@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.nbcc.invoicesystem.models;
+package com.nbcc.ATSsystem.models;
 
 /**
  *
- * @author Chris.Cusack
+ * @author Soyoung Kim
  */
 public interface IError {
     public int getCode();
