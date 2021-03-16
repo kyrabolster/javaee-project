@@ -22,28 +22,14 @@ import javax.sql.rowset.CachedRowSet;
  */
 public class TaskRepository extends BaseRepository implements ITaskRepository {
 
-    private final String SPROC_SELECT_TASKS = "CALL RetrieveAllTasks";
+    private final String SPROC_SELECT_TASKS = "CALL RetrieveTasks(null)";
     private final String SPROC_SELECT_TASK = "CALL RetrieveTasks(?)";
+    private final String SPROC_INSERT_TASK = "CALL InsertTask(?,?,?);";
 
     private IDAL dataAccess;
 
     public TaskRepository() {
         dataAccess = DALFactory.createInstance();
-    }
-
-    @Override
-    public int insertTask(ITask task) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int updateTask(ITask task) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int deleteTask(ITask task) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -66,6 +52,7 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
 
         try {
             List<IParameter> params = ParameterFactory.createListInstance();
+            params.add(ParameterFactory.createInstance(id));
             CachedRowSet cr = dataAccess.executeFill(SPROC_SELECT_TASK, params);
             tasks = toListofTasks(cr);
         } catch (Exception e) {
@@ -89,5 +76,42 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
         }
         
         return retrievedTasks;
+    }
+    
+    @Override
+    public int insertTask(ITask task) {
+        int returnId = 0;
+        
+        List<Object> returnValues;
+        
+        List<IParameter> params = ParameterFactory.createListInstance();
+        
+        params.add(ParameterFactory.createInstance(task.getName()));
+        params.add(ParameterFactory.createInstance(task.getDescription()));
+        params.add(ParameterFactory.createInstance(task.getDuration()));
+        
+        params.add(ParameterFactory.createInstance(returnId, IParameter.Direction.OUT, java.sql.Types.INTEGER));
+        
+        returnValues = dataAccess.executeNonQuery(SPROC_INSERT_TASK, params);
+        
+        try {
+            if(returnValues != null) {
+                returnId = Integer.parseInt(returnValues.get(0).toString());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return returnId;
+    }
+
+    @Override
+    public int updateTask(ITask task) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int deleteTask(ITask task) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
