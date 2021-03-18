@@ -5,6 +5,7 @@
  */
 package com.nbcc.ATSsystem.business;
 
+import com.nbcc.ATSsystem.models.ErrorFactory;
 import com.nbcc.ATSsystem.models.ITask;
 import com.nbcc.ATSsystem.repository.ITaskRepository;
 import com.nbcc.ATSsystem.repository.TaskRepositoryFactory;
@@ -37,12 +38,23 @@ public class TaskService implements ITaskService{
     
     @Override
     public boolean isValid(ITask task) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return task.getErrors().isEmpty();
     }
 
     @Override
     public ITask createTask(ITask task) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (isValid(task)){
+            int id = repo.insertTask(task);
+            if(id > 0) {
+                task.setId(id);
+            } else {
+                task.addError(ErrorFactory.createInstance(5, "Task was not valid for creation. Database error."));
+            }
+        } else {
+            task.addError(ErrorFactory.createInstance(5, "Task failed validation for creation"));
+        }
+        
+        return task;
     }
 
     @Override

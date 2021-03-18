@@ -24,7 +24,7 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
 
     private final String SPROC_SELECT_TASKS = "CALL RetrieveTasks(null)";
     private final String SPROC_SELECT_TASK = "CALL RetrieveTasks(?)";
-    private final String SPROC_INSERT_TASK = "CALL InsertTask(?,?,?);";
+    private final String SPROC_INSERT_TASK = "CALL InsertTask(?,?,?,?);";
 
     private IDAL dataAccess;
 

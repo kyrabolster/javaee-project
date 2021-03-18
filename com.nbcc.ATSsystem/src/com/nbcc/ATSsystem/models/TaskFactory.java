@@ -17,6 +17,10 @@ public abstract class TaskFactory {
         return new Task();
     }
     
+    public static ITask createInstance(String name, String description, int duration) {
+        return new Task(name, description, duration);
+    }
+    
     public static ArrayList<ITask> createListInstance() {
         return new ArrayList();
     }

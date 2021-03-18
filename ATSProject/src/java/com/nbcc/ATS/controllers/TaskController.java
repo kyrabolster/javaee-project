@@ -9,6 +9,7 @@ import com.nbcc.ATS.models.ErrorViewModel;
 import com.nbcc.ATSsystem.business.ITaskService;
 import com.nbcc.ATSsystem.business.TaskServiceFactory;
 import com.nbcc.ATSsystem.models.ITask;
+import com.nbcc.ATSsystem.models.TaskFactory;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 public class TaskController extends CommonController {
     private static final String TASKS_VIEW = "/tasks.jsp";
     private static final String TASKS_MAINT_VIEW = "/task.jsp";
+    private static final String TASK_SUMMARY_VIEW = "/tasksummary.jsp";
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -64,14 +66,28 @@ public class TaskController extends CommonController {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        super.setView(request, TASK_SUMMARY_VIEW);
+        
+        ITaskService taskService = TaskServiceFactory.createInstance();
+        ITask task;
+        
         try {
             String action = super.getValue(request, "action");
             int id = super.getInteger(request, "hdnTaskId");
             
-            
 
             switch (action.toLowerCase()) {
                 case "create":
+                    task = setTask(request);
+                    task = taskService.createTask(task);
+                    
+                    request.setAttribute("task", task);
+                    
+                    if(!taskService.isValid(task)){
+                        request.setAttribute("error", task.getErrors());
+                        super.setView(request, TASKS_MAINT_VIEW);
+                    }
                     
                     break;
                 case "save":
@@ -89,5 +105,17 @@ public class TaskController extends CommonController {
         super.getView().forward(request, response);
     }
 
-
+    private ITask setTask(HttpServletRequest request){
+        String name;
+        String description;
+        int duration;
+        
+        name = getValue(request, "taskName");
+        description = getValue(request, "taskDesc");
+        duration = getInteger(request, "taskDuration");
+        
+        ITask task = TaskFactory.createInstance(name, description, duration);
+        
+        return task;
+    }
 }

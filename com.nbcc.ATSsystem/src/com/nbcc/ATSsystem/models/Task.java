@@ -24,9 +24,9 @@ public class Task extends Base implements ITask {
     }
 
     public Task(String name, String description, int duration) {
-        this.name = name;
-        this.description = description;
-        this.duration = duration;
+        setName(name);
+        setDescription(description);
+        setDuration(duration);
     }
 
     public int getId() {
