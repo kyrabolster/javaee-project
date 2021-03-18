@@ -6,13 +6,15 @@
 package com.nbcc.ATSsystem.models;
 
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author KyraB
  */
 public class Employee extends Base implements IEmployee {
-    
+
     private int id;
     private String firstName;
     private String lastName;
@@ -24,15 +26,19 @@ public class Employee extends Base implements IEmployee {
     private Date deletedAt;
 
     public Employee() {
+        this.firstName = "";
+        this.lastName = "";
+        this.SIN = "";
+        this.hourlyRate = 0.0;
     }
 
     public Employee(String firstName, String lastName, String SIN, double hourlyRate) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.SIN = SIN;
-        this.hourlyRate = hourlyRate;
+        setFirstName(firstName);
+        setLastName(lastName);
+        setSIN(SIN);
+        setHourlyRate(hourlyRate);
     }
-    
+
     public int getId() {
         return id;
     }
@@ -46,7 +52,11 @@ public class Employee extends Base implements IEmployee {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        if (firstName == null) {
+            addError(ErrorFactory.createInstance(1, "First name is required"));
+        } else {
+            this.firstName = firstName;
+        }
     }
 
     public String getLastName() {
@@ -54,7 +64,11 @@ public class Employee extends Base implements IEmployee {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        if (firstName == null) {
+            addError(ErrorFactory.createInstance(2, "Last name is required"));
+        } else {
+            this.lastName = lastName;
+        }
     }
 
     public String getSIN() {
@@ -62,7 +76,18 @@ public class Employee extends Base implements IEmployee {
     }
 
     public void setSIN(String SIN) {
-        this.SIN = SIN;
+        if (SIN == null) {
+            addError(ErrorFactory.createInstance(3, "SIN must be greater than 0"));
+        } else {
+            Pattern pattern = Pattern.compile("^\\d{3}-?\\d{3}-?\\d{3}$");
+            Matcher matcher = pattern.matcher((CharSequence) SIN);
+
+            if (!matcher.matches()) {
+                addError(ErrorFactory.createInstance(4, "SIN must be in valid Canadian format"));
+            } else {
+                this.SIN = SIN;
+            }
+        }
     }
 
     public double getHourlyRate() {
@@ -70,7 +95,11 @@ public class Employee extends Base implements IEmployee {
     }
 
     public void setHourlyRate(double hourlyRate) {
-        this.hourlyRate = hourlyRate;
+        if (hourlyRate <= 0) {
+            addError(ErrorFactory.createInstance(4, "Hourly rate must be greater than 0"));
+        } else {
+            this.hourlyRate = hourlyRate;
+        }
     }
 
     public boolean isIsDeleted() {
