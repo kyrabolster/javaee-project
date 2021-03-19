@@ -42,9 +42,11 @@ public class Task extends Base implements ITask {
     }
 
     public void setName(String name) {
-        if (name == null) {
+        if ("".equals(name) || name == null) {
             addError(ErrorFactory.createInstance(1, "Task name is required"));
-        } else {
+        } else if (name.length() < 2) {
+            addError(ErrorFactory.createInstance(3, "Task name must be 2 characters or larger"));
+        }else {
             this.name = name;
         }
     }
@@ -54,7 +56,7 @@ public class Task extends Base implements ITask {
     }
 
     public void setDescription(String description) {
-        if (description == null) {
+        if ("".equals(description) || description == null) {
             addError(ErrorFactory.createInstance(2, "Task description is required"));
         } else if (description.length() < 5) {
             addError(ErrorFactory.createInstance(3, "Task description must be 5 characters or larger"));
@@ -69,7 +71,7 @@ public class Task extends Base implements ITask {
 
     public void setDuration(int duration) {
         if (duration < 15) {
-            addError(ErrorFactory.createInstance(4, "Duration can not be less than 15 minutes"));
+            addError(ErrorFactory.createInstance(4, "Duration can not be less than 30 minutes"));
         } else {
             this.duration = duration;
         }
