@@ -19,7 +19,7 @@
             <h1 class="text-center display-4 grey mt-5 mb-5">Employee List</h1>
             <section>
                 <div class="container clearfix">
-                    <a href="${pageContext.request.contextPath}/employee/create"><button class="btn float-right btn-info mb-2" type="button" >Create New Task</button></a>
+                    <a href="${pageContext.request.contextPath}/employee/create"><button class="btn float-right btn-info mb-2" type="button" >Create New Employee</button></a>
                     <c:set var="employeeCount" value="${ employees.size()}" />
                     <c:choose>
                         <c:when test="${ employeeCount > 0}">

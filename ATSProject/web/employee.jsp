@@ -35,7 +35,7 @@
                                     <td><label>Employee Id:</label></td>
                                     <td>
                                         ${employee.id}
-                                        <input type="hidden" value="${employee.id}" name="hdnTaskId" />                                
+                                        <input type="hidden" value="${employee.id}" name="hdnEmployeeId" />                                
                                     </td>
                                 </tr>
                             </c:if>
@@ -55,7 +55,7 @@
                                 <td>Hourly Rate:</td>
                                 <td><input type="text" name="hourlyRate" value='${employee.hourlyRate}'/></td>
                             </tr>
-                        </table
+                        </table>
                         <c:choose>
                             <c:when test="${employee != null && employee.id != 0}">
                                 <input class="btn btn-primary" type="submit" value="Delete" name="action" />
@@ -67,9 +67,9 @@
                         </c:choose>
                     </form>  
                     <c:choose>
-                        <c:when test="${ task.errors.size() > 0 }">
+                        <c:when test="${ employee.errors.size() > 0 }">
                             <ul>
-                                <c:forEach items="${ task.errors }" var="err">
+                                <c:forEach items="${ employee.errors }" var="err">
                                     <li>Error Code: ${ err.code } Error Desc: ${err.description }</li>
                                     </c:forEach>
                             </ul>
