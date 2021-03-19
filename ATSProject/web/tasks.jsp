@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="WEB-INF/jspf/header.jspf" %>
-        <title>Tasks List</title>
+        <title>ATS - Task</title>
     </head>
     <body>
         <%@include file="WEB-INF/jspf/navigation.jspf" %>
