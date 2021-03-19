@@ -42,7 +42,7 @@
                                     <tr>
                                         <td><a href="employee/${ employee.id}">${ employee.id}</a></td>
                                         <td>${ employee.firstName } ${ employee.lastName }</td>
-                                        <td>${ employee.sin }</td>
+                                        <td>${ employee.SIN }</td>
                                         <td>${ employee.hourlyRate }</td>
                                     </tr>
                                 </c:forEach>

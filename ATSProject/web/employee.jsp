@@ -27,37 +27,37 @@
             </c:choose>
             <section>
                 <div class="container">
-                    <c:set var="errors" value="${error}" />
+                    <c:set var="errors" value="${ error }" />
                     <form method="POST" action="save">
                         <table class="table table-striped">    
-                            <c:if test="${employee != null && employee.id != 0}">
+                            <c:if test="${ employee != null && employee.id != 0 }">
                                 <tr>
                                     <td><label>Employee Id:</label></td>
                                     <td>
-                                        ${employee.id}
-                                        <input type="hidden" value="${employee.id}" name="hdnEmployeeId" />                                
+                                        ${ employee.id }
+                                        <input type="hidden" value="${ employee.id }" name="hdnEmployeeId" />                                
                                     </td>
                                 </tr>
                             </c:if>
                             <tr>                    
                                 <td>First Name:</td>
-                                <td><input type="text" name="firstName" value='${employee.firstName}'/></td>
+                                <td><input type="text" name="firstName" value='${ employee.firstName }'/></td>
                             </tr>
                             <tr>                    
                                 <td>Last Name:</td>
-                                <td><input type="text" name="lastName" value='${employee.lastName}' /></td>
+                                <td><input type="text" name="lastName" value='${ employee.lastName }' /></td>
                             </tr>
                             <tr>                    
                                 <td>SIN:</td>
-                                <td><input type="text" name="sin" value='${employee.sin}'/></td>
+                                <td><input type="text" name="SIN" value='${ employee.SIN }'/></td>
                             </tr>
                             <tr>                    
                                 <td>Hourly Rate:</td>
-                                <td><input type="text" name="hourlyRate" value='${employee.hourlyRate}'/></td>
+                                <td><input type="text" name="hourlyRate" value='${ employee.hourlyRate }'/></td>
                             </tr>
                         </table>
                         <c:choose>
-                            <c:when test="${employee != null && employee.id != 0}">
+                            <c:when test="${ employee != null && employee.id != 0 }">
                                 <input class="btn btn-primary" type="submit" value="Delete" name="action" />
                                 <input class="btn btn-primary" type="submit" value="Save" name="action" />     
                             </c:when>
@@ -70,7 +70,7 @@
                         <c:when test="${ employee.errors.size() > 0 }">
                             <ul>
                                 <c:forEach items="${ employee.errors }" var="err">
-                                    <li>Error Code: ${ err.code } Error Desc: ${err.description }</li>
+                                    <li>Error Code: ${ err.code } Error Desc: ${ err.description }</li>
                                     </c:forEach>
                             </ul>
                         </c:when>

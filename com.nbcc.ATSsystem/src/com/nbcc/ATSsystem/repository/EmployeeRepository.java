@@ -21,9 +21,9 @@ import javax.sql.rowset.CachedRowSet;
  */
 public class EmployeeRepository extends BaseRepository implements IEmployeeRepository {
 
-    private final String SPROC_SELECT_EMPLOYEES = "CALL RetrieveAllEmployees(null)";
-    private final String SPROC_SELECT_EMPLOYEE = "CALL RetrieveAllEmployeeById(?)";
-    private final String SPROC_INSERT_EMPLOYEE = "CALL InsertEmployee(?,?,?,?);";
+    private final String SPROC_SELECT_EMPLOYEES = "CALL SelectEmployees(null)";
+    private final String SPROC_SELECT_EMPLOYEE = "CALL SelectEmployees(?)";
+    private final String SPROC_INSERT_EMPLOYEE = "CALL InsertEmployee(?,?,?,?,?);";
 
     private IDAL dataAccess;
 
@@ -52,7 +52,7 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         try {
             List<IParameter> params = ParameterFactory.createListInstance();
             params.add(ParameterFactory.createInstance(id));
-            CachedRowSet cr = dataAccess.executeFill(SPROC_SELECT_EMPLOYEES, params);
+            CachedRowSet cr = dataAccess.executeFill(SPROC_SELECT_EMPLOYEE, params);
             employees = toListofEmployees(cr);
         } catch (Exception e) {
             System.out.println(e.getMessage());

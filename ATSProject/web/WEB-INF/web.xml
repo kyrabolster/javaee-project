@@ -4,38 +4,75 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+    <servlet-mapping>
+        <servlet-name>EmployeeController</servlet-name>
+        <url-pattern>/EmployeeController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-     <servlet>
+    <servlet>
         <servlet-name>HomeView</servlet-name>
         <jsp-file>/index.jsp</jsp-file>
     </servlet>
     <!--mapping-->
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>HomeView</servlet-name>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
-     <!--Default Views-->
+    <!--Default Views-->
     <servlet>
         <servlet-name>404</servlet-name>
         <jsp-file>/404.jsp</jsp-file>
     </servlet>
-    <!--mapping-->
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>404</servlet-name>
         <url-pattern>/404</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>CreateEmployeeView</servlet-name>
+        <jsp-file>/employee.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateEmployeeView</servlet-name>
+        <url-pattern>/employee/create</url-pattern>
+    </servlet-mapping>
+    <!-- Controller mapping -->
+    <servlet>
+        <servlet-name>EmployeeController</servlet-name>
+        <servlet-class>com.nbcc.ATS.controllers.EmployeeController</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>EmployeeController</servlet-name>
+        <url-pattern>/employees</url-pattern>
+    </servlet-mapping>
+   
+    <!--Map for query string parameter to retrieve invoice by id-->
+    <servlet-mapping>
+        <servlet-name>EmployeeController</servlet-name>
+        <url-pattern>/employee/*</url-pattern>
+    </servlet-mapping>
+   
+
+    <!--mapping-->
+
     
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     
+
+    <welcome-file-list>
+        <welcome-file>home</welcome-file>
+    </welcome-file-list>
         
     <error-page>
-	<error-code>404</error-code>
-	<location>/404</location>
+        <error-code>404</error-code>
+        <location>/404</location>
     </error-page>
+    
 </web-app>

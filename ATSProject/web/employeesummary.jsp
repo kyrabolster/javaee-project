@@ -36,7 +36,7 @@
                                 </tr>
                                 <tr>
                                     <td style="text-align: right;">Employee SIN</td>
-                                    <td>${ employee.sin }</td>
+                                    <td>${ employee.SIN }</td>
                                 </tr>
                                 <tr>
                                     <td style="text-align: right;">Employee Hourly Rate</td>
