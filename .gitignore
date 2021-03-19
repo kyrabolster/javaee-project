@@ -21,12 +21,11 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-/ATSProject/nbproject/private/*
-/com.nbcc.dataaccess/nbproject/private/*
-/com.nbcc.ATSsystem/nbproject/private/*
-/ATSProject/build/
+nbproject/private/
+build/
 
 /com.nbcc.dataaccess/dist/
 /com.nbcc.dataaccess/build/
 /com.nbcc.ATSsystem/dist/
 /com.nbcc.ATSsystem/build/
+/ATSProject/dist/
