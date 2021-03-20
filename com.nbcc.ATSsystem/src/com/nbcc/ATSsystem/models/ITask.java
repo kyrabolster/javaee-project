@@ -5,6 +5,8 @@
  */
 package com.nbcc.ATSsystem.models;
 
+import java.util.Date;
+
 /**
  *
  * @author Soyoung Kim
@@ -26,4 +28,12 @@ public interface ITask extends IBase {
     int getDuration();
     
     void setDuration(int duration);
+    
+    Date getCreatedAt();
+    
+    void setCreatedAt(Date createdAt);
+    
+    Date getUpdatedAt();
+    
+    void setUpdatedAt(Date updatedAt);
 }

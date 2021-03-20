@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.nbcc.ATSsystem.models;
+import java.util.Date;
 
 /**
  *
@@ -16,6 +17,8 @@ public class Task extends Base implements ITask {
     private String name;
     private String description;
     private int duration;
+    private Date createdAt;
+    private Date updatedAt;
 
     public Task() {
         this.name = "";
@@ -75,6 +78,22 @@ public class Task extends Base implements ITask {
         } else {
             this.duration = duration;
         }
+    }
+    
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+    
+    public void setCreatedAt(Date createdAt){
+        this.createdAt = createdAt;
+    }
+    
+    public Date getUpdatedAt(){
+        return updatedAt;
+    }
+    
+    public void setUpdatedAt(Date updatedAt){
+        this.updatedAt = updatedAt;
     }
 
 }
