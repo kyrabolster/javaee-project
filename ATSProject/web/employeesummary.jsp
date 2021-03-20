@@ -40,7 +40,7 @@
                                 </tr>
                                 <tr>
                                     <td style="text-align: right;">Employee Hourly Rate</td>
-                                    <td>${ employee.hourlyRate}</td>
+                                    <td><fmt:formatNumber value="${ employee.hourlyRate}" type="currency" currencySymbol="$"/></td>
                                 </tr>
                         </table>
                     </c:otherwise>

@@ -71,7 +71,12 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
             employee.setFirstName(cs.getString("FirstName"));
             employee.setLastName(cs.getString("LastName"));
             employee.setSIN(cs.getString("SIN"));
-            employee.setHourlyRate(super.getDouble("HourlyRate", cs));
+            employee.setHourlyRate(cs.getDouble("HourlyRate"));
+            employee.setCreatedAt(super.getDate("CreatedAt", cs));
+            employee.setIsDeleted(super.getBoolean("isDeleted", cs));
+            employee.setDeletedAt(super.getDate("DeletedAt", cs));
+            employee.setUpdatedAt(super.getDate("UpdatedAt", cs));
+
             retrievedEmployees.add(employee);
         }
 

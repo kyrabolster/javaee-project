@@ -6,13 +6,15 @@
 package com.nbcc.ATSsystem.models;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
  * @author KyraB
  */
 public abstract class EmployeeFactory {
-     public static IEmployee createInstance() {
+     
+    public static IEmployee createInstance() {
         return new Employee();
     }
     

@@ -33,7 +33,7 @@ public interface IEmployee extends IBase {
 
     void setHourlyRate(double hourlyRate);
 
-    boolean isIsDeleted();
+    boolean getIsDeleted();
 
     void setIsDeleted(boolean isDeleted);
 

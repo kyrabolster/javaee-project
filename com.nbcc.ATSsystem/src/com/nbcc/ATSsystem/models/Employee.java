@@ -32,7 +32,7 @@ public class Employee extends Base implements IEmployee {
         this.hourlyRate = 0.0;
     }
 
-    public Employee(String firstName, String lastName, String SIN, double hourlyRate) {
+   public Employee(String firstName, String lastName, String SIN, double hourlyRate) {
         setFirstName(firstName);
         setLastName(lastName);
         setSIN(SIN);
@@ -52,7 +52,7 @@ public class Employee extends Base implements IEmployee {
     }
 
     public void setFirstName(String firstName) {
-        if (firstName == null) {
+        if (firstName == null || firstName.isEmpty()) {
             addError(ErrorFactory.createInstance(1, "First name is required"));
         } else {
             this.firstName = firstName;
@@ -64,7 +64,7 @@ public class Employee extends Base implements IEmployee {
     }
 
     public void setLastName(String lastName) {
-        if (firstName == null) {
+        if (lastName == null || lastName.isEmpty()) {
             addError(ErrorFactory.createInstance(2, "Last name is required"));
         } else {
             this.lastName = lastName;
@@ -102,7 +102,7 @@ public class Employee extends Base implements IEmployee {
         }
     }
 
-    public boolean isIsDeleted() {
+    public boolean getIsDeleted() {
         return isDeleted;
     }
 

@@ -26,24 +26,19 @@
                             <table class="table table-striped">
                                 <tr class="bg-dark text-light">
                                     <th>
-                                        Id
-                                    </th>
-                                    <th>
                                         Name
                                     </th>
-                                    <th>
-                                        SIN
+                                    <th class="text-right">
+                                       Details
                                     </th>
-                                    <th>
-                                        Hourly Rate
-                                    </th>
-                                </tr>
-                                <c:forEach items="${employees}"  var="employee">
+                                    <c:forEach items="${employees}"  var="employee">
                                     <tr>
-                                        <td><a href="employee/${ employee.id}">${ employee.id}</a></td>
-                                        <td>${ employee.firstName } ${ employee.lastName }</td>
-                                        <td>${ employee.SIN }</td>
-                                        <td>${ employee.hourlyRate }</td>
+                                        <td>
+                                            ${ employee.firstName } ${ employee.lastName }
+                                        </td>
+                                        <td class="text-right">
+                                            <a href="employee/${ employee.id}">View Details</a> 
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </table>

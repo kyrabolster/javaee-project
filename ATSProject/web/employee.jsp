@@ -55,6 +55,38 @@
                                 <td>Hourly Rate:</td>
                                 <td><input type="text" name="hourlyRate" value='${ employee.hourlyRate }'/></td>
                             </tr>
+                            <tr>                    
+                                <td>Created Date:</td>
+                                <td><input type="text" name="createdAt" value='${ employee.createdAt }'/></td>
+                            </tr>
+                            <tr>                    
+                                <td>Is Deleted?</td>
+                                <td><input type="text" name="isDeleted" value='${ employee.isDeleted }'/></td>
+                            </tr>
+                            <c:if test="${ employee.isDeleted == true && employee.isDeleted != null }">
+                                <tr>                    
+                                    <td>Deleted Date:</td>
+                                    <td><input type="text" name="deletedDate" value='${ employee.deletedAt }'/></td>
+                                </tr>
+                            </c:if>
+                            <c:if test="${ employee.updatedAt != null }">
+                                <tr>                    
+                                    <td>Updated Date:</td>
+                                    <td><input type="text" name="updatedDate" value='${ employee.updatedAt }'/></td>
+                                </tr>
+                            </c:if>
+                                <tr>                    
+                                    <td>Team Name:</td>
+                                    <td>
+                                    <!--<input type="text" name="teamName" value='$'/>-->
+                                    </td>
+                                </tr>
+                                <tr>                    
+                                    <td>Skills (Tasks):</td>
+                                    <td>
+                                    <!--<input type="text" name="teamName" value=''/>-->
+                                    </td>
+                                </tr>
                         </table>
                         <c:choose>
                             <c:when test="${ employee != null && employee.id != 0 }">
