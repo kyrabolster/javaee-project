@@ -26,3 +26,7 @@ hs_err_pid*
 /com.nbcc.ATSsystem/nbproject/private/*
 /ATSProject/build/
 
+/com.nbcc.dataaccess/build/
+/com.nbcc.dataaccess/dist/
+/com.nbcc.ATSsystem/dist/
+/ATSProject/dist/
