@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class TeamController extends CommonController {
 
+    private static final String TEAMS_VIEW = "/teams.jsp";
     private static final String TEAMS_MAINT_VIEW = "/team.jsp";
     private static final String TEAM_SUMMARY_VIEW = "/teamsummary.jsp";
 
@@ -55,7 +56,7 @@ public class TeamController extends CommonController {
             //Set attribute as list of the invoices
             //when implement show teams
             //request.setAttribute("teams", teamService.getTeams());
-            super.setView(request, TEAMS_MAINT_VIEW);
+            super.setView(request, TEAMS_VIEW);
         }
 
         super.getView().forward(request, response);
@@ -77,9 +78,9 @@ public class TeamController extends CommonController {
 
             switch (action.toLowerCase()) {
                 case "create":
-                    team = setTeam(request);
-                    team = teamService.createTeam(team);
+                    team = setTeam(request);                    
                     assignedEmps = getAssignedEmp(request);
+                    team = teamService.createTeam(team);
 
                     request.setAttribute("team", team);
                     request.setAttribute("emp1", assignedEmps.get(0));
@@ -100,6 +101,8 @@ public class TeamController extends CommonController {
             }
 
         } catch (Exception e) {
+            List<EmployeeVM> employeeList = teamService.getEmployees();
+            request.setAttribute("employeesList", employeeList);
             super.setView(request, TEAMS_MAINT_VIEW);
             request.setAttribute("error", new ErrorViewModel("An error occurred attempting to maintain teams"));
         }

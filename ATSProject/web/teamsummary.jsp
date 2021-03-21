@@ -36,15 +36,20 @@
                                 </tr>
                                 <tr>
                                     <td style="text-align: right;">Team Member 1</td>
-                                    <td>${ emp1 }</td>
+                                    <td>${ emp1.name }</td>
                                 </tr>
                                 <tr>
                                     <td style="text-align: right;">Team Member 2</td>
-                                    <td>${ emp2 }</td>
+                                    <td>${ emp2.name }</td>
                                 </tr>
                                 <tr>
                                     <td style="text-align: right;">On Call</td>
-                                    <td>${ team.isOnCall }</td>
+                                    <c:if test="${ team.isOnCall == true}">
+                                        <td>Yes</td>
+                                    </c:if>
+                                    <c:if test="${ team.isOnCall == false}">
+                                        <td>No</td>
+                                    </c:if>
                                 </tr>
                         </table>
                     </c:otherwise>
