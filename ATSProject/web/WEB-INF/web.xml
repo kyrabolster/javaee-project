@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <servlet-mapping>
+
+        <servlet-mapping>
         <servlet-name>TeamController</servlet-name>
         <url-pattern>/TeamController</url-pattern>
     </servlet-mapping>
@@ -13,8 +14,7 @@
         <servlet-name>HomeView</servlet-name>
         <jsp-file>/index.jsp</jsp-file>
     </servlet>
-    <!--mapping-->
-    
+  
     <servlet-mapping>
         <servlet-name>HomeView</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -24,6 +24,7 @@
         <servlet-name>404</servlet-name>
         <jsp-file>/404.jsp</jsp-file>
     </servlet>
+    
     <!--mapping-->
     <servlet-mapping>
         <servlet-name>404</servlet-name>
@@ -84,9 +85,37 @@
     </servlet-mapping>    
     
     
+    <!--mapping-->
+     <servlet>
+        <servlet-name>CreateTeamView</servlet-name>
+        <jsp-file>/team.jsp</jsp-file>
+    </servlet>
+    <!--mapping-->
+    <servlet-mapping>
+        <servlet-name>CreateTeamView</servlet-name>
+        <url-pattern>/team/create</url-pattern>
+    </servlet-mapping>
+    <!--End Default Views -->
+        <!-- Controller Mapping -->
+    <servlet>
+        <servlet-name>TeamController</servlet-name>
+        <servlet-class>com.nbcc.ATS.controllers.TeamController</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>TeamController</servlet-name>
+        <url-pattern>/teams</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>TeamController</servlet-name>
+        <url-pattern>/team/*</url-pattern>
+    </servlet-mapping>    
+    
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
     <error-page>
         <error-code>404</error-code>
         <location>/404</location>

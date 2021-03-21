@@ -36,7 +36,7 @@ CREATE TABLE `employees` (
   `UpdatedAt` datetime DEFAULT NULL,
   `DeletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,6 +45,7 @@ CREATE TABLE `employees` (
 
 LOCK TABLES `employees` WRITE;
 /*!40000 ALTER TABLE `employees` DISABLE KEYS */;
+INSERT INTO `employees` VALUES (1,'Sam','Smith','111-222-333',30,_binary '\0','2021-03-19 22:05:19',NULL,NULL),(2,'Jennifer','Wilson','444-555-666',40,_binary '\0','2021-03-19 22:05:19',NULL,NULL);
 /*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,8 +118,9 @@ CREATE TABLE `jobs` (
   `Start` datetime NOT NULL,
   `End` datetime NOT NULL,
   PRIMARY KEY (`Id`),
-  KEY `TeamId_Jobs_FK_idx` (`TeamId`),
-  CONSTRAINT `TeamId_Jobs_FK` FOREIGN KEY (`TeamId`) REFERENCES `teams` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `team_idfk_idx` (`TeamId`),
+  KEY `job_team_idfk_idx` (`TeamId`),
+  CONSTRAINT `job_team_idfk` FOREIGN KEY (`TeamId`) REFERENCES `teams` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -146,7 +148,7 @@ CREATE TABLE `tasks` (
   `CreatedAt` datetime NOT NULL,
   `UpdatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,6 +157,7 @@ CREATE TABLE `tasks` (
 
 LOCK TABLES `tasks` WRITE;
 /*!40000 ALTER TABLE `tasks` DISABLE KEYS */;
+INSERT INTO `tasks` VALUES (1,'Network Design','Network design is a category of systems design that deals with data transport mechanisms',30,'2021-03-16 19:48:54',NULL),(2,'Network security','Network security is a broad term that covers a multitude of technologies, devices and processes.',60,'2021-03-17 15:38:48',NULL),(3,'Router Configuration','Configure client\'s router to make their network complete.',30,'2021-03-17 15:44:13',NULL),(7,'','tests',30,'2021-03-18 20:53:35',NULL);
 /*!40000 ALTER TABLE `tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,9 +172,9 @@ CREATE TABLE `team_members` (
   `EmployeeId` int(11) NOT NULL,
   `TeamId` int(11) NOT NULL,
   PRIMARY KEY (`EmployeeId`,`TeamId`),
-  KEY `TeamId_idx` (`TeamId`),
-  CONSTRAINT `TeamsId` FOREIGN KEY (`TeamId`) REFERENCES `teams` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `emp_idfk` FOREIGN KEY (`EmployeeId`) REFERENCES `employees` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `team_idfk_idx` (`TeamId`),
+  CONSTRAINT `emp_idfk` FOREIGN KEY (`EmployeeId`) REFERENCES `employees` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `team_idfk` FOREIGN KEY (`TeamId`) REFERENCES `teams` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -192,7 +195,7 @@ DROP TABLE IF EXISTS `teams`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `teams` (
-  `Id` int(11) NOT NULL,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
   `IsOnCall` bit(1) NOT NULL,
   `IsDeleted` bit(1) NOT NULL,
@@ -211,6 +214,182 @@ LOCK TABLES `teams` WRITE;
 /*!40000 ALTER TABLE `teams` DISABLE KEYS */;
 /*!40000 ALTER TABLE `teams` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'ats2021hotel'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `InsertEmployee` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`dev`@`%` PROCEDURE `InsertEmployee`(
+  IN FirstName_param VARCHAR(50),
+  IN LastName_param VARCHAR(50),
+  IN SIN_param VARCHAR(11),
+  IN HourlyRate_param DECIMAL(10,0),
+  OUT Id_out INT
+)
+BEGIN
+	INSERT INTO employees(FirstName, LastName, SIN, HourlyRate, IsDeleted, CreatedAt)
+		VALUES(FirstName_param, LastName_param, SIN_param, HourlyRate_param, 0, CURRENT_TIMESTAMP());
+		
+    SET Id_out = LAST_INSERT_ID();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `InsertTask` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+DELIMITER ;;
+CREATE DEFINER=`dev`@`%` PROCEDURE `InsertTask`(
+IN Name_param NVARCHAR(255),
+IN Description_param NVARCHAR(255),
+IN Duration_param INT,
+OUT Id_out INT
+)
+BEGIN
+
+	INSERT INTO tasks(Name, Description, Duration, CreatedAt)
+    VALUES(Name_param, Description_param, Duration_param, CURRENT_TIMESTAMP());
+    
+    SET Id_out = LAST_INSERT_ID();
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `InsertTeam` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`dev`@`%` PROCEDURE `InsertTeam`(
+IN Name_param NVARCHAR(255),
+IN IsOnCall_param BIT,
+IN Employee1_param INT,
+IN Employee2_param INT,
+OUT Id_out INT
+)
+BEGIN
+	DECLARE exit handler FOR SQLEXCEPTION, SQLWARNING
+	  BEGIN
+		ROLLBACK;
+		RESIGNAL;
+	  END;
+
+	START TRANSACTION; 
+		INSERT INTO teams(Name, IsOnCall, IsDeleted, CreatedAt)
+		VALUES(Name_param, IsOnCall_param, 0, CURRENT_TIMESTAMP());
+		
+		SET Id_out = LAST_INSERT_ID();
+		
+		INSERT INTO team_members(EmployeeId, TeamId)
+		VALUES
+			(Employee1_param, Id_out),
+			(Employee2_param, Id_out);
+	COMMIT;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `RetrieveAllEmployeeById` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`dev`@`%` PROCEDURE `RetrieveAllEmployeeById`(
+	IN Id_param INT
+)
+BEGIN
+
+	SELECT (Id, FirstName, LastName, SIN, HourlyRate, IsDeleted, CreatedAt, UpdatedAt, DeletedAt)
+    FROM employees
+    WHERE (Id_param IS NULL OR id = Id_param)
+    ORDER BY CreatedAt;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `RetrieveAllEmployees` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`dev`@`%` PROCEDURE `RetrieveAllEmployees`()
+BEGIN
+
+	SELECT (Id, FirstName, LastName, SIN, HourlyRate, IsDeleted, CreatedAt, UpdatedAt, DeletedAt)
+    FROM employees
+    ORDER BY CreatedAt;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `RetrieveTasks` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`dev`@`%` PROCEDURE `RetrieveTasks`(
+	IN Id_param INT
+)
+BEGIN
+	
+    SELECT Id, Name, Description, Duration FROM Tasks
+    WHERE (Id_param IS NULL OR Id = Id_param)
+    ORDER BY CreatedAt;
+    
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -221,4 +400,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-09 17:36:33
+-- Dump completed on 2021-03-19 22:40:22
