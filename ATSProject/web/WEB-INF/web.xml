@@ -10,6 +10,11 @@
         <servlet-name>TeamController</servlet-name>
         <url-pattern>/TeamController</url-pattern>
     </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>TaskController</servlet-name>
+        <url-pattern>/TaskController</url-pattern>
+    </servlet-mapping>
   
     <session-config>
         <session-timeout>
