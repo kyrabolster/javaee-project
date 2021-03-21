@@ -26,3 +26,13 @@ BEGIN
 	COMMIT;
 END$$
 DELIMITER ;
+
+
+DELIMITER $$
+CREATE DEFINER=`dev`@`%` PROCEDURE `selectEmployeesNotInTeam`()
+BEGIN
+	SELECT id, CONCAT(firstName, ' ', LastName) AS FullName FROM employees 
+    WHERE id NOT IN (SELECT employeeId FROM team_members);
+END$$
+DELIMITER ;
+
