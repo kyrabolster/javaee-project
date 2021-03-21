@@ -93,22 +93,6 @@
         <url-pattern>/team/*</url-pattern>
     </servlet-mapping>    
     
-    
-
-    <!--End Default Views -->
-        <!-- Controller Mapping -->
-
-    
-    <servlet-mapping>
-        <servlet-name>TeamController</servlet-name>
-        <url-pattern>/teams</url-pattern>
-    </servlet-mapping>
-    
-    <servlet-mapping>
-        <servlet-name>TeamController</servlet-name>
-        <url-pattern>/team/*</url-pattern>
-    </servlet-mapping>    
-    
     <servlet>
         <servlet-name>CreateEmployeeView</servlet-name>
         <jsp-file>/employee.jsp</jsp-file>
