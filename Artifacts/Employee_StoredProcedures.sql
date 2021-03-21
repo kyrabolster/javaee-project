@@ -21,34 +21,51 @@ END$$
 DELIMITER ;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS RetrieveAllEmployees;
+DROP PROCEDURE IF EXISTS SelectEmployees;
 // DELIMITER;
 
 DELIMITER $$
-CREATE PROCEDURE `RetrieveAllEmployees` ()
+CREATE PROCEDURE `SelectEmployees`(IN Id_param INT)
 BEGIN
-
-	SELECT (Id, FirstName, LastName, SIN, HourlyRate, IsDeleted, CreatedAt, UpdatedAt, DeletedAt)
-    FROM employees
-    ORDER BY CreatedAt;
-
+SELECT * FROM employees
+    WHERE
+    (Id_param IS NULL OR  employees.id = Id_param)
+    ORDER BY  employees.CreatedAt;
 END$$
 DELIMITER ;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS RetrieveAllEmployeeById;
+DROP PROCEDURE IF EXISTS SelectTasks;
 // DELIMITER;
 
 DELIMITER $$
-CREATE PROCEDURE `RetrieveAllEmployeeById` (
-	IN Id_param INT
-)
+CREATE PROCEDURE `SelectTasks`(IN Id_param INT)
 BEGIN
+SELECT Name FROM tasks
+		INNER JOIN employees_tasks
+			ON employees_tasks.TaskId = tasks.Id
+		INNER JOIN employees
+			ON employees_tasks.EmployeeId = employees.Id
+    WHERE
+    (Id_param IS NULL OR employees.Id = Id_param)
+	ORDER BY Name;
+END$$
+DELIMITER ;
 
-	SELECT (Id, FirstName, LastName, SIN, HourlyRate, IsDeleted, CreatedAt, UpdatedAt, DeletedAt)
-    FROM employees
-    WHERE (Id_param IS NULL OR id = Id_param)
-    ORDER BY CreatedAt;
+DELIMITER //
+DROP PROCEDURE IF EXISTS SelectTasks;
+// DELIMITER;
 
+DELIMITER $$
+CREATE PROCEDURE `SelectTeams`(IN Id_param INT)
+BEGIN
+	SELECT Name FROM teams
+		INNER JOIN team_members
+			ON team_members.TeamId = teams.Id
+		INNER JOIN employees
+			ON team_members.EmployeeId = employees.Id
+    WHERE
+    (Id_param IS NULL OR employees.Id = Id_param)
+    ORDER BY Name;
 END$$
 DELIMITER ;
