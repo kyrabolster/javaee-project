@@ -1,5 +1,5 @@
 DELIMITER $$
-CREATE DEFINER=`dev`@`%` PROCEDURE `InsertTeam`(
+CREATE PROCEDURE `InsertTeam`(
 IN Name_param NVARCHAR(255),
 IN IsOnCall_param BIT,
 IN Employee1_param INT,
@@ -29,7 +29,7 @@ DELIMITER ;
 
 
 DELIMITER $$
-CREATE DEFINER=`dev`@`%` PROCEDURE `selectEmployeesNotInTeam`()
+CREATE PROCEDURE `selectEmployeesNotInTeam`()
 BEGIN
 	SELECT id, CONCAT(firstName, ' ', LastName) AS FullName FROM employees 
     WHERE id NOT IN (SELECT employeeId FROM team_members);
