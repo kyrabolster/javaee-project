@@ -25,20 +25,20 @@
                             <table class="table table-striped">
                                 <tr class="bg-dark text-light">
                                     <th>
-                                        Id
-                                    </th>
-                                    <th>
                                         Name
                                     </th>
                                     <th>
                                         Description
                                     </th>
+                                     <th>
+                                        Details
+                                    </th>
                                 </tr>
                                 <c:forEach items="${tasks}"  var="task">
                                     <tr>
-                                        <td><a href="task/${ task.id}">${ task.id}</a></td>
                                         <td>${ task.name }</td>
                                         <td>${ task.description }</td>
+                                        <td><a href="task/${ task.id}">View Details</a></td>
                                     </tr>
                                 </c:forEach>
 
