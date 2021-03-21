@@ -98,4 +98,17 @@ public abstract class BaseRepository {
         nValue = rs.getBoolean(getByColumnLabel(columnName,rs));
         return nValue;
     }
+    
+    /**
+     * 
+     * @param columnName
+     * @param rs
+     * @return
+     * @throws SQLException 
+     */
+    protected String getString(String columnName, CachedRowSet rs) throws SQLException{
+        String nValue = "";
+        nValue = rs.getString(getByColumnLabel(columnName,rs));
+        return nValue;
+    }
 }

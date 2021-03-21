@@ -6,6 +6,7 @@
 package com.nbcc.ATSsystem.models;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -48,4 +49,12 @@ public interface IEmployee extends IBase {
     Date getDeletedAt();
 
     void setDeletedAt(Date deletedAt);
+
+    List<String> getTasks();
+
+    void setTasks(List<String> tasks);
+    
+    List<String> getTeams();
+
+    void setTeams(List<String> teams);
 }

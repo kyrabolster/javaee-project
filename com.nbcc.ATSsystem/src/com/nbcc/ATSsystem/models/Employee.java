@@ -6,6 +6,7 @@
 package com.nbcc.ATSsystem.models;
 
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +25,9 @@ public class Employee extends Base implements IEmployee {
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
+    private List<String> tasks;
+    private List<String> teams;
+
 
     public Employee() {
         this.firstName = "";
@@ -32,7 +36,7 @@ public class Employee extends Base implements IEmployee {
         this.hourlyRate = 0.0;
     }
 
-   public Employee(String firstName, String lastName, String SIN, double hourlyRate) {
+    public Employee(String firstName, String lastName, String SIN, double hourlyRate) {
         setFirstName(firstName);
         setLastName(lastName);
         setSIN(SIN);
@@ -132,5 +136,21 @@ public class Employee extends Base implements IEmployee {
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
+    }
+    
+    public List<String> getTasks() {
+        return tasks;
+    }
+    
+    public void setTasks(List<String> tasks) {
+        this.tasks = tasks;
+    }
+    
+    public List<String> getTeams() {
+        return teams;
+    }
+    
+    public void setTeams(List<String> teams) {
+        this.teams = teams;
     }
 }

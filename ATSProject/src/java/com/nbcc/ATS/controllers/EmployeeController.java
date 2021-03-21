@@ -11,6 +11,7 @@ import com.nbcc.ATSsystem.business.IEmployeeService;
 import com.nbcc.ATSsystem.models.IEmployee;
 import com.nbcc.ATSsystem.models.EmployeeFactory;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +43,7 @@ public class EmployeeController extends CommonController {
             //Set attribute as invoice or error
             if (employee != null) {
                 request.setAttribute("employee", employee);
+
             } else {
                 request.setAttribute("error", new ErrorViewModel(String.format("Employee ID: $s is not found", id)));
             }

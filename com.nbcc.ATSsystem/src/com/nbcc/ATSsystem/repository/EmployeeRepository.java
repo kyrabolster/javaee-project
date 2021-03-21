@@ -12,6 +12,7 @@ import com.nbcc.dataaccess.IDAL;
 import com.nbcc.dataaccess.IParameter;
 import com.nbcc.dataaccess.ParameterFactory;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.sql.rowset.CachedRowSet;
 
@@ -24,6 +25,8 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
     private final String SPROC_SELECT_EMPLOYEES = "CALL SelectEmployees(null)";
     private final String SPROC_SELECT_EMPLOYEE = "CALL SelectEmployees(?)";
     private final String SPROC_INSERT_EMPLOYEE = "CALL InsertEmployee(?,?,?,?,?);";
+    private final String SPROC_SELECT_TASKS = "CALL SelectTasks(?)";
+    private final String SPROC_SELECT_TEAMS = "CALL SelectTeams(?)";
 
     private IDAL dataAccess;
 
@@ -31,6 +34,56 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         dataAccess = DALFactory.createInstance();
     }
 
+    public List<String> retrieveTasks(int id) {
+        List<String> tasks = new ArrayList();
+
+        try {
+            List<IParameter> params = ParameterFactory.createListInstance();
+            params.add(ParameterFactory.createInstance(id));
+            CachedRowSet cr = dataAccess.executeFill(SPROC_SELECT_TASKS, params);
+            tasks = toListofTasks(cr);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return tasks;
+    }
+
+    private List<String> toListofTasks(CachedRowSet cs) throws SQLException {
+        List<String> tasks = new ArrayList();
+
+        while (cs.next()) {
+
+            tasks.add(super.getString("Name", cs));
+        }
+        return tasks;
+    }
+    
+    public List<String> retrieveTeams(int id) {
+        List<String> teams = new ArrayList();
+
+        try {
+            List<IParameter> params = ParameterFactory.createListInstance();
+            params.add(ParameterFactory.createInstance(id));
+            CachedRowSet cr = dataAccess.executeFill(SPROC_SELECT_TEAMS, params);
+            teams = toListofTeams(cr);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return teams;
+    }
+
+    private List<String> toListofTeams(CachedRowSet cs) throws SQLException {
+        List<String> teams = new ArrayList();
+
+        while (cs.next()) {
+
+            teams.add(super.getString("Name", cs));
+        }
+        return teams;
+    }
+    
     @Override
     public List<IEmployee> retrieveEmployees() {
         List<IEmployee> retrievedEmployees = EmployeeFactory.createListInstance();
@@ -54,6 +107,10 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
             params.add(ParameterFactory.createInstance(id));
             CachedRowSet cr = dataAccess.executeFill(SPROC_SELECT_EMPLOYEE, params);
             employees = toListofEmployees(cr);
+
+            employees.get(0).setTasks(retrieveTasks(id));
+            employees.get(0).setTeams(retrieveTeams(id));
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

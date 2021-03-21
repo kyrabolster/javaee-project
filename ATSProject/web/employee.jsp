@@ -22,7 +22,7 @@
                     <h1 class="text-center display-4 grey mt-5 mb-5">Create Employee</h1>
                 </c:when>
                 <c:otherwise>
-                    <h1 class="text-center display-4 grey mt-5 mb-5">Edit Employee</h1>
+                    <h1 class="text-center display-4 grey mt-5 mb-5">Employee Details</h1>
                 </c:otherwise>
             </c:choose>
             <section>
@@ -41,52 +41,79 @@
                             </c:if>
                             <tr>                    
                                 <td>First Name:</td>
-                                <td><input type="text" name="firstName" value='${ employee.firstName }'/></td>
-                            </tr>
-                            <tr>                    
-                                <td>Last Name:</td>
-                                <td><input type="text" name="lastName" value='${ employee.lastName }' /></td>
-                            </tr>
-                            <tr>                    
-                                <td>SIN:</td>
-                                <td><input type="text" name="SIN" value='${ employee.SIN }'/></td>
-                            </tr>
-                            <tr>                    
-                                <td>Hourly Rate:</td>
-                                <td><input type="text" name="hourlyRate" value='${ employee.hourlyRate }'/></td>
-                            </tr>
-                            <tr>                    
-                                <td>Created Date:</td>
-                                <td><input type="text" name="createdAt" value='${ employee.createdAt }'/></td>
-                            </tr>
-                            <tr>                    
-                                <td>Is Deleted?</td>
-                                <td><input type="text" name="isDeleted" value='${ employee.isDeleted }'/></td>
-                            </tr>
-                            <c:if test="${ employee.isDeleted == true && employee.isDeleted != null }">
-                                <tr>                    
-                                    <td>Deleted Date:</td>
-                                    <td><input type="text" name="deletedDate" value='${ employee.deletedAt }'/></td>
+                                <td><input type="text" name="firstName" value='${ employee.firstName }' <c:if test="${ employee != null }">readonly/></c:if></td>
                                 </tr>
-                            </c:if>
-                            <c:if test="${ employee.updatedAt != null }">
                                 <tr>                    
-                                    <td>Updated Date:</td>
-                                    <td><input type="text" name="updatedDate" value='${ employee.updatedAt }'/></td>
+                                    <td>Last Name:</td>
+                                    <td><input type="text" name="lastName" value='${ employee.lastName }' <c:if test="${ employee != null }">readonly/></c:if></td>
                                 </tr>
-                            </c:if>
                                 <tr>                    
-                                    <td>Team Name:</td>
-                                    <td>
-                                    <!--<input type="text" name="teamName" value='$'/>-->
+                                    <td>SIN:</td>
+                                    <td><input type="text" name="SIN" value='${ employee.SIN }' <c:if test="${ employee != null }">readonly/></c:if></td>
+                                </tr>
+                                <tr>                    
+                                    <td>Hourly Rate:</td>
+                                    <td><input type="text" name="hourlyRate" value='${ employee.hourlyRate }' <c:if test="${ employee != null }">readonly/></c:if></td>
+                                </tr>
+                                <tr>           
+                                    <!--Do not show when creating employee-->
+                                <c:if test="${ employee != null && employee.id > 0 }">
+                                    <td>Created Date:</td>
+                                    <td><input readonly type="text" name="createdAt" value='${ employee.createdAt }'/></td>
+                                </tr>
+                                <tr>   
+                                    <td>Is Deleted?</td>
+                                    <td><input readonly type="checkbox" name="isDeleted" value="true" 
+                                               <c:if test="${ employee.isDeleted == true }"> 
+                                                   checked
+                                               </c:if>
                                     </td>
                                 </tr>
+                                <c:if test="${ employee.isDeleted == true && employee.isDeleted != null }">
+                                    <tr>                    
+                                        <td>Deleted Date:</td>
+                                        <td><input readonly type="text" name="deletedDate" value='${ employee.deletedAt }'/></td>
+                                    </tr>
+                                </c:if>
+
+                                <c:if test="${ employee.updatedAt != null }">
+                                    <tr>                    
+                                        <td>Updated Date:</td>
+                                        <td><input readonly type="text" name="updatedDate" value='${ employee.updatedAt }'/></td>
+                                    </tr>
+                                </c:if>
                                 <tr>                    
                                     <td>Skills (Tasks):</td>
-                                    <td>
-                                    <!--<input type="text" name="teamName" value=''/>-->
-                                    </td>
+                                    <c:choose>
+                                        <c:when test="${employee.tasks.size() <= 0}">
+                                            <td><i>No skills to show</i></td>
+                                        </c:when>
+                                        <c:otherwise>
+
+                                            <td>
+                                                <c:forEach items="${employee.tasks}" var="task">
+                                                    ${task}<br>
+                                                </c:forEach>
+                                            </td>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </tr>
+                                <tr>                    
+                                    <td>Teams:</td>
+                                    <c:choose>
+                                        <c:when test="${employee.teams.size() <= 0}">
+                                            <td><i>No teams to show</i></td>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <td>
+                                                <c:forEach items="${employee.teams}" var="team">
+                                                    ${team}<br>
+                                                </c:forEach>
+                                            </td>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </tr>
+                            </c:if>
                         </table>
                         <c:choose>
                             <c:when test="${ employee != null && employee.id != 0 }">

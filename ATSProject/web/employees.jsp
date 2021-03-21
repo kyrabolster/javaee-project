@@ -31,7 +31,7 @@
                                     <th class="text-right">
                                        Details
                                     </th>
-                                    <c:forEach items="${employees}"  var="employee">
+                                    <c:forEach items="${employees}" var="employee">
                                     <tr>
                                         <td>
                                             ${ employee.firstName } ${ employee.lastName }

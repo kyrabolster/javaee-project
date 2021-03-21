@@ -13,9 +13,15 @@ import java.util.List;
  * @author KyraB
  */
 public interface IEmployeeRepository {
+
     int insertEmployee(IEmployee employee);
+
     int updateEmployee(IEmployee employee);
+
     int deleteEmployee(IEmployee employee);
+
     List<IEmployee> retrieveEmployees();
+
     IEmployee retrieveEmployee(int id);
+
 }
