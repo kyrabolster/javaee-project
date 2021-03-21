@@ -40,12 +40,15 @@
                             </c:if>
                             <tr>                    
                                 <td>Team Name</td>
-                                <td><input class="form-control" type="text" name="teamName" value='${task.name}'/></td>
+                                <td><input class="form-control" type="text" name="teamName" value='${team.name}'/></td>
                             </tr>
                             <tr>                    
                                 <td>Team Member 1</td>
                                 <td><select name="teamMember1">
-                                        <option value="member1">name</option>
+                                        <option value="0">-- Select Employee --</option>
+                                        <c:forEach items="${employeesList}" var="employee">
+                                            <option value="${employee.id}">${employee.name}</option>
+                                        </c:forEach>
                                     </select>
                                 </td>
                             </tr>
@@ -53,7 +56,10 @@
                                 <td>Team Member 2</td>
 
                                 <td><select name="teamMember2">
-                                        <option value="member2">name</option>
+                                        <option value="0">-- Select Employee --</option>
+                                        <c:forEach items="${employeesList}" var="employee">
+                                            <option value="${employee.id}">${employee.name}</option>
+                                        </c:forEach>
                                     </select>
                                 </td>
                             </tr>
