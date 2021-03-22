@@ -47,7 +47,7 @@
                                 <td><select name="teamMember1">
                                         <option value="0">-- Select Employee --</option>
                                         <c:forEach items="${employeesList}" var="employee">
-                                            <option value="${employee.id}">${employee.name}</option>
+                                            <option value="${employee.id}" ${employee.id == emp1.id ? 'selected' : ''}>${employee.name}</option>
                                         </c:forEach>
                                     </select>
                                 </td>
@@ -58,7 +58,7 @@
                                 <td><select name="teamMember2">
                                         <option value="0">-- Select Employee --</option>
                                         <c:forEach items="${employeesList}" var="employee">
-                                            <option value="${employee.id}">${employee.name}</option>
+                                            <option value="${employee.id}" ${employee.id == emp2.id ? 'selected' : ''}>${employee.name}</option>
                                         </c:forEach>
                                     </select>
                                 </td>

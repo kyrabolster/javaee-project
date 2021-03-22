@@ -43,17 +43,21 @@ public class TeamController extends CommonController {
 
             int id = super.getInteger(pathParts[1]);
             //Get the team in a variable
-            ITeam team = teamService.getTeam(id);
 
-            //Set attribute as team or error
-            if (team != null) {
-                request.setAttribute("team", team);
-            } else {
-                request.setAttribute("error", new ErrorViewModel(String.format("Team ID: $s is not found", id)));
+            if (id > 0) {
+                ITeam team = teamService.getTeam(id);
+
+                //Set attribute as team or error
+                if (team != null) {
+                    request.setAttribute("team", team);
+                } else {
+                    request.setAttribute("error", new ErrorViewModel(String.format("Team ID: $s is not found", id)));
+                }
             }
+
             super.setView(request, TEAMS_MAINT_VIEW);
         } else {
-            //Set attribute as list of the invoices
+            //Set attribute as list of the teams
             //when implement show teams
             //request.setAttribute("teams", teamService.getTeams());
             super.setView(request, TEAMS_VIEW);
@@ -78,7 +82,7 @@ public class TeamController extends CommonController {
 
             switch (action.toLowerCase()) {
                 case "create":
-                    team = setTeam(request);                    
+                    team = setTeam(request);
                     assignedEmps = getAssignedEmp(request);
                     team = teamService.createTeam(team);
 
@@ -88,6 +92,8 @@ public class TeamController extends CommonController {
 
                     if (!teamService.isValid(team)) {
                         request.setAttribute("error", team.getErrors());
+                        List<EmployeeVM> employeeList = teamService.getEmployees();
+                        request.setAttribute("employeesList", employeeList);
                         super.setView(request, TEAMS_MAINT_VIEW);
                     }
 
@@ -101,10 +107,11 @@ public class TeamController extends CommonController {
             }
 
         } catch (Exception e) {
+            request.setAttribute("error", new ErrorViewModel("An error occurred attempting to maintain teams"));
             List<EmployeeVM> employeeList = teamService.getEmployees();
             request.setAttribute("employeesList", employeeList);
             super.setView(request, TEAMS_MAINT_VIEW);
-            request.setAttribute("error", new ErrorViewModel("An error occurred attempting to maintain teams"));
+
         }
 
         super.getView().forward(request, response);
@@ -128,9 +135,9 @@ public class TeamController extends CommonController {
 
     private List<EmployeeVM> getAssignedEmp(HttpServletRequest request) {
         ITeamService teamService = TeamServiceFactory.createInstance();
-        
+
         List<EmployeeVM> employeeList = teamService.getEmployees();
-        
+
         int memberId1 = getInteger(request, "teamMember1");
         int memberId2 = getInteger(request, "teamMember2");
 
