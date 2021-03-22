@@ -41,19 +41,19 @@
                             </c:if>
                             <tr>                    
                                 <td>First Name:</td>
-                                <td><input type="text" name="firstName" value='${ employee.firstName }' <c:if test="${ employee != null }">readonly/></c:if></td>
+                                <td><input type="text" name="firstName" value='${ employee.firstName }' <c:if test="${ employee != null && employee.id > 0}">readonly/></c:if></td>
                                 </tr>
                                 <tr>                    
                                     <td>Last Name:</td>
-                                    <td><input type="text" name="lastName" value='${ employee.lastName }' <c:if test="${ employee != null }">readonly/></c:if></td>
+                                    <td><input type="text" name="lastName" value='${ employee.lastName }' <c:if test="${ employee != null && employee.id > 0 }">readonly/></c:if></td>
                                 </tr>
                                 <tr>                    
                                     <td>SIN:</td>
-                                    <td><input type="text" name="SIN" value='${ employee.SIN }' <c:if test="${ employee != null }">readonly/></c:if></td>
+                                    <td><input type="text" name="SIN" value='${ employee.SIN }' <c:if test="${ employee != null && employee.id > 0}">readonly/></c:if></td>
                                 </tr>
                                 <tr>                    
                                     <td>Hourly Rate:</td>
-                                    <td><input type="text" name="hourlyRate" value='${ employee.hourlyRate }' <c:if test="${ employee != null }">readonly/></c:if></td>
+                                    <td><input type="text" name="hourlyRate" value='${ employee.hourlyRate }' <c:if test="${ employee != null && employee.id > 0}">readonly/></c:if></td>
                                 </tr>
                                 <tr>           
                                     <!--Do not show when creating employee-->
@@ -63,7 +63,7 @@
                                 </tr>
                                 <tr>   
                                     <td>Is Deleted?</td>
-                                    <td><input readonly type="checkbox" name="isDeleted" value="true" 
+                                    <td><input style="pointer-events: none" type="checkbox" name="isDeleted" value="true"
                                                <c:if test="${ employee.isDeleted == true }"> 
                                                    checked
                                                </c:if>
