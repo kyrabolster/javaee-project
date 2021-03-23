@@ -16,16 +16,22 @@
         <%@include file="/WEB-INF/jspf/navigation.jspf" %>
     </head>
     <body>
-        <div>
-            <%= exception.toString()%> 
-        </div>
-        <div>
-            <%= exception.getMessage()%>
-        </div>
-        <div>
-            <%= request.getRequestURI()%>
-        </div>
+        <div class="container">
+            <c:choose>
+                <c:when test="${ entity != null}">
+                    <h1 class="text-center display-4 grey mt-5 mb-5"> 
+                        Sorry! We couldn't find the  ${ entity } you are looking for.
+                    </h1>
 
-        <a href="index.jsp">Home</a>        
+                    <h5 class="text-center">
+                        See our list of ${ entity }s <a href="/ATSProject/${ entity }s">here</a>.
+                    </h5>
+                </c:when>
+                <c:otherwise>
+                    <c:redirect url="/404" />
+                </c:otherwise>
+            </c:choose>
+
+        </div>  
     </body>
 </html>

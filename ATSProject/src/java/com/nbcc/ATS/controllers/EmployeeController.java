@@ -11,6 +11,7 @@ import com.nbcc.ATSsystem.business.IEmployeeService;
 import com.nbcc.ATSsystem.models.IEmployee;
 import com.nbcc.ATSsystem.models.EmployeeFactory;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ public class EmployeeController extends CommonController {
     private static final String EMPLOYEES_VIEW = "/employees.jsp";
     private static final String EMPLOYEES_MAINT_VIEW = "/employee.jsp";
     private static final String EMPLOYEE_SUMMARY_VIEW = "/employeesummary.jsp";
+    private static final String EMPLOYEE_ERROR = "/error.jsp";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,17 +39,24 @@ public class EmployeeController extends CommonController {
             String[] pathParts = pathInfo.split("/");
 
             int id = super.getInteger(pathParts[1]);
-            IEmployee employee = employeeService.getEmployee(id);
 
-            if (employee != null) {
-                request.setAttribute("employee", employee);
+            if (employeeExists(id)) {
 
+                IEmployee employee = employeeService.getEmployee(id);
+
+                if (employee != null) {
+                    request.setAttribute("employee", employee);
+
+                } else {
+                    request.setAttribute("error", new ErrorViewModel(String.format("Employee ID: $s is not found", id)));
+                }
+                super.setView(request, EMPLOYEES_MAINT_VIEW);
+            //if employee not found
             } else {
-                request.setAttribute("error", new ErrorViewModel(String.format("Employee ID: $s is not found", id)));
-//                super.setView(request, EMPLOYEE_ERROR);
-
+                request.setAttribute("entity", "employee");
+                super.setView(request, EMPLOYEE_ERROR);
             }
-            super.setView(request, EMPLOYEES_MAINT_VIEW);
+
         } else {
             //Set attribute as list of the invoices
             request.setAttribute("employees", employeeService.getEmployees());
@@ -120,5 +129,20 @@ public class EmployeeController extends CommonController {
         IEmployee employee = EmployeeFactory.createInstance(firstName, lastName, SIN, hourlyRate);
 
         return employee;
+    }
+
+    private boolean employeeExists(int id) {
+        IEmployeeService employeeService = EmployeeServiceFactory.createInstance();
+
+        List<IEmployee> emps = employeeService.getEmployees();
+
+        List<Integer> empIds = new ArrayList<Integer>();
+
+        for (IEmployee emp : emps) {
+            int empId = emp.getId();
+            empIds.add(empId);
+        }
+
+        return empIds.contains(id);
     }
 }
