@@ -58,7 +58,7 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         }
         return tasks;
     }
-    
+
     public List<String> retrieveTeams(int id) {
         List<String> teams = new ArrayList();
 
@@ -83,7 +83,7 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         }
         return teams;
     }
-    
+
     @Override
     public List<IEmployee> retrieveEmployees() {
         List<IEmployee> retrievedEmployees = EmployeeFactory.createListInstance();
@@ -107,7 +107,7 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
             params.add(ParameterFactory.createInstance(id));
             CachedRowSet cr = dataAccess.executeFill(SPROC_SELECT_EMPLOYEE, params);
             employees = toListofEmployees(cr);
-
+            
             employees.get(0).setTasks(retrieveTasks(id));
             employees.get(0).setTeams(retrieveTeams(id));
 

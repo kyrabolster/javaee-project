@@ -37,15 +37,15 @@ public class EmployeeController extends CommonController {
             String[] pathParts = pathInfo.split("/");
 
             int id = super.getInteger(pathParts[1]);
-            //Get the invoice in a variable
             IEmployee employee = employeeService.getEmployee(id);
 
-            //Set attribute as invoice or error
             if (employee != null) {
                 request.setAttribute("employee", employee);
 
             } else {
                 request.setAttribute("error", new ErrorViewModel(String.format("Employee ID: $s is not found", id)));
+//                super.setView(request, EMPLOYEE_ERROR);
+
             }
             super.setView(request, EMPLOYEES_MAINT_VIEW);
         } else {
