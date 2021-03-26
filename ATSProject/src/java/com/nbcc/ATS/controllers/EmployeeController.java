@@ -8,8 +8,11 @@ package com.nbcc.ATS.controllers;
 import com.nbcc.ATS.models.ErrorViewModel;
 import com.nbcc.ATSsystem.business.EmployeeServiceFactory;
 import com.nbcc.ATSsystem.business.IEmployeeService;
+import com.nbcc.ATSsystem.business.ITaskService;
+import com.nbcc.ATSsystem.business.TaskServiceFactory;
 import com.nbcc.ATSsystem.models.IEmployee;
 import com.nbcc.ATSsystem.models.EmployeeFactory;
+import com.nbcc.ATSsystem.models.ITask;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +35,13 @@ public class EmployeeController extends CommonController {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
-        //Service Instance
+
         IEmployeeService employeeService = EmployeeServiceFactory.createInstance();
+
+        // get all tasks
+        ITaskService taskService = TaskServiceFactory.createInstance();
+        List<ITask> taskList = taskService.getTasks();
+        request.setAttribute("taskList", taskList);
 
         if (pathInfo != null) {
             String[] pathParts = pathInfo.split("/");
@@ -51,7 +59,7 @@ public class EmployeeController extends CommonController {
                     request.setAttribute("error", new ErrorViewModel(String.format("Employee ID: $s is not found", id)));
                 }
                 super.setView(request, EMPLOYEES_MAINT_VIEW);
-            //if employee not found
+                //if employee not found
             } else {
                 request.setAttribute("entity", "employee");
                 super.setView(request, EMPLOYEE_ERROR);

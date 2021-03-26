@@ -67,6 +67,7 @@
                                                <c:if test="${ employee.isDeleted == true }"> 
                                                    checked
                                                </c:if>
+                                               >
                                     </td>
                                 </tr>
                                 <c:if test="${ employee.isDeleted == true && employee.isDeleted != null }">
@@ -83,20 +84,27 @@
                                     </tr>
                                 </c:if>
                                 <tr>                    
-                                    <td>Skills (Tasks):</td>
-                                    <c:choose>
-                                        <c:when test="${employee.tasks.size() <= 0}">
-                                            <td><i>No skills to show</i></td>
-                                        </c:when>
-                                        <c:otherwise>
+                                    <td>Skills (Tasks):</td> 
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${employee.tasks.size() <= 0}">
+                                                <i>No skills to show</i>
+                                            </c:when>
+                                            <c:otherwise>
 
-                                            <td>
                                                 <c:forEach items="${employee.tasks}" var="task">
                                                     ${task}<br>
                                                 </c:forEach>
-                                            </td>
-                                        </c:otherwise>
-                                    </c:choose>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <select class="ml-5" name="taskSelect">
+                                            <option value="0">-- Select Skills --</option>
+                                            <c:forEach items="${taskList}" var="task">
+                                                <!-- check for duplicates *** -->
+                                                <option value="${task.id}" >${task.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
                                 </tr>
                                 <tr>                    
                                     <td>Teams:</td>
