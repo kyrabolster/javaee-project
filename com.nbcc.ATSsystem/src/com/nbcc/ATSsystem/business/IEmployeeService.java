@@ -21,4 +21,6 @@ public interface IEmployeeService {
     
     IEmployee getEmployee(int id);
     List<IEmployee> getEmployees();
+    
+    boolean addEmployeeSkill(int EmployeeId, int TaskId);
 }

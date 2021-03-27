@@ -22,6 +22,23 @@ END$$
 DELIMITER ;
 
 DELIMITER //
+DROP PROCEDURE IF EXISTS SelectTasks;
+// DELIMITER;
+
+CREATE PROCEDURE `SelectTasks`(IN Id_param INT)
+BEGIN
+SELECT tasks.Id, Name FROM tasks
+		INNER JOIN employees_tasks
+			ON employees_tasks.TaskId = tasks.Id
+		INNER JOIN employees
+			ON employees_tasks.EmployeeId = employees.Id
+    WHERE
+    (Id_param IS NULL OR employees.Id = Id_param)
+	ORDER BY Name;
+END$$
+DELIMITER ;
+
+DELIMITER //
 DROP PROCEDURE IF EXISTS RetrieveTasks;
 // DELIMITER;
 
@@ -35,5 +52,37 @@ BEGIN
     WHERE (Id_param IS NULL OR Id = Id_param)
     ORDER BY CreatedAt;
     
+END$$
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS AddEmployeeSkill;
+// DELIMITER;
+
+CREATE PROCEDURE `AddEmployeeSkill` (
+IN Employee_id_param INT,
+IN Task_id_param INT
+)
+BEGIN
+	INSERT INTO employees_tasks
+		(EmployeeId, TaskId)
+	VALUES 
+		(Employee_id_param, Task_id_param);
+END$$
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS getTasksNotAssignedToEmployee;
+// DELIMITER;
+
+CREATE PROCEDURE `getTasksNotAssignedToEmployee`(IN Employee_Id_param INT)
+BEGIN
+	SELECT tasks.* FROM tasks 
+	WHERE tasks.id NOT IN (
+		SELECT taskId FROM employees_tasks
+			INNER JOIN employees
+				ON employees.id = employees_tasks.EmployeeId
+		WHERE employees.id = Employee_Id_param
+    );
 END$$
 DELIMITER ;

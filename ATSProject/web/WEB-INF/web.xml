@@ -115,6 +115,10 @@
         <servlet-name>EmployeeController</servlet-name>
         <url-pattern>/employee/*</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmployeeController</servlet-name>
+        <url-pattern>/employeeskills/*</url-pattern>
+    </servlet-mapping>
   
     <!--mapping-->
 

@@ -55,6 +55,11 @@ public class EmployeeService implements IEmployeeService {
 
         return employee;
     }
+    
+    @Override
+    public boolean addEmployeeSkill(int EmployeeId, int TaskId) {
+            return repo.addEmployeeSkill(EmployeeId, TaskId);
+    }
 
     @Override
     public int saveEmployee(IEmployee employee) {

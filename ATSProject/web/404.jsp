@@ -5,7 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="WEB-INF/jspf/header.jspf" %>
-        <title>Invoicing Application</title>
+        <title>Error</title>
     </head>
     <body>
         <%@include file="WEB-INF/jspf/navigation.jspf" %>

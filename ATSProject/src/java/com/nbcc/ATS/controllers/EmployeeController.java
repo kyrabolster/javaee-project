@@ -29,6 +29,7 @@ public class EmployeeController extends CommonController {
     private static final String EMPLOYEES_VIEW = "/employees.jsp";
     private static final String EMPLOYEES_MAINT_VIEW = "/employee.jsp";
     private static final String EMPLOYEE_SUMMARY_VIEW = "/employeesummary.jsp";
+    private static final String EMPLOYEE_SKILLS_VIEW = "/employeeskills.jsp";
     private static final String EMPLOYEE_ERROR = "/error.jsp";
 
     @Override
@@ -37,11 +38,6 @@ public class EmployeeController extends CommonController {
         String pathInfo = request.getPathInfo();
 
         IEmployeeService employeeService = EmployeeServiceFactory.createInstance();
-
-        // get all tasks
-        ITaskService taskService = TaskServiceFactory.createInstance();
-        List<ITask> taskList = taskService.getTasks();
-        request.setAttribute("taskList", taskList);
 
         if (pathInfo != null) {
             String[] pathParts = pathInfo.split("/");
@@ -58,7 +54,9 @@ public class EmployeeController extends CommonController {
                 } else {
                     request.setAttribute("error", new ErrorViewModel(String.format("Employee ID: $s is not found", id)));
                 }
+
                 super.setView(request, EMPLOYEES_MAINT_VIEW);
+
                 //if employee not found
             } else {
                 request.setAttribute("entity", "employee");
@@ -95,6 +93,8 @@ public class EmployeeController extends CommonController {
             String action = super.getValue(request, "action");
             int id = super.getInteger(request, "hdnEmployeeId");
 
+            getTasksToAdd(request, id);
+            
             switch (action.toLowerCase()) {
                 case "create":
                     employee = setEmployee(request);
@@ -113,6 +113,27 @@ public class EmployeeController extends CommonController {
                     break;
                 case "delete":
 
+                    break;
+                case "update skills":
+                    employee = employeeService.getEmployee(id);
+                    request.setAttribute("employee", employee);
+            
+                    super.setView(request, EMPLOYEE_SKILLS_VIEW);
+
+                    break;
+                case "add skill":
+                    int skillId = setSkillToAdd(request);
+                    
+                    employeeService.addEmployeeSkill(id, skillId);
+ 
+                    //repetitive....
+                    employee = employeeService.getEmployee(id);
+                    request.setAttribute("employee", employee);
+                    
+                    getTasksToAdd(request, id);
+            
+                    super.setView(request, EMPLOYEE_SKILLS_VIEW);
+                    
                     break;
             }
         } catch (Exception e) {
@@ -137,6 +158,27 @@ public class EmployeeController extends CommonController {
         IEmployee employee = EmployeeFactory.createInstance(firstName, lastName, SIN, hourlyRate);
 
         return employee;
+    }
+    
+     private int setSkillToAdd(HttpServletRequest request) {
+        int skillId;
+
+        skillId = getInteger(request, "taskToAdd");
+
+        return skillId;
+    }
+    
+    
+    private void getAllTasks(HttpServletRequest request) {
+        ITaskService taskService = TaskServiceFactory.createInstance();
+        List<ITask> taskList = taskService.getTasks();
+        request.setAttribute("taskList", taskList);
+    }
+    
+    private void getTasksToAdd(HttpServletRequest request, int employeeId) {
+        ITaskService taskService = TaskServiceFactory.createInstance();
+        List<ITask> tasksToAdd = taskService.getTasksNotAssignedToEmployee(employeeId);
+        request.setAttribute("tasksToAdd", tasksToAdd);
     }
 
     private boolean employeeExists(int id) {

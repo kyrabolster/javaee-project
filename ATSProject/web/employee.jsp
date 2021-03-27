@@ -28,7 +28,7 @@
             <section>
                 <div class="container">
                     <c:set var="errors" value="${ error }" />
-                    <form method="POST" action="save">
+                    <form method="POST" action="save"> 
                         <table class="table table-striped">    
                             <c:if test="${ employee != null && employee.id != 0 }">
                                 <tr>
@@ -91,19 +91,11 @@
                                                 <i>No skills to show</i>
                                             </c:when>
                                             <c:otherwise>
-
                                                 <c:forEach items="${employee.tasks}" var="task">
-                                                    ${task}<br>
+                                                    ${task.name}<br>
                                                 </c:forEach>
                                             </c:otherwise>
                                         </c:choose>
-                                        <select class="ml-5" name="taskSelect">
-                                            <option value="0">-- Select Skills --</option>
-                                            <c:forEach items="${taskList}" var="task">
-                                                <!-- check for duplicates *** -->
-                                                <option value="${task.id}" >${task.name}</option>
-                                            </c:forEach>
-                                        </select>
                                     </td>
                                 </tr>
                                 <tr>                    
@@ -126,7 +118,10 @@
                         <c:choose>
                             <c:when test="${ employee != null && employee.id != 0 }">
                                 <input class="btn btn-primary" type="submit" value="Delete" name="action" />
-                                <input class="btn btn-primary" type="submit" value="Save" name="action" />     
+                                <input class="btn btn-primary" type="submit" value="Save" name="action" /> 
+                                <a href="${pageContext.request.contextPath}/employeeskills/${ employee.id}">
+                                    <input class="btn btn-primary" type="submit" name="action" value="Update Skills"/> 
+                                </a>
                             </c:when>
                             <c:otherwise>
                                 <input class="btn btn-primary" type="submit" value="Create" name="action" />

@@ -19,4 +19,5 @@ public interface ITaskRepository {
     int deleteTask(ITask task);
     List<ITask> retrieveTasks();
     ITask retrieveTask(int id);
+    List<ITask> retrieveTasksNotAssignedToEmployee(int employeeId);
 }

@@ -37,6 +37,12 @@ public class TaskService implements ITaskService{
     }
     
     @Override
+    public List<ITask> getTasksNotAssignedToEmployee(int employeeId) {
+        List<ITask> tasks = repo.retrieveTasksNotAssignedToEmployee(employeeId);
+        return tasks;
+    }
+    
+    @Override
     public boolean isValid(ITask task) {
         return task.getErrors().isEmpty();
     }

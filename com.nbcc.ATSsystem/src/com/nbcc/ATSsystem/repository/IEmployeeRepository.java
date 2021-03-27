@@ -24,4 +24,6 @@ public interface IEmployeeRepository {
 
     IEmployee retrieveEmployee(int id);
 
+    boolean addEmployeeSkill(int EmployeeId, int TaskId);
+
 }
