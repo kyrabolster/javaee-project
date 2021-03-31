@@ -94,7 +94,7 @@ public class EmployeeController extends CommonController {
             int id = super.getInteger(request, "hdnEmployeeId");
 
             getTasksToAdd(request, id);
-            
+
             switch (action.toLowerCase()) {
                 case "create":
                     employee = setEmployee(request);
@@ -117,23 +117,26 @@ public class EmployeeController extends CommonController {
                 case "update skills":
                     employee = employeeService.getEmployee(id);
                     request.setAttribute("employee", employee);
-            
+
                     super.setView(request, EMPLOYEE_SKILLS_VIEW);
 
                     break;
                 case "add skill":
                     int skillId = setSkillToAdd(request);
+
+                    if (skillId == 0) {
+                        request.setAttribute("error", new ErrorViewModel(String.format("Please select a skill to be added.")));
+                    }
                     
                     employeeService.addEmployeeSkill(id, skillId);
- 
-                    //repetitive....
+
                     employee = employeeService.getEmployee(id);
                     request.setAttribute("employee", employee);
-                    
+
                     getTasksToAdd(request, id);
-            
+
                     super.setView(request, EMPLOYEE_SKILLS_VIEW);
-                    
+
                     break;
             }
         } catch (Exception e) {
@@ -159,22 +162,21 @@ public class EmployeeController extends CommonController {
 
         return employee;
     }
-    
-     private int setSkillToAdd(HttpServletRequest request) {
+
+    private int setSkillToAdd(HttpServletRequest request) {
         int skillId;
 
         skillId = getInteger(request, "taskToAdd");
 
         return skillId;
     }
-    
-    
+
     private void getAllTasks(HttpServletRequest request) {
         ITaskService taskService = TaskServiceFactory.createInstance();
         List<ITask> taskList = taskService.getTasks();
         request.setAttribute("taskList", taskList);
     }
-    
+
     private void getTasksToAdd(HttpServletRequest request, int employeeId) {
         ITaskService taskService = TaskServiceFactory.createInstance();
         List<ITask> tasksToAdd = taskService.getTasksNotAssignedToEmployee(employeeId);
