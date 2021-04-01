@@ -30,13 +30,13 @@ public interface IJob extends IBase{
     
     void setClientName(String clientName);
     
-    Date getStartDate();
+    Date getStart();
     
-    void setStartDate(Date Start);
+    void setStart(Date Start);
     
-    Date getEndDate();
+    Date getEnd();
     
-    void setEndDate(Date End);
+    void setEnd(Date End);
     
     List<String> getTasks();
 
