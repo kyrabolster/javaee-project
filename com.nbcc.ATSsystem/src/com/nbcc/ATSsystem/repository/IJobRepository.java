@@ -6,6 +6,8 @@
 package com.nbcc.ATSsystem.repository;
 
 import com.nbcc.ATSsystem.models.IJob;
+import com.nbcc.ATSsystem.models.ITask;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,5 +24,9 @@ public interface IJobRepository {
     
     List<IJob> retrieveJobs();
     
+    List<IJob> retrieveJobsByDate(Date date);
+    
     IJob retrieveJob(int id);
+    
+    List<ITask> retrieveTasks();
 }

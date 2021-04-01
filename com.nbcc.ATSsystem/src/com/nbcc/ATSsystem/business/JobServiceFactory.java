@@ -7,8 +7,12 @@ package com.nbcc.ATSsystem.business;
 
 /**
  *
- * @author notil
+ * @author Soyoung Kim
+ * @date 2021-04-01
  */
 public class JobServiceFactory {
-    
+
+    public static IJobService createInstance() {
+        return new JobService();
+    }
 }

@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2021-04-01
  */
 public interface IJobService {
-    boolean inValid(IJob job);
+    boolean isValid(IJob job);
     
     IJob createJob(IJob job);
     int saveJob(IJob job);
