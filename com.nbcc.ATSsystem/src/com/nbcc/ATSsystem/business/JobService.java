@@ -8,6 +8,7 @@ package com.nbcc.ATSsystem.business;
 import com.nbcc.ATSsystem.models.ErrorFactory;
 import com.nbcc.ATSsystem.models.IJob;
 import com.nbcc.ATSsystem.models.ITask;
+import com.nbcc.ATSsystem.models.TeamListVM;
 import com.nbcc.ATSsystem.repository.IJobRepository;
 import com.nbcc.ATSsystem.repository.JobRepositoryFactory;
 import java.util.Date;
@@ -37,10 +38,10 @@ public class JobService implements IJobService{
             if(id > 0) {
                 job.setId(id);
             } else {
-                job.addError(ErrorFactory.createInstance(5, "Job was not valid for creation. Database error."));
+                job.addError(ErrorFactory.createInstance(7, "Job was not valid for creation. Database error."));
             }
         } else {
-            job.addError(ErrorFactory.createInstance(5, "Job failed validation for creation."));
+            job.addError(ErrorFactory.createInstance(7, "Job failed validation for creation."));
         }
         
         return job;
@@ -74,5 +75,10 @@ public class JobService implements IJobService{
     @Override
     public List<ITask> getTasks() {
         return repo.retrieveTasks();
+    }
+
+    @Override
+    public List<TeamListVM> getAvailableTeams(String start, String tasks, boolean isOnSite) {
+        return repo.retrieveAvailableTeamList(start, tasks, isOnSite);
     }
 }

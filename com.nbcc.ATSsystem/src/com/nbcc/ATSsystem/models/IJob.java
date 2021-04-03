@@ -5,7 +5,8 @@
  */
 package com.nbcc.ATSsystem.models;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -30,15 +31,28 @@ public interface IJob extends IBase{
     
     void setClientName(String clientName);
     
-    Date getStart();
+    Timestamp getStart();
     
-    void setStart(Date Start);
+    void setStart(Timestamp Start);
     
-    Date getEnd();
+    Timestamp getEnd();
     
-    void setEnd(Date End);
+    void setEnd(Timestamp End);
     
     List<String> getTasks();
 
     void setTasks(List<String> tasks);
+    
+    boolean getIsOnSite();
+    
+    void setIsOnSite(boolean isOnSite);
+    
+    int getTotalDuration();
+    
+    void setTotalDuration(int totalDuration);
+    
+    String getSelectedTasks();
+    
+    void setSelectedTasks(String selectedTasks);
+    
 }

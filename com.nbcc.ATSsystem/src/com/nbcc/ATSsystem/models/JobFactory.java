@@ -5,8 +5,9 @@
  */
 package com.nbcc.ATSsystem.models;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,8 +20,16 @@ public abstract class JobFactory {
         return new Job();
     }
     
-    public static IJob createInstance(int teamId, String description, String clientName, Date start, List<String> tasks){
-        return new Job(teamId, description, clientName, start, tasks);
+    public static IJob createInstance(String clientName, String description, Timestamp start, List<String> tasks, boolean isOnSite){
+        return new Job(clientName, description, start, tasks, isOnSite);
+    }
+    
+    public static IJob createInstance(int teamId, String clientName, String description, Timestamp start, List<String> tasks){
+        return new Job(teamId, clientName, description, start, tasks);
+    }
+    
+    public static IJob createInstance(int teamId, String clientName, String description, Timestamp start, List<String> tasks, boolean isOnSite, int totalDuration, String selectedTasks){
+        return new Job(teamId, clientName, description, start, tasks, isOnSite, totalDuration, selectedTasks);
     }
     
     public static ArrayList<IJob> createListInstance() {

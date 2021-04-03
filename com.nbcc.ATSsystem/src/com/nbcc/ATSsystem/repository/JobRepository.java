@@ -8,9 +8,16 @@ package com.nbcc.ATSsystem.repository;
 import com.nbcc.ATSsystem.models.IJob;
 import com.nbcc.ATSsystem.models.ITask;
 import com.nbcc.ATSsystem.models.TaskFactory;
+import com.nbcc.ATSsystem.models.TeamListVM;
 import com.nbcc.dataaccess.DALFactory;
 import com.nbcc.dataaccess.IDAL;
+import com.nbcc.dataaccess.IParameter;
+import com.nbcc.dataaccess.ParameterFactory;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.sql.rowset.CachedRowSet;
@@ -20,23 +27,50 @@ import javax.sql.rowset.CachedRowSet;
  * @author Soyoung Kim
  * @date 2021-03-30
  */
-public class JobRepository extends BaseRepository implements IJobRepository{
-    private final String SPROC_INSERT_JOB = "CALL InsertJob(?,?,?,?,?,?,?)";
-    private final String SPROC_SELECT_TEAMS = "CALL SelectAvailableTeamList(?,?,?,?)";
-    private final String SPROC_SELECT_EMERGENCY_TEAM = "CALL SelectEmergencyTeam(?,?,?,?)";
+public class JobRepository extends BaseRepository implements IJobRepository {
+
+    private final String SPROC_INSERT_JOB = "CALL InsertJob(?,?,?,?,?,?,?,?)";
+    private final String SPROC_SELECT_TEAMS = "CALL SelectAvailableTeamList(?,?,?)";
+    private final String SPROC_SELECT_EMERGENCYTEAM = "CALL SelectEmergencyTeam(?,?,?)";
     private final String SPROC_SELECT_JOB = "CALL SelectJobs(?)";
-    private final String SPROC_SELECT_JOBS = "CALL SelectJobs(null)";    
-    private final String SPROC_SELECT_TASKS = "CALL SelectTasks(null)";
-    
+    private final String SPROC_SELECT_JOBS = "CALL SelectJobs(null)";
+    private final String SPROC_SELECT_TASKS = "CALL RetrieveTasks(null)";
+
     private IDAL dataAccess;
 
     public JobRepository() {
         dataAccess = DALFactory.createInstance();
     }
-    
+
     @Override
-    public int insertJob(IJob job) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int insertJob(IJob job) {        
+        int returnId = 0;
+        
+        List<Object> returnValues;
+
+        List<IParameter> params = ParameterFactory.createListInstance();
+        
+        params.add(ParameterFactory.createInstance(job.getTeamId()));        
+        params.add(ParameterFactory.createInstance(job.getClientName()));
+        params.add(ParameterFactory.createInstance(job.getDescription()));
+        params.add(ParameterFactory.createInstance(job.getStart()));
+        params.add(ParameterFactory.createInstance(job.getSelectedTasks()));
+        params.add(ParameterFactory.createInstance(job.getIsOnSite()));
+        params.add(ParameterFactory.createInstance(job.getTotalDuration()));
+        
+        params.add(ParameterFactory.createInstance(returnId, IParameter.Direction.OUT, java.sql.Types.INTEGER));
+        
+        returnValues = dataAccess.executeNonQuery(SPROC_INSERT_JOB, params);
+        
+        try {
+            if (returnValues != null) {
+                returnId = Integer.parseInt(returnValues.get(0).toString());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return returnId;
     }
 
     @Override
@@ -58,13 +92,13 @@ public class JobRepository extends BaseRepository implements IJobRepository{
     public IJob retrieveJob(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<IJob> retrieveJobsByDate(Date date) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
     }
-    
+
     @Override
     public List<ITask> retrieveTasks() {
         List<ITask> retrievedTasks = TaskFactory.createListInstance();
@@ -75,10 +109,10 @@ public class JobRepository extends BaseRepository implements IJobRepository{
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
         return retrievedTasks;
     }
-    
+
     private List<ITask> toListofTasks(CachedRowSet cs) throws SQLException {
         List<ITask> retrievedTasks = TaskFactory.createListInstance();
         ITask task;
@@ -90,5 +124,54 @@ public class JobRepository extends BaseRepository implements IJobRepository{
             retrievedTasks.add(task);
         }
         return retrievedTasks;
+    }
+
+    @Override
+    public List<TeamListVM> retrieveAvailableTeamList(String start, String tasks, boolean isOnSite) {
+        List<TeamListVM> retrievedTeamList = new ArrayList<>();
+
+        List<IParameter> params = ParameterFactory.createListInstance();
+
+        params.add(ParameterFactory.createInstance(start));
+        params.add(ParameterFactory.createInstance(tasks));
+        params.add(ParameterFactory.createInstance(isOnSite));
+        
+        try {
+            
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
+            
+            String before = "08:00:00";
+            String after = "17:00:00";
+            String target = start.substring(11);
+            
+            LocalTime time = LocalTime.parse(target, format);
+            LocalTime morning = LocalTime.parse(before, format);
+            LocalTime night = LocalTime.parse(after, format);
+            
+            CachedRowSet cr;
+            
+            if(time.isBefore(morning) || time.isAfter(night)){
+                cr = dataAccess.executeFill(SPROC_SELECT_EMERGENCYTEAM, params);  
+                
+            } else {
+                cr = dataAccess.executeFill(SPROC_SELECT_TEAMS, params);            
+            }
+            
+            
+            while (cr.next()) {
+                TeamListVM team = new TeamListVM();
+                team.setId(super.getInt("Teamid", cr));
+                team.setTeamName(cr.getString("TeamName"));
+                team.setTotalDuration(super.getInt("totalDuration", cr));
+                team.setStart(cr.getTimestamp("StartDate"));
+                team.setEnd(cr.getTimestamp("EndDate"));
+
+                retrievedTeamList.add(team);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return retrievedTeamList;
     }
 }

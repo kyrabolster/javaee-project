@@ -5,8 +5,9 @@
  */
 package com.nbcc.ATSsystem.models;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,30 +15,53 @@ import java.util.List;
  * @author Soyoung Kim
  * @date 2021-03-30
  */
-public class Job extends Base implements IJob{
+public class Job extends Base implements IJob {
+
     private int id;
-    private int teamId;
-    private String description;
+    private int teamId;    
     private String clientName;
-    private Date start;
-    private Date end;
+    private String description;
+    private Timestamp start;
+    private Timestamp end;
     private List<String> tasks;
+    private boolean isOnSite;
+    private int totalDuration;
+    private String selectedTasks;
 
     public Job() {
         this.teamId = 0;
         this.description = "";
         this.clientName = "";
-        this.start = new Date();
-        this.end = new Date();
+        this.start = new Timestamp(System.currentTimeMillis());
+        this.end = new Timestamp(System.currentTimeMillis());
         this.tasks = new ArrayList<>();
     }
 
-    public Job(int teamId, String description, String clientName, Date start, List<String> tasks) {
-        this.teamId = teamId;
-        this.description = description;
-        this.clientName = clientName;
-        this.start = start;
-        this.tasks = tasks;
+    public Job(String clientName, String description, Timestamp start, List<String> tasks, boolean isOnSite) {
+        setClientName(clientName);
+        setDescription(description);
+        setStart(start);
+        setTasks(tasks);
+        setIsOnSite(isOnSite);
+    }
+
+    public Job(int teamId, String clientName, String description, Timestamp start, List<String> tasks) {
+        setTeamId(teamId);        
+        setClientName(clientName);
+        setDescription(description);
+        setStart(start);
+        setTasks(tasks);
+    }
+    
+    public Job(int teamId, String clientName, String description, Timestamp start, List<String> tasks, boolean isOnSite, int totalDuration, String selectedTasks) {
+        setTeamId(teamId);        
+        setClientName(clientName);
+        setDescription(description);
+        setStart(start);
+        setTasks(tasks);
+        setIsOnSite(isOnSite);
+        setTotalDuration(totalDuration);
+        setSelectedTasks(selectedTasks);
     }
 
     public int getId() {
@@ -53,7 +77,23 @@ public class Job extends Base implements IJob{
     }
 
     public void setTeamId(int teamId) {
-        this.teamId = teamId;
+        if (teamId < 0) {
+            addError(ErrorFactory.createInstance(6, "You should select a team"));
+        } else {
+            this.teamId = teamId;
+        }
+    }
+        
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        if ("".equals(clientName) || clientName == null) {
+            addError(ErrorFactory.createInstance(1, "Client Name is required"));
+        } else {
+            this.clientName = clientName;
+        }
     }
 
     public String getDescription() {
@@ -61,30 +101,34 @@ public class Job extends Base implements IJob{
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if ("".equals(description) || description == null) {
+            addError(ErrorFactory.createInstance(2, "Job description is required"));
+        } else {
+            this.description = description;
+        }
     }
 
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
-    public Date getStart() {
+    public Timestamp getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
-        this.start = start;
+    public void setStart(Timestamp start) {
+        Timestamp current = new Timestamp(System.currentTimeMillis());
+
+        if (start == null) {
+            addError(ErrorFactory.createInstance(3, "Start date is required"));
+        } else if (start.compareTo(current) < 0) {
+            addError(ErrorFactory.createInstance(4, "Start date can not be past"));
+        } else {
+            this.start = start;
+        }
     }
 
-    public Date getEnd() {
+    public Timestamp getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(Timestamp end) {
         this.end = end;
     }
 
@@ -93,8 +137,39 @@ public class Job extends Base implements IJob{
     }
 
     public void setTasks(List<String> tasks) {
-        this.tasks = tasks;
+        if (tasks.isEmpty()) {
+            addError(ErrorFactory.createInstance(5, "At least one task is required"));
+        } else {
+            this.tasks = tasks;
+        }
     }
     
+    public boolean getIsOnSite() {
+        return isOnSite;
+    }
     
+    public void setIsOnSite(boolean isOnSite) {
+        this.isOnSite = isOnSite;
+    }
+
+    @Override
+    public int getTotalDuration() {
+        return totalDuration;
+    }
+
+    @Override
+    public void setTotalDuration(int totalDuration) {
+        this.totalDuration = totalDuration;
+    }
+
+    @Override
+    public String getSelectedTasks() {
+        return selectedTasks;
+    }
+
+    @Override
+    public void setSelectedTasks(String selectedTasks) {
+        this.selectedTasks = selectedTasks;
+    }
+
 }

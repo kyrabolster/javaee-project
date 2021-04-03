@@ -12,6 +12,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="WEB-INF/jspf/header.jspf" %>
         <title>ATS - Job</title>
+
+        <script type="text/javascript">
+            $('#datetimepicker').datetimepicker({
+                format: 'yyyy-MM-dd HH:mm'
+            });
+        </script>
     </head>
     <body>
         <%@include file="WEB-INF/jspf/navigation.jspf" %>
@@ -40,44 +46,87 @@
                             </c:if>
                             <tr>                    
                                 <td>Client Name</td>
-                                <td><input class="form-control" type="text" name="clicneName" value='${job.clientName}'/></td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${teams.size() == 0 || teams == null}">
+                                            <input class="form-control" type="text" name="clientName" value='${job.clientName}'/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p>${job.clientName}</p>
+                                            <input class="form-control" type="hidden" name="clientName" value='${job.clientName}'/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                             </tr>
                             <tr>                    
                                 <td>Description</td>
-                                <td><textarea class="form-control" name="jobDescription" rows="3">${job.description}</textarea></td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${teams.size() == 0 || teams == null}">
+                                            <textarea class="form-control" name="jobDescription" rows="3">${job.description}</textarea>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p>${job.description}</p>
+                                            <input class="form-control" type="hidden" name="jobDescription" value='${job.description}'/>
+                                        </c:otherwise>
+                                    </c:choose>                                    
+                                </td>
                             </tr>
                             <tr>
                                 <td>Start</td>
-                                <td><input class="form-control" type="datetime-local" name="jobStart" value='${job.start}'/></td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${teams.size() == 0 || teams == null}">
+                                            <input class="form-control" name="jobStart" type="datetime-local" id ='datetimepicker' value='${job.start}'/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p>${job.start}</p>
+                                            <input class="form-control" type="hidden" name="jobStart" value='${job.start}'/>
+                                        </c:otherwise>
+                                    </c:choose>      
+                                </td>
                             </tr>
                             <tr>                            
                                 <td>On site</td>
                                 <td>
-                                    <input type="checkbox" class="form-check-input ml-1" id="isOnSite" ${job.isOnsite == true ? 'checked' : ''}>
+                                    <input type="checkbox" class="form-check-input ml-1" name="isOnSite" ${job.isOnSite == true ? 'checked' : ''} ${teams.size() > 0 ? 'disabled' : ''}>
                                 </td>
                             </tr>
                             <tr>                            
                                 <td>Tasks</td>
                                 <td>
-                                    <input type="checkbox" class="form-check-input ml-1" id="task">
-                                    <label class="form-check-label ml-4" for="task1">Task 1</label>
-                                    <input type="checkbox" class="form-check-input ml-1" id="task">
-                                    <label class="form-check-label ml-4" for="task2">Task 2</label>
-                                    <input type="checkbox" class="form-check-input ml-1" id="task">
-                                    <label class="form-check-label ml-4" for="task3">Task 3</label>
-                                    <input type="checkbox" class="form-check-input ml-1" id="task">
-                                    <label class="form-check-label ml-4" for="task4">Task 4</label>
+                                    <c:choose>
+                                        <c:when test="${teams.size() == 0 || teams == null}">
+                                            <c:forEach items="${tasks}" var="task">
+                                                <input type="checkbox" class="form-check-input ml-1" name="task" value="${task.id}">
+                                                <label class="form-check-label ml-4">${task.name}</label>
+                                                <br>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach items="${job.tasks}" var="task">
+                                                <p>${task}</p>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>     
+
                                 </td>
                             </tr>
                         </table>
-                                <input class="btn btn-primary" type="submit" value="Search Team" name="action" />
-                                <input class="btn btn-primary" type="submit" value="Reset" name="action" />
                         <c:choose>
-                            <c:when test="${job != null && job.id}">
+                            <c:when test="${teams == null || teams.size() == 0}">
+                                <input class="btn btn-primary" type="submit" value="SearchTeam" name="action" />
+                            </c:when>
+                            <c:when test="${teams != null || teams.size() > 0}">
+                                <input class="btn btn-primary" type="submit" value="Reset" name="action" />
+                            </c:when>
+                            <c:when test="${job != null && job.id > 0}">
                                 <input class="btn btn-primary" type="submit" value="Delete" name="action" />
                                 <input class="btn btn-primary" type="submit" value="Save" name="action" />     
                             </c:when>
-                            <c:when test="${job.team == null}">
+                        </c:choose>
+                        <c:choose>
+                            <c:when test="${teams.size() > 0}">
                                 <table class="table table-striped mt-5">
                                     <tr>
                                         <th>
@@ -87,55 +136,52 @@
                                             Team Name
                                         </th>
                                         <th>
-                                            Member 1
+                                            Start Date
                                         </th>
                                         <th>
-                                            Member 2
+                                            End Date
                                         </th>
                                         <th>
-                                            Duration
+                                            Total Duration
+                                        </th>
+                                        <th>
                                         </th>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <input type='radio' name='isSelecteTeam'>
-                                        </td>
-                                        <td>
-                                            First Team
-                                        </td>
-                                        <td>
-                                            Sam Smith
-                                        </td>
-                                        <td>
-                                            Jennifer Brown
-                                        </td>
-                                        <td>
-                                            90 minutes
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input type='radio' name='isSelecteTeam'>
-                                        </td>
-                                        <td>
-                                            First Team
-                                        </td>
-                                        <td>
-                                            Sam Smith
-                                        </td>
-                                        <td>
-                                            Jennifer Brown
-                                        </td>
-                                        <td>
-                                            60 minutes
-                                        </td>
-                                    </tr>
+
+                                    <c:forEach items="${teams}" var="team">
+                                        <tr>
+                                            <td>
+                                                <input type='radio' name='isSelecteTeam' value="${team.id}">
+                                            </td>
+                                            <td>
+                                                ${team.teamName}
+                                            </td>
+                                            <td>
+                                                ${team.start}
+                                            </td>
+                                            <td>
+                                                ${team.end}
+                                            </td>
+                                            <td>
+                                                ${team.totalDuration}
+                                            </td>
+                                            <td>
+                                                <a href="${pageContext.request.contextPath}/team/${team.id}">Team Details</a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+
                                 </table>
                                 <input class="btn btn-primary" type="submit" value="Create" name="action" />
                             </c:when>
                         </c:choose>
                     </form>
                     <c:choose>
+                        <c:when test="${teams.size() == 0}">
+                            <ul>
+                                <li>No teams available</li>                            
+                            </ul>
+                        </c:when>
                         <c:when test="${ job.errors.size() > 0 }">
                             <ul>
                                 <c:forEach items="${ job.errors }" var="err">
@@ -157,3 +203,4 @@
     </body>
     <%@include file="WEB-INF/jspf/footer.jspf" %>
 </html>
+

@@ -7,6 +7,7 @@ package com.nbcc.ATSsystem.repository;
 
 import com.nbcc.ATSsystem.models.IJob;
 import com.nbcc.ATSsystem.models.ITask;
+import com.nbcc.ATSsystem.models.TeamListVM;
 import java.util.Date;
 import java.util.List;
 
@@ -29,4 +30,6 @@ public interface IJobRepository {
     IJob retrieveJob(int id);
     
     List<ITask> retrieveTasks();
+    
+    List<TeamListVM> retrieveAvailableTeamList(String start, String tasks, boolean isOnSite);
 }

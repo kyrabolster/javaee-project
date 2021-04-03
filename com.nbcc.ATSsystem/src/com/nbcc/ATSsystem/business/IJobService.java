@@ -7,6 +7,7 @@ package com.nbcc.ATSsystem.business;
 
 import com.nbcc.ATSsystem.models.IJob;
 import com.nbcc.ATSsystem.models.ITask;
+import com.nbcc.ATSsystem.models.TeamListVM;
 import java.util.Date;
 import java.util.List;
 
@@ -27,4 +28,5 @@ public interface IJobService {
     List<IJob> getJobsByDate(Date date);
     
     List<ITask> getTasks();
+    List<TeamListVM> getAvailableTeams(String start, String tasks, boolean isOnSite);
 }
