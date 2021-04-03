@@ -173,6 +173,13 @@ public class EmployeeController extends CommonController {
                     super.setView(request, EMPLOYEE_SKILLS_VIEW);
 
                     break;
+                case "search":
+                    String search = getValue(request, "search");
+                    
+                    //pass search keyword
+                    request.setAttribute("employees", employeeService.getEmployees(search));
+                    super.setView(request, EMPLOYEES_VIEW);
+                    break;
             }
         } catch (Exception e) {
             super.setView(request, EMPLOYEES_MAINT_VIEW);

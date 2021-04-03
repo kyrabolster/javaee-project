@@ -34,6 +34,12 @@ public class EmployeeService implements IEmployeeService {
         List<IEmployee> employees = repo.retrieveEmployees();
         return employees;
     }
+    
+    @Override
+    public List<IEmployee> getEmployees(String search) {
+        List<IEmployee> employees = repo.retrieveEmployees(search);
+        return employees;
+    }
 
     @Override
     public boolean isValid(IEmployee employee) {

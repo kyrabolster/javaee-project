@@ -21,6 +21,8 @@ public interface IEmployeeRepository {
     int deleteEmployee(int id);
 
     List<IEmployee> retrieveEmployees();
+    
+    List<IEmployee> retrieveEmployees(String search);
 
     IEmployee retrieveEmployee(int id);
 

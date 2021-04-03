@@ -27,6 +27,7 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
 
     private final String SPROC_SELECT_EMPLOYEES = "CALL SelectEmployees(null)";
     private final String SPROC_SELECT_EMPLOYEE = "CALL SelectEmployees(?)";
+    private final String SPROC_SEARCH_EMPLOYEES = "CALL SearchEmployees(?)";
     private final String SPROC_INSERT_EMPLOYEE = "CALL InsertEmployee(?,?,?,?,?);";
     private final String SPROC_SELECT_TASKS = "CALL SelectTasks(?)";
     private final String SPROC_SELECT_TEAMS = "CALL SelectTeams(?)";
@@ -101,6 +102,22 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
 
         try {
             CachedRowSet cr = dataAccess.executeFill(SPROC_SELECT_EMPLOYEES, null);
+            retrievedEmployees = toListofEmployees(cr);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return retrievedEmployees;
+    }
+    
+    @Override
+    public List<IEmployee> retrieveEmployees(String search) {
+        List<IEmployee> retrievedEmployees = EmployeeFactory.createListInstance();
+
+        try {
+            List<IParameter> params = ParameterFactory.createListInstance();
+            params.add(ParameterFactory.createInstance(search));
+            CachedRowSet cr = dataAccess.executeFill(SPROC_SEARCH_EMPLOYEES, params);
             retrievedEmployees = toListofEmployees(cr);
         } catch (Exception e) {
             System.out.println(e.getMessage());
