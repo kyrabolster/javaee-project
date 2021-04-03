@@ -86,3 +86,19 @@ BEGIN
     );
 END$$
 DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS RemoveEmployeeSkill;
+// DELIMITER;
+
+CREATE PROCEDURE `RemoveEmployeeSkill`(
+IN Employee_id_param INT,
+IN Task_id_param INT
+)
+BEGIN
+	DELETE FROM employees_tasks
+		WHERE 
+			EmployeeId = Employee_id_param AND 
+            TaskId = Task_id_param;
+END$$
+DELIMITER ;

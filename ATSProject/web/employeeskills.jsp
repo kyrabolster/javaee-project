@@ -57,7 +57,7 @@
                                             <i>No skills assigned currently</i>
                                         </c:when>
                                         <c:otherwise>
-                                            <select multiple name="taskSelect">
+                                            <select multiple name="taskToRemove">
                                                 <c:forEach items="${employee.tasks}" var="task">
                                                     <!-- check for duplicates *** -->
                                                     <option value="${task.id}" >${task.name}</option>

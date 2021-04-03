@@ -12,6 +12,7 @@ import com.nbcc.ATSsystem.business.ITaskService;
 import com.nbcc.ATSsystem.business.TaskServiceFactory;
 import com.nbcc.ATSsystem.models.IEmployee;
 import com.nbcc.ATSsystem.models.EmployeeFactory;
+import com.nbcc.ATSsystem.models.ErrorFactory;
 import com.nbcc.ATSsystem.models.ITask;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +45,9 @@ public class EmployeeController extends CommonController {
 
             int id = super.getInteger(pathParts[1]);
 
-            if (employeeExists(id)) {
+            if ("/create".equals(pathInfo)) {
+                super.setView(request, EMPLOYEES_MAINT_VIEW);
+            } else if (employeeExists(id)) {
 
                 IEmployee employee = employeeService.getEmployee(id);
 
@@ -64,7 +67,7 @@ public class EmployeeController extends CommonController {
             }
 
         } else {
-            //Set attribute as list of the invoices
+            //Set attribute as list of the employees
             request.setAttribute("employees", employeeService.getEmployees());
             super.setView(request, EMPLOYEES_VIEW);
         }
@@ -112,7 +115,22 @@ public class EmployeeController extends CommonController {
 
                     break;
                 case "delete":
+                    employee = setEmployee(request);
+                    employee.setId(id);
 
+                    request.setAttribute("employee", employee);
+
+                    if (employeeService.deleteEmployee(id) == 0) {
+                        employee.addError(ErrorFactory.createInstance(13, "No records affected. Delete was unsuccessful"));
+                        request.setAttribute("errors", employee.getErrors());
+                        super.setView(request, EMPLOYEES_MAINT_VIEW);
+                    } else {
+                        if (employeeExists(id)) {
+                            request.setAttribute("deleteMessage", "The following employee had been flagged as deleted since they are a member in a team.");
+                        } else {
+                            request.setAttribute("deleteMessage", "The following employee has been successfully deleted from the employees list.");
+                        }
+                    }
                     break;
                 case "update skills":
                     employee = employeeService.getEmployee(id);
@@ -122,13 +140,30 @@ public class EmployeeController extends CommonController {
 
                     break;
                 case "add skill":
-                    int skillId = setSkillToAdd(request);
+                    int skillToAddId = setSkillToAdd(request);
 
-                    if (skillId == 0) {
+                    if (skillToAddId == 0) {
                         request.setAttribute("error", new ErrorViewModel(String.format("Please select a skill to be added.")));
                     }
-                    
-                    employeeService.addEmployeeSkill(id, skillId);
+
+                    employeeService.addEmployeeSkill(id, skillToAddId);
+
+                    employee = employeeService.getEmployee(id);
+                    request.setAttribute("employee", employee);
+
+                    getTasksToAdd(request, id);
+
+                    super.setView(request, EMPLOYEE_SKILLS_VIEW);
+
+                    break;
+                case "remove skill":
+                    int skillToRemoveId = setSkillToRemove(request);
+
+                    if (skillToRemoveId == 0) {
+                        request.setAttribute("error", new ErrorViewModel(String.format("Please select a skill to be removed.")));
+                    }
+
+                    employeeService.removeEmployeeSkill(id, skillToRemoveId);
 
                     employee = employeeService.getEmployee(id);
                     request.setAttribute("employee", employee);
@@ -167,6 +202,14 @@ public class EmployeeController extends CommonController {
         int skillId;
 
         skillId = getInteger(request, "taskToAdd");
+
+        return skillId;
+    }
+
+    private int setSkillToRemove(HttpServletRequest request) {
+        int skillId;
+
+        skillId = getInteger(request, "taskToRemove");
 
         return skillId;
     }

@@ -55,10 +55,15 @@ public class EmployeeService implements IEmployeeService {
 
         return employee;
     }
-    
+
     @Override
     public boolean addEmployeeSkill(int EmployeeId, int TaskId) {
-            return repo.addEmployeeSkill(EmployeeId, TaskId);
+        return repo.addEmployeeSkill(EmployeeId, TaskId);
+    }
+
+    @Override
+    public boolean removeEmployeeSkill(int EmployeeId, int TaskId) {
+        return repo.removeEmployeeSkill(EmployeeId, TaskId);
     }
 
     @Override
@@ -68,6 +73,10 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public int deleteEmployee(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (id == 0) {
+            return 0;
+        } else {
+            return repo.deleteEmployee(id);
+        }
     }
 }

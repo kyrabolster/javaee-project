@@ -31,6 +31,8 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
     private final String SPROC_SELECT_TASKS = "CALL SelectTasks(?)";
     private final String SPROC_SELECT_TEAMS = "CALL SelectTeams(?)";
     private final String SPROC_ADD_EMPLOYEE_SKILLS = "CALL AddEmployeeSkill(?,?)";
+    private final String SPROC_REMOVE_EMPLOYEE_SKILLS = "CALL RemoveEmployeeSkill(?,?)";
+    private final String SPROC_DELETE_EMPLOYEE = "CALL DeleteEmployee(?);";
 
     private IDAL dataAccess;
 
@@ -192,7 +194,26 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
+        return returnValues != null;
+    }
+
+    @Override
+    public boolean removeEmployeeSkill(int EmployeeId, int TaskId) {
+
+        List<Object> returnValues = null;
+
+        List<IParameter> params = ParameterFactory.createListInstance();
+
+        params.add(ParameterFactory.createInstance(EmployeeId));
+        params.add(ParameterFactory.createInstance(TaskId));
+
+        try {
+            returnValues = dataAccess.executeNonQuery(SPROC_REMOVE_EMPLOYEE_SKILLS, params);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         return returnValues != null;
     }
 
@@ -202,7 +223,23 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
     }
 
     @Override
-    public int deleteEmployee(IEmployee employee) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int deleteEmployee(int id) {
+        int rowsAffected = 0;
+        List<Object> returnValues;
+        List<IParameter> params = ParameterFactory.createListInstance();
+
+        params.add(ParameterFactory.createInstance(id));
+
+        returnValues = dataAccess.executeNonQuery(SPROC_DELETE_EMPLOYEE, params);
+
+        try {
+            if (returnValues != null) {
+                rowsAffected = Integer.parseInt(returnValues.get(0).toString());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return rowsAffected;
     }
 }

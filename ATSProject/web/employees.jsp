@@ -23,13 +23,19 @@
                     <c:set var="employeeCount" value="${ employees.size()}" />
                     <c:choose>
                         <c:when test="${ employeeCount > 0}">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input type="search" id="searchEmployees" class="form-control" />
+                                </div>
+                                <a href=""><button class="btn btn-info mb-2" type="button" >Search</button></a>
+                            </div>
                             <table class="table table-striped">
                                 <tr class="bg-dark text-light">
                                     <th>
                                         Name
                                     </th>
                                     <th class="text-right">
-                                       Details
+                                        Details
                                     </th>
                                     <c:forEach items="${employees}" var="employee">
                                     <tr>

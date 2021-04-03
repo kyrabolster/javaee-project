@@ -18,12 +18,14 @@ public interface IEmployeeRepository {
 
     int updateEmployee(IEmployee employee);
 
-    int deleteEmployee(IEmployee employee);
+    int deleteEmployee(int id);
 
     List<IEmployee> retrieveEmployees();
 
     IEmployee retrieveEmployee(int id);
 
     boolean addEmployeeSkill(int EmployeeId, int TaskId);
+
+    boolean removeEmployeeSkill(int EmployeeId, int TaskId);
 
 }

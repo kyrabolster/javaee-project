@@ -117,11 +117,13 @@
                         </table>
                         <c:choose>
                             <c:when test="${ employee != null && employee.id != 0 }">
-                                <input class="btn btn-primary" type="submit" value="Delete" name="action" />
                                 <input class="btn btn-primary" type="submit" value="Save" name="action" /> 
-                                <a href="${pageContext.request.contextPath}/employeeskills/${ employee.id}">
-                                    <input class="btn btn-primary" type="submit" name="action" value="Update Skills"/> 
-                                </a>
+                                <c:if test="${ employee.isDeleted != true }"> 
+                                    <input class="btn btn-primary" type="submit" value="Delete" name="action" />
+                                    <a href="${pageContext.request.contextPath}/employeeskills/${ employee.id}">
+                                        <input class="btn btn-primary" type="submit" name="action" value="Update Skills"/> 
+                                    </a>
+                                </c:if>
                             </c:when>
                             <c:otherwise>
                                 <input class="btn btn-primary" type="submit" value="Create" name="action" />
