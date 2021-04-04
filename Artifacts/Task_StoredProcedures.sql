@@ -56,6 +56,25 @@ END$$
 DELIMITER ;
 
 DELIMITER //
+DROP PROCEDURE IF EXISTS DeleteEmployee
+// DELIMITER;
+
+DELIMITER //
+CREATE PROCEDURE DeleteTask (
+IN Id_param INT
+)
+BEGIN
+	IF NOT EXISTS (
+		SELECT taskId FROM employees_tasks WHERE TaskId = Id_param
+			UNION ALL
+		SELECT taskId FROM job_tasks WHERE TaskId = Id_param) 
+	THEN
+			DELETE FROM tasks WHERE id = Id_param;
+	END IF;
+END//
+DELIMITER;
+
+DELIMITER //
 DROP PROCEDURE IF EXISTS AddEmployeeSkill;
 // DELIMITER;
 

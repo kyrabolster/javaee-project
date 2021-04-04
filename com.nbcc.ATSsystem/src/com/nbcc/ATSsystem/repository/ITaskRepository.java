@@ -16,7 +16,7 @@ import java.util.List;
 public interface ITaskRepository {
     int insertTask(ITask task);
     int updateTask(ITask task);
-    int deleteTask(ITask task);
+    int deleteTask(int id);
     List<ITask> retrieveTasks();
     ITask retrieveTask(int id);
     List<ITask> retrieveTasksNotAssignedToEmployee(int employeeId);
