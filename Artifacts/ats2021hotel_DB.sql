@@ -30,7 +30,7 @@ CREATE TABLE `employees` (
   `FirstName` varchar(50) NOT NULL,
   `LastName` varchar(50) NOT NULL,
   `SIN` varchar(11) NOT NULL,
-  `HourlyRate` decimal(10,0) NOT NULL,
+  `HourlyRate` decimal(13,2) NOT NULL,
   `IsDeleted` bit(1) NOT NULL,
   `CreatedAt` datetime NOT NULL,
   `UpdatedAt` datetime DEFAULT NULL,
@@ -85,8 +85,8 @@ DROP TABLE IF EXISTS `job_tasks`;
 CREATE TABLE `job_tasks` (
   `TaskId` int(11) NOT NULL,
   `JobId` int(11) NOT NULL,
-  `OperatingCost` decimal(10,0) NOT NULL,
-  `OperatingRevenue` decimal(10,0) NOT NULL,
+  `OperatingCost` decimal(13,2) NOT NULL,
+  `OperatingRevenue` decimal(13,2) NOT NULL,
   PRIMARY KEY (`TaskId`,`JobId`),
   KEY `JobId_JobTask_FK_idx` (`JobId`),
   CONSTRAINT `JobId_JobTask_FK` FOREIGN KEY (`JobId`) REFERENCES `jobs` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -232,7 +232,7 @@ CREATE DEFINER=`dev`@`%` PROCEDURE `InsertEmployee`(
   IN FirstName_param VARCHAR(50),
   IN LastName_param VARCHAR(50),
   IN SIN_param VARCHAR(11),
-  IN HourlyRate_param DECIMAL(10,0),
+  IN HourlyRate_param DECIMAL(13,2),
   OUT Id_out INT
 )
 BEGIN
