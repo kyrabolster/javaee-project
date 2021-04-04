@@ -361,7 +361,7 @@ BEGIN
 	END WHILE;
 		
 	select DISTINCT TempTable.TeamId, TeamName, totalDuration, StartDate, EndDate from TempTable 
-	left join jobs on TempTable.TeamId = jobs.TeamId
+	join jobs on TempTable.TeamId = jobs.TeamId
 	where TempTable.TeamId 
 						NOT in (select jobs.TeamId from jobs where Start between Start_param and EndDate OR End between Start_param and EndDate)
 						AND
