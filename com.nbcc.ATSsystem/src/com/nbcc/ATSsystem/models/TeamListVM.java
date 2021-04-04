@@ -6,7 +6,7 @@
 package com.nbcc.ATSsystem.models;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  *
@@ -19,6 +19,7 @@ public class TeamListVM {
     private int totalDuration;
     private Timestamp start;
     private Timestamp end;
+    private List<IEmployee> teamMembers;
 
     public TeamListVM() {        
     }
@@ -29,6 +30,12 @@ public class TeamListVM {
         setTotalDuration(totalDuration);
         setStart(start);
         setEnd(end);
+    }
+    
+    public TeamListVM(int id, String teamName, List<IEmployee> teamMembers){
+        setId(id);
+        setTeamName(teamName);
+        setTeamMembers(teamMembers);
     }
     
     public int getId() {
@@ -69,6 +76,14 @@ public class TeamListVM {
 
     public void setEnd(Timestamp end) {
         this.end = end;
+    }
+
+    public List<IEmployee> getTeamMembers() {
+        return teamMembers;
+    }
+
+    public void setTeamMembers(List<IEmployee> teamMembers) {
+        this.teamMembers = teamMembers;
     }
     
     

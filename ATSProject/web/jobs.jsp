@@ -18,10 +18,18 @@
             <h1 class="text-center display-4 grey mt-5 mb-5">Jobs List</h1>
             <section>
                 <div class="container clearfix">
-                    <a href="${pageContext.request.contextPath}/job/create"><button class="btn float-right btn-info mb-2" type="button" >Create New Job</button></a>
+                    <div>
+                        <a href="${pageContext.request.contextPath}/job/create"><button class="btn float-right btn-info mb-2" type="button" >Create New Job</button></a>                    
+                    </div>
+                    <form method="POST" action="">
+                        <div class="form-inline mx-sm-3 mb-2">
+                            <input class="form-control" name="searchDate" type="date"/> 
+                            <input class="btn btn-info ml-2" type="submit" value="Search" name="action" />
+                        </div>
+                    </form>
                     <c:set var="jobsCount" value="${ jobs.size()}" />
                     <c:choose>
-                        <c:when test="${ jobsCount > 0}">
+                        <c:when test="${ jobs.size() > 0}">
                             <table class="table table-striped">
                                 <tr class="bg-dark text-light">
                                     <th>
@@ -31,24 +39,48 @@
                                         Client Name
                                     </th>
                                     <th>
+                                        Description
+                                    </th>
+                                    <th>
                                         Start Date
                                     </th>
                                     <th>
                                         End Date
                                     </th>
+                                    <th>
+                                        Cost
+                                    </th>
+                                    <th>
+                                        Revenue
+                                    </th>
+                                    <th>
+                                        Team
+                                    </th>
+                                    <th>
+                                        Tasks
+                                    </th>
+                                    <th>
+                                        View Details
+                                    </th>
                                 </tr>
                                 <c:forEach items="${jobs}"  var="job">
                                     <tr>
-                                        <td><a href="job/${ job.id}">${ job.id}</a></td>
+                                        <td>${ job.id}</td>
                                         <td>${ job.clientName }</td>
-                                        <td>${ job.start }</td>
-                                        <td>${ job.end }</td>
+                                        <td>${ job.description }</td>
+                                        <td><fmt:formatDate value="${ job.start }" pattern = "yyyy-MM-dd HH:mm" /></td>
+                                        <td><fmt:formatDate value="${ job.end }" pattern = "yyyy-MM-dd HH:mm" /></td>
+                                        <td><fmt:formatNumber value="${ job.cost }" type="currency" currencySymbol="$"/></td>
+                                        <td><fmt:formatNumber value="${ job.revenue }" type="currency" currencySymbol="$"/></td>
+                                        <td>${ job.teamName }</td>
+                                        <td>${ job.tasksName }</td>
+                                        <td><a href="job/${ job.id}">View Details</a></td>
                                     </tr>
                                 </c:forEach>
 
                             </table>
                         </c:when>
-                        <c:when test="${ jobsCount == 0}">
+                        <c:when test="${ jobs.size() == 0}">
                             <hr>
                             <h4 style="text-align:center">No Jobs</h4>
                         </c:when>

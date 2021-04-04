@@ -6,7 +6,6 @@
 package com.nbcc.ATSsystem.models;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +18,15 @@ public class Job extends Base implements IJob {
 
     private int id;
     private int teamId;    
+    private String teamName;
     private String clientName;
     private String description;
     private Timestamp start;
     private Timestamp end;
+    private double cost;
+    private double revenue;
+    private String tasksName;
+    
     private List<String> tasks;
     private boolean isOnSite;
     private int totalDuration;
@@ -83,7 +87,15 @@ public class Job extends Base implements IJob {
             this.teamId = teamId;
         }
     }
-        
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+    
     public String getClientName() {
         return clientName;
     }
@@ -113,12 +125,8 @@ public class Job extends Base implements IJob {
     }
 
     public void setStart(Timestamp start) {
-        Timestamp current = new Timestamp(System.currentTimeMillis());
-
         if (start == null) {
             addError(ErrorFactory.createInstance(3, "Start date is required"));
-        } else if (start.compareTo(current) < 0) {
-            addError(ErrorFactory.createInstance(4, "Start date can not be past"));
         } else {
             this.start = start;
         }
@@ -172,4 +180,29 @@ public class Job extends Base implements IJob {
         this.selectedTasks = selectedTasks;
     }
 
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public double getRevenue() {
+        return revenue;
+    }
+
+    public void setRevenue(double revenue) {
+        this.revenue = revenue;
+    }
+
+    public String getTasksName() {
+        return tasksName;
+    }
+
+    public void setTasksName(String tasksName) {
+        this.tasksName = tasksName;
+    }
+
+    
 }

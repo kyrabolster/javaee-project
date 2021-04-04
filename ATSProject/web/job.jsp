@@ -12,12 +12,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="WEB-INF/jspf/header.jspf" %>
         <title>ATS - Job</title>
-
-        <script type="text/javascript">
-            $('#datetimepicker').datetimepicker({
-                format: 'yyyy-MM-dd HH:mm'
-            });
-        </script>
     </head>
     <body>
         <%@include file="WEB-INF/jspf/navigation.jspf" %>
@@ -27,7 +21,7 @@
                     <h1 class="text-center display-4 grey mt-5 mb-5">Create Job</h1>
                 </c:when>
                 <c:otherwise>
-                    <h1 class="text-center display-4 grey mt-5 mb-5">Edit Job</h1>
+                    <h1 class="text-center display-4 grey mt-5 mb-5">Job Details</h1>
                 </c:otherwise>
             </c:choose>
             <section>
@@ -48,7 +42,7 @@
                                 <td>Client Name</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${teams.size() == 0 || teams == null}">
+                                        <c:when test="${(teams.size() == 0 || teams == null) && team == null}">
                                             <input class="form-control" type="text" name="clientName" value='${job.clientName}'/>
                                         </c:when>
                                         <c:otherwise>
@@ -62,7 +56,7 @@
                                 <td>Description</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${teams.size() == 0 || teams == null}">
+                                        <c:when test="${(teams.size() == 0 || teams == null) && team == null}">
                                             <textarea class="form-control" name="jobDescription" rows="3">${job.description}</textarea>
                                         </c:when>
                                         <c:otherwise>
@@ -76,53 +70,85 @@
                                 <td>Start</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${teams.size() == 0 || teams == null}">
+                                        <c:when test="${(teams.size() == 0 || teams == null) && team == null}">
                                             <input class="form-control" name="jobStart" type="datetime-local" id ='datetimepicker' value='${job.start}'/>
                                         </c:when>
                                         <c:otherwise>
-                                            <p>${job.start}</p>
+                                            <p><fmt:formatDate value="${ job.start }" pattern = "yyyy-MM-dd HH:mm" /></p>
                                             <input class="form-control" type="hidden" name="jobStart" value='${job.start}'/>
                                         </c:otherwise>
                                     </c:choose>      
                                 </td>
                             </tr>
-                            <tr>                            
-                                <td>On site</td>
-                                <td>
-                                    <input type="checkbox" class="form-check-input ml-1" name="isOnSite" ${job.isOnSite == true ? 'checked' : ''} ${teams.size() > 0 ? 'disabled' : ''}>
-                                </td>
-                            </tr>
+                            <c:if test="${job != null && job.id > 0 && team != null}">
+                                <tr>
+                                    <td>End</td>
+                                    <td><fmt:formatDate value="${ job.end }" pattern = "yyyy-MM-dd HH:mm" /></td>
+                                </tr>
+                            </c:if>
+
+                            <c:if test="${job == null || job.id == 0}">
+                                <tr>                            
+                                    <td>On site</td>
+                                    <td>
+                                        <input type="checkbox" class="form-check-input ml-1" name="isOnSite" ${job.isOnSite == true ? 'checked' : ''} ${teams.size() > 0 || team != null ? 'disabled' : ''}>
+                                        <c:if test="${teams != null}">
+                                            <input class="form-control" type="hidden" name="isOnSite" value="${job.isOnSite == true ? 'checked' : ''}"/>
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </c:if>
                             <tr>                            
                                 <td>Tasks</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${teams.size() == 0 || teams == null}">
+                                        <c:when test="${(teams.size() == 0 || teams == null) && team == null}">
                                             <c:forEach items="${tasks}" var="task">
                                                 <input type="checkbox" class="form-check-input ml-1" name="task" value="${task.id}">
                                                 <label class="form-check-label ml-4">${task.name}</label>
                                                 <br>
                                             </c:forEach>
                                         </c:when>
+                                        <c:when test="${team != null}">
+                                            <p>${job.tasksName}</p>
+                                        </c:when>  
                                         <c:otherwise>
                                             <c:forEach items="${job.tasks}" var="task">
                                                 <p>${task}</p>
                                             </c:forEach>
                                         </c:otherwise>
                                     </c:choose>     
-
                                 </td>
                             </tr>
+                            <c:if test="${job != null && job.id > 0 && team != null}">
+                                <tr>
+                                    <td>Cost</td>
+                                    <td><fmt:formatNumber value="${ job.cost }" type="currency" currencySymbol="$"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Revenue</td>
+                                    <td><fmt:formatNumber value="${ job.revenue }" type="currency" currencySymbol="$"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Team Member</td>
+                                    <td>
+                                        <c:forEach items="${team.teamMembers}" var="member">
+                                            <p>${member.firstName} ${member.lastName}</p>
+                                        </c:forEach>
+                                    </td>
+                                </tr>
+                            </c:if>
+
                         </table>
                         <c:choose>
-                            <c:when test="${teams == null || teams.size() == 0}">
+                            <c:when test="${(teams == null || teams.size() == 0) && team == null}">
                                 <input class="btn btn-primary" type="submit" value="SearchTeam" name="action" />
                             </c:when>
                             <c:when test="${teams != null || teams.size() > 0}">
                                 <input class="btn btn-primary" type="submit" value="Reset" name="action" />
                             </c:when>
-                            <c:when test="${job != null && job.id > 0}">
+                            <c:when test="${job != null && job.id > 0 && team != null}">
                                 <input class="btn btn-primary" type="submit" value="Delete" name="action" />
-                                <input class="btn btn-primary" type="submit" value="Save" name="action" />     
                             </c:when>
                         </c:choose>
                         <c:choose>
@@ -157,10 +183,10 @@
                                                 ${team.teamName}
                                             </td>
                                             <td>
-                                                ${team.start}
+                                                <fmt:formatDate value="${team.start}" pattern = "yyyy-MM-dd HH:mm" />                                                
                                             </td>
                                             <td>
-                                                ${team.end}
+                                                <fmt:formatDate value="${team.end}" pattern = "yyyy-MM-dd HH:mm" />
                                             </td>
                                             <td>
                                                 ${team.totalDuration}
@@ -170,7 +196,6 @@
                                             </td>
                                         </tr>
                                     </c:forEach>
-
                                 </table>
                                 <input class="btn btn-primary" type="submit" value="Create" name="action" />
                             </c:when>

@@ -23,6 +23,10 @@ public interface IJob extends IBase{
     
     void setTeamId(int teamId);
     
+    String getTeamName();
+    
+    void setTeamName(String teamName);
+    
     String getDescription();
     
     void setDescription(String description);
@@ -54,5 +58,17 @@ public interface IJob extends IBase{
     String getSelectedTasks();
     
     void setSelectedTasks(String selectedTasks);
+    
+    double getCost();
+    
+    void setCost(double cost);
+    
+    double getRevenue();
+    
+    void setRevenue(double revenue);
+    
+    String getTasksName();
+    
+    void setTasksName(String tasksName);
     
 }

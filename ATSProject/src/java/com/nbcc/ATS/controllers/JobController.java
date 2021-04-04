@@ -6,8 +6,10 @@
 package com.nbcc.ATS.controllers;
 
 import com.nbcc.ATS.models.ErrorViewModel;
+import com.nbcc.ATS.models.JobDeletedViewModel;
 import com.nbcc.ATSsystem.business.IJobService;
 import com.nbcc.ATSsystem.business.JobServiceFactory;
+import com.nbcc.ATSsystem.models.ErrorFactory;
 import com.nbcc.ATSsystem.models.IJob;
 import com.nbcc.ATSsystem.models.ITask;
 import com.nbcc.ATSsystem.models.JobFactory;
@@ -35,6 +37,9 @@ public class JobController extends CommonController {
     private static final String JOBS_VIEW = "/jobs.jsp";
     private static final String JOBS_MAINT_VIEW = "/job.jsp";
     private static final String JOB_SUMMARY_VIEW = "/jobsummary.jsp";
+    private static final String TASK_ERROR = "/error.jsp";
+
+    //common variables for creating job
     private List<String> taskIds = new ArrayList<>();
     private List<TeamListVM> teamList = new ArrayList<>();
     private List<TeamListVM> selectedTeam = new ArrayList<>();
@@ -52,8 +57,20 @@ public class JobController extends CommonController {
             String[] pathParts = pathInfo.split("/");
             int id = super.getInteger(pathParts[1]);
 
-            if (id > 0) {
-                // getjob(int id) -> job/{id}
+            if (jobExists(id)) {
+                IJob job = jobService.getJob(id);
+
+                if (job != null) {
+                    request.setAttribute("job", job);
+                    request.setAttribute("team", jobService.getTeamByJob(id));
+                } else {
+                    request.setAttribute("error", new ErrorViewModel(String.format("Job ID: $s is not found", id)));
+                }
+                super.setView(request, JOBS_MAINT_VIEW);
+
+            } else {
+                request.setAttribute("entity", "job");
+                super.setView(request, TASK_ERROR);
             }
 
             List<ITask> tasks = jobService.getTasks();
@@ -61,6 +78,7 @@ public class JobController extends CommonController {
 
             super.setView(request, JOBS_MAINT_VIEW);
         } else {
+            request.setAttribute("jobs", jobService.getJobs());
             super.setView(request, JOBS_VIEW);
         }
 
@@ -93,16 +111,23 @@ public class JobController extends CommonController {
                     request.setAttribute("job", job);
 
                     selectedTasks = String.join(",", request.getParameterValues("task"));
-                    Date start = super.getDate(request, "jobStart");
-                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date start = super.getDateTime(request, "jobStart");
 
-                    String jobStart = df.format(start);
-                    
-                    boolean isOnSite = request.getParameter("isOnSite") != null;
+                    Timestamp current = new Timestamp(System.currentTimeMillis());
 
-                    teamList = jobService.getAvailableTeams(jobStart, selectedTasks, isOnSite);
+                    if (start.compareTo(current) < 0) {
+                        request.setAttribute("error", new ErrorViewModel("Start date can not be past"));
+                    } else {
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-                    request.setAttribute("teams", teamList);
+                        String jobStart = df.format(start);
+
+                        boolean isOnSite = request.getParameter("isOnSite") != null;
+
+                        teamList = jobService.getAvailableTeams(jobStart, selectedTasks, isOnSite);
+
+                        request.setAttribute("teams", teamList);
+                    }
                     break;
 
                 case "reset":
@@ -126,6 +151,39 @@ public class JobController extends CommonController {
                         super.setView(request, JOBS_MAINT_VIEW);
                     }
 
+                    break;
+
+                case "delete":
+                    super.setView(request, JOB_SUMMARY_VIEW);
+                    
+                    job = jobService.getJob(id);
+                    request.setAttribute("job", job);
+                    request.setAttribute("team", jobService.getTeamByJob(id));
+                    
+                    int rowsAffected = jobService.deleteJob(id);
+                    
+                    if(rowsAffected == 0) {
+                        job.addError(ErrorFactory.createInstance(13, "No record affected. Delete was unsuccessful"));
+                        request.setAttribute("errors", job.getErrors());
+                        super.setView(request, JOBS_MAINT_VIEW);
+                    } else {
+                        JobDeletedViewModel vm = new JobDeletedViewModel(id, rowsAffected);
+                        request.setAttribute("vm", vm);
+                    }
+                    
+                    break;
+                    
+                case "search":
+                    Date searchDate = super.getDate(request, "searchDate");
+                    if (searchDate != null) {
+                        DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+                        String strDate = df2.format(searchDate);
+
+                        request.setAttribute("jobs", jobService.getJobsByDate(strDate));
+                    } else {
+                        request.setAttribute("jobs", jobService.getJobs());
+                    }
+                    super.setView(request, JOBS_VIEW);
                     break;
             }
         } catch (Exception e) {
@@ -161,8 +219,8 @@ public class JobController extends CommonController {
 
         clientName = super.getValue(request, "clientName");
         description = super.getValue(request, "jobDescription");
-        start = new Timestamp(super.getDate(request, "jobStart").getTime());
-        
+        start = new Timestamp(super.getDateTime(request, "jobStart").getTime());
+
         isOnSite = request.getParameter("isOnSite") != null;
 
         IJob job = JobFactory.createInstance(clientName, description, start, taskNames, isOnSite);
@@ -183,6 +241,21 @@ public class JobController extends CommonController {
         IJob job = JobFactory.createInstance(teamId, tempJob.getClientName(), tempJob.getDescription(), tempJob.getStart(), taskIds, tempJob.getIsOnSite(), totalDuration, selectedTasks);
 
         return job;
+    }
+
+    private boolean jobExists(int id) {
+        IJobService jobService = JobServiceFactory.createInstance();
+
+        List<IJob> jobs = jobService.getJobs();
+
+        List<Integer> jobIds = new ArrayList<>();
+
+        for (IJob job : jobs) {
+            int jobId = job.getId();
+            jobIds.add(jobId);
+        }
+
+        return jobIds.contains(id);
     }
 
 }

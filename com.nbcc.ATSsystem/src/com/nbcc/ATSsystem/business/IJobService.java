@@ -25,8 +25,9 @@ public interface IJobService {
     
     IJob getJob(int id);
     List<IJob> getJobs();
-    List<IJob> getJobsByDate(Date date);
+    List<IJob> getJobsByDate(String date);
     
     List<ITask> getTasks();
     List<TeamListVM> getAvailableTeams(String start, String tasks, boolean isOnSite);
+    TeamListVM getTeamByJob(int jobId);
 }

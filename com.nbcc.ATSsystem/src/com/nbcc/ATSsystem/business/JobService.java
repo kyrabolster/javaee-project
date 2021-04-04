@@ -11,7 +11,6 @@ import com.nbcc.ATSsystem.models.ITask;
 import com.nbcc.ATSsystem.models.TeamListVM;
 import com.nbcc.ATSsystem.repository.IJobRepository;
 import com.nbcc.ATSsystem.repository.JobRepositoryFactory;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,22 +53,22 @@ public class JobService implements IJobService{
 
     @Override
     public int deleteJob(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return repo.deleteJob(id);
     }
 
     @Override
     public IJob getJob(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return repo.retrieveJob(id);
     }
 
     @Override
     public List<IJob> getJobs() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return repo.retrieveJobs();
     }
 
     @Override
-    public List<IJob> getJobsByDate(Date date) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<IJob> getJobsByDate(String date) {
+        return repo.retrieveJobsByDate(date);
     }
 
     @Override
@@ -80,5 +79,10 @@ public class JobService implements IJobService{
     @Override
     public List<TeamListVM> getAvailableTeams(String start, String tasks, boolean isOnSite) {
         return repo.retrieveAvailableTeamList(start, tasks, isOnSite);
+    }
+
+    @Override
+    public TeamListVM getTeamByJob(int jobId) {
+        return repo.retrieveTeamListByJobId(jobId);
     }
 }
