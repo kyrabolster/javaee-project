@@ -130,6 +130,11 @@
                                     <td><fmt:formatNumber value="${ job.revenue }" type="currency" currencySymbol="$"/></td>
                                 </tr>
                                 <tr>
+                                    <td>Team Name</td>
+                                    <td>${team.teamName}</td>
+                                        
+                                </tr>
+                                <tr>
                                     <td>Team Member</td>
                                     <td>
                                         <c:forEach items="${team.teamMembers}" var="member">
