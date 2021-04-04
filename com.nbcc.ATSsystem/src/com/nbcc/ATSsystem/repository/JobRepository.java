@@ -31,6 +31,7 @@ import javax.sql.rowset.CachedRowSet;
 public class JobRepository extends BaseRepository implements IJobRepository {
 
     private final String SPROC_INSERT_JOB = "CALL InsertJob(?,?,?,?,?,?,?,?)";
+    private final String SPROC_INSERT_EMERGENCYJOB = "CALL InsertEmergencyJob(?,?,?,?,?,?,?,?)";
     private final String SPROC_SELECT_TEAMS = "CALL SelectAvailableTeamList(?,?,?)";
     private final String SPROC_SELECT_EMERGENCYTEAM = "CALL SelectEmergencyTeam(?,?,?)";
     private final String SPROC_SELECT_JOB = "CALL SelectJobs(?,null)";
@@ -64,7 +65,24 @@ public class JobRepository extends BaseRepository implements IJobRepository {
 
         params.add(ParameterFactory.createInstance(returnId, IParameter.Direction.OUT, java.sql.Types.INTEGER));
 
-        returnValues = dataAccess.executeNonQuery(SPROC_INSERT_JOB, params);
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        String before = "08:00:00";
+        String after = "17:00:00";
+        String target = job.getStart().toString().substring(11, 19);
+
+        LocalTime time = LocalTime.parse(target, format);
+        LocalTime morning = LocalTime.parse(before, format);
+        LocalTime night = LocalTime.parse(after, format);
+
+
+        if (time.isBefore(morning) || time.isAfter(night)) {
+            returnValues = dataAccess.executeNonQuery(SPROC_INSERT_EMERGENCYJOB, params);
+
+        } else {
+            returnValues = dataAccess.executeNonQuery(SPROC_INSERT_JOB, params);
+        }
+            
 
         try {
             if (returnValues != null) {
