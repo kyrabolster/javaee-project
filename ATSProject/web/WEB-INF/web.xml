@@ -87,14 +87,18 @@
         <url-pattern>/team/*</url-pattern>
     </servlet-mapping>    
     
-    <servlet>
+     <servlet-mapping>
+        <servlet-name>EmployeeController</servlet-name>
+        <url-pattern>/employee/*</url-pattern>
+    </servlet-mapping> 
+<!--    <servlet>
         <servlet-name>CreateEmployeeView</servlet-name>
         <jsp-file>/employee.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>CreateEmployeeView</servlet-name>
         <url-pattern>/employee/create</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     <!-- Controller mapping -->
     <servlet>
         <servlet-name>EmployeeController</servlet-name>
@@ -110,6 +114,10 @@
     <servlet-mapping>
         <servlet-name>EmployeeController</servlet-name>
         <url-pattern>/employee/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmployeeController</servlet-name>
+        <url-pattern>/employeeskills/*</url-pattern>
     </servlet-mapping>
   
     <!--mapping-->

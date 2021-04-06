@@ -23,13 +23,21 @@
                     <c:set var="employeeCount" value="${ employees.size()}" />
                     <c:choose>
                         <c:when test="${ employeeCount > 0}">
+                            <form action="" method="POST">
+                                <div class="input-group">
+                                    <div class="form-outline">
+                                        <input type="search" name="search" />
+                                    </div>
+                                        <button class="btn btn-info mb-2" type="submit" value="search" name="action">Search</button>
+                                </div>
+                            </form>
                             <table class="table table-striped">
                                 <tr class="bg-dark text-light">
                                     <th>
                                         Name
                                     </th>
                                     <th class="text-right">
-                                       Details
+                                        Details
                                     </th>
                                     <c:forEach items="${employees}" var="employee">
                                     <tr>
@@ -45,7 +53,7 @@
                         </c:when>
                         <c:when test="${ employeeCount == 0}">
                             <hr>
-                            <h4 style="text-align:center">No Employees</h4>
+                            <h4 style="text-align:center">No Employees To Display</h4>
                         </c:when>
                     </c:choose>
                 </div>

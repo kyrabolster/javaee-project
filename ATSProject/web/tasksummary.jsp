@@ -19,6 +19,7 @@
         <main>
             <div class="container">
                 <h1 class="text-center display-4 grey mt-5 mb-5">Summary</h1>
+                <h4>${ deleteMessage }</h4>
                 <c:choose>
                     <c:when test="${ vm.rowsDeleted != null }">
                         <h4>Task deleted Id: <span class="font-weight-bold">${task.id}</span></h4>

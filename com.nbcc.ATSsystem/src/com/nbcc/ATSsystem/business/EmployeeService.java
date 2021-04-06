@@ -34,6 +34,12 @@ public class EmployeeService implements IEmployeeService {
         List<IEmployee> employees = repo.retrieveEmployees();
         return employees;
     }
+    
+    @Override
+    public List<IEmployee> getEmployees(String search) {
+        List<IEmployee> employees = repo.retrieveEmployees(search);
+        return employees;
+    }
 
     @Override
     public boolean isValid(IEmployee employee) {
@@ -57,12 +63,26 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
+    public boolean addEmployeeSkill(int EmployeeId, int TaskId) {
+        return repo.addEmployeeSkill(EmployeeId, TaskId);
+    }
+
+    @Override
+    public boolean removeEmployeeSkill(int EmployeeId, int TaskId) {
+        return repo.removeEmployeeSkill(EmployeeId, TaskId);
+    }
+
+    @Override
     public int saveEmployee(IEmployee employee) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int deleteEmployee(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (id == 0) {
+            return 0;
+        } else {
+            return repo.deleteEmployee(id);
+        }
     }
 }

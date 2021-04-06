@@ -50,9 +50,9 @@ public interface IEmployee extends IBase {
 
     void setDeletedAt(Date deletedAt);
 
-    List<String> getTasks();
+     List<ITask> getTasks();
 
-    void setTasks(List<String> tasks);
+    void setTasks(List<ITask> tasks);
     
     List<String> getTeams();
 

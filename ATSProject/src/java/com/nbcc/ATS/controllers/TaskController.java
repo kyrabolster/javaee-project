@@ -8,6 +8,7 @@ package com.nbcc.ATS.controllers;
 import com.nbcc.ATS.models.ErrorViewModel;
 import com.nbcc.ATSsystem.business.ITaskService;
 import com.nbcc.ATSsystem.business.TaskServiceFactory;
+import com.nbcc.ATSsystem.models.ErrorFactory;
 import com.nbcc.ATSsystem.models.ITask;
 import com.nbcc.ATSsystem.models.TaskFactory;
 import java.io.IOException;
@@ -105,7 +106,18 @@ public class TaskController extends CommonController {
 
                     break;
                 case "delete":
+                    task = setTask(request);
+                    task.setId(id);
 
+                    request.setAttribute("task", task);
+
+                    if (taskService.deleteTask(id) == 0) {
+                        task.addError(ErrorFactory.createInstance(13, "Delete was unsuccessful. Tasks assigned to employees or jobs cannot be deleted."));
+                        request.setAttribute("errors", task.getErrors());
+                        super.setView(request, TASKS_MAINT_VIEW);
+                    } else {
+                        request.setAttribute("deleteMessage", "The following task has been successfully deleted.");
+                    }
                     break;
             }
         } catch (Exception e) {

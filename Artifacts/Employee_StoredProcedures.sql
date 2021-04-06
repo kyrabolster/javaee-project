@@ -21,6 +21,26 @@ END$$
 DELIMITER ;
 
 DELIMITER //
+DROP PROCEDURE IF EXISTS DeleteEmployee
+// DELIMITER;
+
+DELIMITER //
+CREATE PROCEDURE DeleteEmployee (
+IN Id_param INT
+)
+BEGIN
+	IF EXISTS (SELECT employeeId FROM team_members WHERE employeeId = Id_param) THEN
+			UPDATE employees 
+				SET isDeleted = 1, deletedAt = CURRENT_TIMESTAMP()
+			WHERE Id = Id_param;
+		ELSE    
+			DELETE FROM employees_tasks WHERE EmployeeId = Id_param;
+			DELETE FROM employees WHERE Id = Id_param;
+		END IF;
+END//
+DELIMITER;
+
+DELIMITER //
 DROP PROCEDURE IF EXISTS SelectEmployees;
 // DELIMITER;
 
@@ -31,6 +51,22 @@ SELECT * FROM employees
     WHERE
     (Id_param IS NULL OR  employees.id = Id_param)
     ORDER BY  employees.CreatedAt;
+END$$
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS SearchEmployees;
+// DELIMITER;
+
+DELIMITER $$
+CREATE PROCEDURE `SearchEmployees`(
+IN lastName_param VARCHAR(50)
+)
+BEGIN
+	SELECT DISTINCT * FROM employees 
+		WHERE firstName LIKE CONCAT ('%', keyword_param, '%') OR
+			lastName LIKE CONCAT ('%', keyword_param, '%') OR 
+            SIN LIKE CONCAT ('%', keyword_param, '%');
 END$$
 DELIMITER ;
 

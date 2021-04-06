@@ -13,12 +13,23 @@ import java.util.List;
  * @author KyraB
  */
 public interface IEmployeeService {
-     boolean isValid(IEmployee employee);
-    
+
+    boolean isValid(IEmployee employee);
+
     IEmployee createEmployee(IEmployee employee);
+
     int saveEmployee(IEmployee employee);
+
     int deleteEmployee(int id);
-    
+
     IEmployee getEmployee(int id);
+
     List<IEmployee> getEmployees();
+    
+    List<IEmployee> getEmployees(String search);
+
+    boolean addEmployeeSkill(int EmployeeId, int TaskId);
+
+    boolean removeEmployeeSkill(int EmployeeId, int TaskId);
+
 }

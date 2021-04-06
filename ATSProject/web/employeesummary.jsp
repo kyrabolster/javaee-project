@@ -19,6 +19,7 @@
         <main>
             <div class="container">
                 <h1 class="text-center display-4 grey mt-5 mb-5">Summary</h1>
+                <h4>${ deleteMessage }</h4>
                 <c:choose>
                     <c:when test="${ vm.rowsDeleted != null }">
                         <h4>Employee deleted Id: <span class="font-weight-bold">${employee.id}</span></h4>
@@ -43,6 +44,7 @@
                                     <td><fmt:formatNumber value="${ employee.hourlyRate}" type="currency" currencySymbol="$"/></td>
                                 </tr>
                         </table>
+                        <a href="/ATSProject/employees">Back to Employee List</a>
                     </c:otherwise>
                 </c:choose>
             </div>
