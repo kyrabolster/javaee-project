@@ -17,7 +17,7 @@ import java.util.List;
 public class Job extends Base implements IJob {
 
     private int id;
-    private int teamId;    
+    private int teamId;
     private String teamName;
     private String clientName;
     private String description;
@@ -26,7 +26,7 @@ public class Job extends Base implements IJob {
     private double cost;
     private double revenue;
     private String tasksName;
-    
+
     private List<String> tasks;
     private boolean isOnSite;
     private int totalDuration;
@@ -50,15 +50,15 @@ public class Job extends Base implements IJob {
     }
 
     public Job(int teamId, String clientName, String description, Timestamp start, List<String> tasks) {
-        setTeamId(teamId);        
+        setTeamId(teamId);
         setClientName(clientName);
         setDescription(description);
         setStart(start);
         setTasks(tasks);
     }
-    
+
     public Job(int teamId, String clientName, String description, Timestamp start, List<String> tasks, boolean isOnSite, int totalDuration, String selectedTasks) {
-        setTeamId(teamId);        
+        setTeamId(teamId);
         setClientName(clientName);
         setDescription(description);
         setStart(start);
@@ -95,7 +95,7 @@ public class Job extends Base implements IJob {
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
-    
+
     public String getClientName() {
         return clientName;
     }
@@ -125,8 +125,12 @@ public class Job extends Base implements IJob {
     }
 
     public void setStart(Timestamp start) {
+        Timestamp current = new Timestamp(System.currentTimeMillis());
+
         if (start == null) {
             addError(ErrorFactory.createInstance(3, "Start date is required"));
+        } else if (start.compareTo(current) < 0) {
+            addError(ErrorFactory.createInstance(7, "Start date can not be past"));
         } else {
             this.start = start;
         }
@@ -151,11 +155,11 @@ public class Job extends Base implements IJob {
             this.tasks = tasks;
         }
     }
-    
+
     public boolean getIsOnSite() {
         return isOnSite;
     }
-    
+
     public void setIsOnSite(boolean isOnSite) {
         this.isOnSite = isOnSite;
     }
@@ -204,5 +208,4 @@ public class Job extends Base implements IJob {
         this.tasksName = tasksName;
     }
 
-    
 }

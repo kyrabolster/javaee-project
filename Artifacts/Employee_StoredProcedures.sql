@@ -59,13 +59,13 @@ DROP PROCEDURE IF EXISTS SearchEmployees;
 // DELIMITER;
 
 DELIMITER $$
-CREATE PROCEDURE `SearchEmployees`(
-IN lastName_param VARCHAR(50)
+CREATE PROCEDURE SearchEmployees(
+IN keyword_param VARCHAR(50)
 )
 BEGIN
-	SELECT DISTINCT * FROM employees 
-		WHERE firstName LIKE CONCAT ('%', keyword_param, '%') OR
-			lastName LIKE CONCAT ('%', keyword_param, '%') OR 
+    SELECT DISTINCT * FROM employees 
+        WHERE firstName LIKE CONCAT ('%', keyword_param, '%') OR
+            lastName LIKE CONCAT ('%', keyword_param, '%') OR 
             SIN LIKE CONCAT ('%', keyword_param, '%');
 END$$
 DELIMITER ;
@@ -77,7 +77,7 @@ DROP PROCEDURE IF EXISTS SelectTasks;
 DELIMITER $$
 CREATE PROCEDURE `SelectTasks`(IN Id_param INT)
 BEGIN
-SELECT Name FROM tasks
+SELECT tasks.id, Name FROM tasks
 		INNER JOIN employees_tasks
 			ON employees_tasks.TaskId = tasks.Id
 		INNER JOIN employees
@@ -89,7 +89,7 @@ END$$
 DELIMITER ;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS SelectTasks;
+DROP PROCEDURE IF EXISTS SelectTeams;
 // DELIMITER;
 
 DELIMITER $$

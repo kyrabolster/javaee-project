@@ -4,7 +4,7 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS InsertTask;
 // DELIMITER;
 
-DELIMITER $$
+DELIMITER //
 CREATE PROCEDURE `InsertTask`(
 IN Name_param NVARCHAR(255),
 IN Description_param NVARCHAR(255),
@@ -18,13 +18,14 @@ BEGIN
     
     SET Id_out = LAST_INSERT_ID();
 
-END$$
-DELIMITER ;
+END
+//DELIMITER ;
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS SelectTasks;
 // DELIMITER;
 
+DELIMITER //
 CREATE PROCEDURE `SelectTasks`(IN Id_param INT)
 BEGIN
 SELECT tasks.Id, Name FROM tasks
@@ -35,14 +36,14 @@ SELECT tasks.Id, Name FROM tasks
     WHERE
     (Id_param IS NULL OR employees.Id = Id_param)
 	ORDER BY Name;
-END$$
-DELIMITER ;
+END
+//DELIMITER ;
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS RetrieveTasks;
 // DELIMITER;
 
-DELIMITER $$
+DELIMITER //
 CREATE PROCEDURE `RetrieveTasks`(
 	IN Id_param INT
 )
@@ -52,15 +53,15 @@ BEGIN
     WHERE (Id_param IS NULL OR Id = Id_param)
     ORDER BY CreatedAt;
     
-END$$
-DELIMITER ;
+END
+//DELIMITER ;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS DeleteEmployee
+DROP PROCEDURE IF EXISTS DeleteTask
 // DELIMITER;
 
 DELIMITER //
-CREATE PROCEDURE DeleteTask (
+CREATE PROCEDURE `DeleteTask` (
 IN Id_param INT
 )
 BEGIN
@@ -78,6 +79,7 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS AddEmployeeSkill;
 // DELIMITER;
 
+DELIMITER //
 CREATE PROCEDURE `AddEmployeeSkill` (
 IN Employee_id_param INT,
 IN Task_id_param INT
@@ -87,13 +89,14 @@ BEGIN
 		(EmployeeId, TaskId)
 	VALUES 
 		(Employee_id_param, Task_id_param);
-END$$
-DELIMITER ;
+END
+// DELIMITER ;
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS getTasksNotAssignedToEmployee;
 // DELIMITER;
 
+DELIMITER //
 CREATE PROCEDURE `getTasksNotAssignedToEmployee`(IN Employee_Id_param INT)
 BEGIN
 	SELECT tasks.* FROM tasks 
@@ -103,13 +106,14 @@ BEGIN
 				ON employees.id = employees_tasks.EmployeeId
 		WHERE employees.id = Employee_Id_param
     );
-END$$
-DELIMITER ;
+END
+//DELIMITER ;
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS RemoveEmployeeSkill;
 // DELIMITER;
 
+DELIMITER //
 CREATE PROCEDURE `RemoveEmployeeSkill`(
 IN Employee_id_param INT,
 IN Task_id_param INT
@@ -119,5 +123,5 @@ BEGIN
 		WHERE 
 			EmployeeId = Employee_id_param AND 
             TaskId = Task_id_param;
-END$$
-DELIMITER ;
+END
+//DELIMITER ;

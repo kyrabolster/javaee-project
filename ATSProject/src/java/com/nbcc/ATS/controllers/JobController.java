@@ -113,21 +113,16 @@ public class JobController extends CommonController {
                     selectedTasks = String.join(",", request.getParameterValues("task"));
                     Date start = super.getDateTime(request, "jobStart");
 
-                    Timestamp current = new Timestamp(System.currentTimeMillis());
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-                    if (start.compareTo(current) < 0) {
-                        request.setAttribute("error", new ErrorViewModel("Start date can not be past"));
-                    } else {
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String jobStart = df.format(start);
 
-                        String jobStart = df.format(start);
+                    boolean isOnSite = request.getParameter("isOnSite") != null;
 
-                        boolean isOnSite = request.getParameter("isOnSite") != null;
+                    teamList = jobService.getAvailableTeams(jobStart, selectedTasks, isOnSite);
 
-                        teamList = jobService.getAvailableTeams(jobStart, selectedTasks, isOnSite);
+                    request.setAttribute("teams", teamList);
 
-                        request.setAttribute("teams", teamList);
-                    }
                     break;
 
                 case "reset":
@@ -141,7 +136,7 @@ public class JobController extends CommonController {
                     request.setAttribute("job", job);
                     job = jobService.createJob(job);
 
-                    request.setAttribute("job", job);
+                    request.setAttribute("job", jobService.getJob(job.getId()));
                     request.setAttribute("team", selectedTeam.get(0));
                     request.setAttribute("tasks", taskNames);
 
@@ -155,24 +150,25 @@ public class JobController extends CommonController {
 
                 case "delete":
                     super.setView(request, JOB_SUMMARY_VIEW);
-                    
+
                     job = jobService.getJob(id);
                     request.setAttribute("job", job);
                     request.setAttribute("team", jobService.getTeamByJob(id));
-                    
+
                     int rowsAffected = jobService.deleteJob(id);
-                    
-                    if(rowsAffected == 0) {
+
+                    if (rowsAffected == 0) {
                         job.addError(ErrorFactory.createInstance(13, "No record affected. Delete was unsuccessful"));
                         request.setAttribute("errors", job.getErrors());
                         super.setView(request, JOBS_MAINT_VIEW);
                     } else {
                         JobDeletedViewModel vm = new JobDeletedViewModel(id, rowsAffected);
+                        request.setAttribute("deleteMessage", "The following job has been successfully deleted from the database.");
                         request.setAttribute("vm", vm);
                     }
-                    
+
                     break;
-                    
+
                 case "search":
                     Date searchDate = super.getDate(request, "searchDate");
                     if (searchDate != null) {
@@ -187,6 +183,7 @@ public class JobController extends CommonController {
                     break;
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             request.setAttribute("error", new ErrorViewModel("An error occurred attempting to maintain jobs"));
             List<ITask> tasks = jobService.getTasks();
             request.setAttribute("tasks", tasks);
@@ -199,7 +196,7 @@ public class JobController extends CommonController {
     private IJob setTempJob(HttpServletRequest request) throws ParseException {
         String clientName;
         String description;
-        Timestamp start;
+        Timestamp start = null;
         boolean isOnSite;
 
         taskNames.clear();
@@ -219,7 +216,10 @@ public class JobController extends CommonController {
 
         clientName = super.getValue(request, "clientName");
         description = super.getValue(request, "jobDescription");
-        start = new Timestamp(super.getDateTime(request, "jobStart").getTime());
+
+        if (super.getDateTime(request, "jobStart") != null) {
+            start = new Timestamp(super.getDateTime(request, "jobStart").getTime());
+        }
 
         isOnSite = request.getParameter("isOnSite") != null;
 

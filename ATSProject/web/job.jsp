@@ -31,7 +31,7 @@
                         <table class="table table-striped">  
                             <c:if test="${job != null && job.id != 0}">
                                 <tr>
-                                    <td>Job Id:</td>
+                                    <td>Job Id</td>
                                     <td>
                                         ${job.id}
                                         <input type="hidden" value="${job.id}" name="hdnJobId" />                                
@@ -212,7 +212,7 @@
                                 <li>No teams available</li>                            
                             </ul>
                         </c:when>
-                        <c:when test="${ job.errors.size() > 0 }">
+                        <c:when test="${ job.id == 0 && job.errors.size() > 0 }">
                             <ul>
                                 <c:forEach items="${ job.errors }" var="err">
                                     <li>Error Code: ${ err.code } Error Desc: ${err.description }</li>
