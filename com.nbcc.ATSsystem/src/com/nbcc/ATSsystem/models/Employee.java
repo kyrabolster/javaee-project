@@ -25,7 +25,7 @@ public class Employee extends Base implements IEmployee {
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
-    private List<String> tasks;
+    private List<ITask> tasks;
     private List<String> teams;
 
 
@@ -138,11 +138,11 @@ public class Employee extends Base implements IEmployee {
         this.deletedAt = deletedAt;
     }
     
-    public List<String> getTasks() {
+    public List<ITask> getTasks() {
         return tasks;
     }
     
-    public void setTasks(List<String> tasks) {
+    public void setTasks(List<ITask> tasks) {
         this.tasks = tasks;
     }
     

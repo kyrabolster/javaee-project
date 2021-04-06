@@ -22,4 +22,5 @@ public interface ITaskService {
     
     ITask getTask(int id);
     List<ITask> getTasks();
+    List<ITask> getTasksNotAssignedToEmployee(int employeeId);
 }

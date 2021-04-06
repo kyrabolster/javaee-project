@@ -28,7 +28,7 @@
             <section>
                 <div class="container">
                     <c:set var="errors" value="${ error }" />
-                    <form method="POST" action="save">
+                    <form method="POST" action="save"> 
                         <table class="table table-striped">    
                             <c:if test="${ employee != null && employee.id != 0 }">
                                 <tr>
@@ -67,6 +67,7 @@
                                                <c:if test="${ employee.isDeleted == true }"> 
                                                    checked
                                                </c:if>
+                                               >
                                     </td>
                                 </tr>
                                 <c:if test="${ employee.isDeleted == true && employee.isDeleted != null }">
@@ -83,20 +84,19 @@
                                     </tr>
                                 </c:if>
                                 <tr>                    
-                                    <td>Skills (Tasks):</td>
-                                    <c:choose>
-                                        <c:when test="${employee.tasks.size() <= 0}">
-                                            <td><i>No skills to show</i></td>
-                                        </c:when>
-                                        <c:otherwise>
-
-                                            <td>
+                                    <td>Skills (Tasks):</td> 
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${employee.tasks.size() <= 0}">
+                                                <i>No skills to show</i>
+                                            </c:when>
+                                            <c:otherwise>
                                                 <c:forEach items="${employee.tasks}" var="task">
-                                                    ${task}<br>
+                                                    ${task.name}<br>
                                                 </c:forEach>
-                                            </td>
-                                        </c:otherwise>
-                                    </c:choose>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                 </tr>
                                 <tr>                    
                                     <td>Teams:</td>
@@ -117,8 +117,13 @@
                         </table>
                         <c:choose>
                             <c:when test="${ employee != null && employee.id != 0 }">
-                                <input class="btn btn-primary" type="submit" value="Delete" name="action" />
-                                <input class="btn btn-primary" type="submit" value="Save" name="action" />     
+                                <input class="btn btn-primary" type="submit" value="Save" name="action" /> 
+                                <c:if test="${ employee.isDeleted != true }"> 
+                                    <input class="btn btn-primary" type="submit" value="Delete" name="action" />
+                                    <a href="${pageContext.request.contextPath}/employeeskills/${ employee.id}">
+                                        <input class="btn btn-primary" type="submit" name="action" value="Update Skills"/> 
+                                    </a>
+                                </c:if>
                             </c:when>
                             <c:otherwise>
                                 <input class="btn btn-primary" type="submit" value="Create" name="action" />

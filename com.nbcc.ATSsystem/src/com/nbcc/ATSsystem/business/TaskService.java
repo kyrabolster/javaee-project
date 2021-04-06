@@ -16,14 +16,14 @@ import java.util.List;
  * @author Soyoung Kim
  * @date 2021-03-16
  */
-public class TaskService implements ITaskService{
+public class TaskService implements ITaskService {
+
     private final ITaskRepository repo;
-    
+
     public TaskService() {
         repo = TaskRepositoryFactory.createInstance();
     }
 
-    
     @Override
     public ITask getTask(int id) {
         ITask task = repo.retrieveTask(id);
@@ -35,7 +35,13 @@ public class TaskService implements ITaskService{
         List<ITask> tasks = repo.retrieveTasks();
         return tasks;
     }
-    
+
+    @Override
+    public List<ITask> getTasksNotAssignedToEmployee(int employeeId) {
+        List<ITask> tasks = repo.retrieveTasksNotAssignedToEmployee(employeeId);
+        return tasks;
+    }
+
     @Override
     public boolean isValid(ITask task) {
         return task.getErrors().isEmpty();
@@ -43,9 +49,9 @@ public class TaskService implements ITaskService{
 
     @Override
     public ITask createTask(ITask task) {
-        if (isValid(task)){
+        if (isValid(task)) {
             int id = repo.insertTask(task);
-            if(id > 0) {
+            if (id > 0) {
                 task.setId(id);
             } else {
                 task.addError(ErrorFactory.createInstance(5, "Task was not valid for creation. Database error."));
@@ -53,7 +59,7 @@ public class TaskService implements ITaskService{
         } else {
             task.addError(ErrorFactory.createInstance(5, "Task failed validation for creation"));
         }
-        
+
         return task;
     }
 
@@ -64,9 +70,11 @@ public class TaskService implements ITaskService{
 
     @Override
     public int deleteTask(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (id == 0) {
+            return 0;
+        } else {
+            return repo.deleteTask(id);
+        }
     }
 
-    
-    
 }

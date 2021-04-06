@@ -25,6 +25,8 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
     private final String SPROC_SELECT_TASKS = "CALL RetrieveTasks(null)";
     private final String SPROC_SELECT_TASK = "CALL RetrieveTasks(?)";
     private final String SPROC_INSERT_TASK = "CALL InsertTask(?,?,?,?);";
+    private final String SPROC_TASKS_NOT_ASSIGNED_TO_EMP = "CALL getTasksNotAssignedToEmployee(?);";
+    private final String SPROC_DELETE_TASK = "CALL DeleteTask(?);";
 
     private IDAL dataAccess;
 
@@ -42,7 +44,23 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
+        return retrievedTasks;
+    }
+
+    @Override
+    public List<ITask> retrieveTasksNotAssignedToEmployee(int employeeId) {
+        List<ITask> retrievedTasks = TaskFactory.createListInstance();
+
+        try {
+            List<IParameter> params = ParameterFactory.createListInstance();
+            params.add(ParameterFactory.createInstance(employeeId));
+            CachedRowSet cr = dataAccess.executeFill(SPROC_TASKS_NOT_ASSIGNED_TO_EMP, params);
+            retrievedTasks = toListofTasks(cr);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         return retrievedTasks;
     }
 
@@ -58,7 +76,7 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
         return tasks.get(0);
     }
 
@@ -74,34 +92,34 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
             task.setDuration(super.getInt("Duration", cs));
             retrievedTasks.add(task);
         }
-        
+
         return retrievedTasks;
     }
-    
+
     @Override
     public int insertTask(ITask task) {
         int returnId = 0;
-        
+
         List<Object> returnValues;
-        
+
         List<IParameter> params = ParameterFactory.createListInstance();
-        
+
         params.add(ParameterFactory.createInstance(task.getName()));
         params.add(ParameterFactory.createInstance(task.getDescription()));
         params.add(ParameterFactory.createInstance(task.getDuration()));
-        
+
         params.add(ParameterFactory.createInstance(returnId, IParameter.Direction.OUT, java.sql.Types.INTEGER));
-        
+
         returnValues = dataAccess.executeNonQuery(SPROC_INSERT_TASK, params);
-        
+
         try {
-            if(returnValues != null) {
+            if (returnValues != null) {
                 returnId = Integer.parseInt(returnValues.get(0).toString());
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
         return returnId;
     }
 
@@ -111,7 +129,23 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
     }
 
     @Override
-    public int deleteTask(ITask task) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int deleteTask(int id) {
+        int rowsAffected = 0;
+        List<Object> returnValues;
+        List<IParameter> params = ParameterFactory.createListInstance();
+
+        params.add(ParameterFactory.createInstance(id));
+
+        returnValues = dataAccess.executeNonQuery(SPROC_DELETE_TASK, params);
+
+        try {
+            if (returnValues != null) {
+                rowsAffected = Integer.parseInt(returnValues.get(0).toString());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return rowsAffected;
     }
 }
