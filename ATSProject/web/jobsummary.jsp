@@ -61,6 +61,7 @@
                             <td><fmt:formatNumber value="${ job.revenue }" type="currency" currencySymbol="$"/></td>
                         </tr>
                 </table>
+                    <a href="/ATSProject/jobs">Back to Job List</a>
             </div>
         </main>        
     </body>

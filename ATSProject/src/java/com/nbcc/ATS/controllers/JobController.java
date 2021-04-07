@@ -221,7 +221,11 @@ public class JobController extends CommonController {
             start = new Timestamp(super.getDateTime(request, "jobStart").getTime());
         }
 
-        isOnSite = request.getParameter("isOnSite") != null;
+        if(request.getParameter("isOnSite") == null || "".equals(request.getParameter("isOnSite"))) {
+            isOnSite = false;            
+        } else {
+            isOnSite = true;
+        }
 
         IJob job = JobFactory.createInstance(clientName, description, start, taskNames, isOnSite);
 
