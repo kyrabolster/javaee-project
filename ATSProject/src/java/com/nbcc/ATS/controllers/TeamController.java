@@ -49,7 +49,9 @@ public class TeamController extends CommonController {
 
                 //Set attribute as team or error
                 if (team != null) {
+                    employeeList = teamService.getMembers(id);
                     request.setAttribute("team", team);
+                    request.setAttribute("employeesList", employeeList);
                 } else {
                     request.setAttribute("error", new ErrorViewModel(String.format("Team ID: $s is not found", id)));
                 }
@@ -57,9 +59,7 @@ public class TeamController extends CommonController {
 
             super.setView(request, TEAMS_MAINT_VIEW);
         } else {
-            //Set attribute as list of the teams
-            //when implement show teams
-            //request.setAttribute("teams", teamService.getTeams());
+            request.setAttribute("teams", teamService.getTeams());
             super.setView(request, TEAMS_VIEW);
         }
 

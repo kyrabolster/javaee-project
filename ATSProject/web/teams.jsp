@@ -19,9 +19,8 @@
             <section>
                 <div class="container clearfix">
                     <a href="${pageContext.request.contextPath}/team/create"><button class="btn float-right btn-info mb-2" type="button" >Create New Team</button></a>
-                    <c:set var="taskCount" value="${ teams.size()}" />
                     <c:choose>
-                        <c:when test="${ teamsCount > 0}">
+                        <c:when test="${ teams.size() > 0}">
                             <table class="table table-striped">
                                 <tr class="bg-dark text-light">
                                     <th>
@@ -31,19 +30,32 @@
                                         Name
                                     </th>
                                     <th>
-                                        Description
+                                        Team Member
+                                    </th>
+                                    <th>
+                                        On Call
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>   
+                                     <th>
+                                        Details
                                     </th>
                                 </tr>
                                 <c:forEach items="${teams}"  var="team">
                                     <tr>
-                                        <td><a href="team/${ team.id}">${ team.id}</a></td>
-                                        <td>${ team.name }</td>
+                                        <td>${team.id}</td>
+                                        <td>${team.name}</td>
+                                        <td>${team.members}</td>
+                                        <td>${team.isOnCall == true ? "<span class='fa fa-check'></span>" : ""}</td>
+                                        <td>${team.isDeleted == true ? "Deleted": ""}</td>
+                                        <td><a href="team/${team.id}">View Details</a></td>
                                     </tr>
                                 </c:forEach>
 
                             </table>
                         </c:when>
-                        <c:when test="${ teamCount == 0}">
+                        <c:when test="${ teams.size() == 0}">
                             <hr>
                             <h4 style="text-align:center">No Teams</h4>
                         </c:when>

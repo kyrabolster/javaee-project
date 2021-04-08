@@ -61,12 +61,17 @@ public class TeamService implements ITeamService{
 
     @Override
     public ITeam getTeam(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return repo.retrieveITeam(id);
     }
 
     @Override
     public List<ITeam> getTeams() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return repo.retrieveTeams();
+    }
+
+    @Override
+    public List<EmployeeVM> getMembers(int id) {
+        return repo.retrievedTeamMembers(id);
     }
     
     
