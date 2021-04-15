@@ -127,12 +127,16 @@ public class Job extends Base implements IJob {
     public void setStart(Timestamp start) {
         Timestamp current = new Timestamp(System.currentTimeMillis());
 
-        if (start == null) {
-            addError(ErrorFactory.createInstance(3, "Start date is required"));
-        } else if (start.compareTo(current) < 0) {
-            addError(ErrorFactory.createInstance(7, "Start date can not be past"));
-        } else {
+        if(getId() > 0){
             this.start = start;
+        } else {
+            if (start == null) {
+                addError(ErrorFactory.createInstance(3, "Start date is required"));
+            } else if (start.compareTo(current) < 0) {
+                addError(ErrorFactory.createInstance(7, "Start date can not be past"));
+            } else {
+                this.start = start;
+            }            
         }
     }
 
