@@ -65,7 +65,16 @@ public class TaskService implements ITaskService {
 
     @Override
     public int saveTask(ITask task) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(task.getId() == 0) {
+            task.addError(ErrorFactory.createInstance(14, "Task was not saved. Id is required."));
+        }
+        
+        if(isValid(task)){
+            return repo.updateTask(task);
+        } else {
+            task.addError(ErrorFactory.createInstance(14, "Task invalid for saving"));
+            return 0;
+        }
     }
 
     @Override

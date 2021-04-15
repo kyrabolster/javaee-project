@@ -103,6 +103,22 @@ public class TaskController extends CommonController {
 
                     break;
                 case "save":
+                    task = setTask(request);
+                    task.setId(id);
+                    
+                    request.setAttribute("task", task);
+                    
+                    if(taskService.saveTask(task) == 0) {
+                        task.addError(ErrorFactory.createInstance(15, "No record affected. Save was unsuccessful"));
+                        request.setAttribute("errors", task.getErrors());
+                        super.setView(request, TASKS_MAINT_VIEW);
+                    } else {
+                        if(!taskService.isValid(task)){
+                            request.setAttribute("errors", task.getErrors());
+                            super.setView(request, TASKS_MAINT_VIEW);
+                        }
+                        request.setAttribute("message", "The following task has been successfully updated.");
+                    }
 
                     break;
                 case "delete":
@@ -116,7 +132,7 @@ public class TaskController extends CommonController {
                         request.setAttribute("errors", task.getErrors());
                         super.setView(request, TASKS_MAINT_VIEW);
                     } else {
-                        request.setAttribute("deleteMessage", "The following task has been successfully deleted.");
+                        request.setAttribute("message", "The following task has been successfully deleted.");
                     }
                     break;
             }
