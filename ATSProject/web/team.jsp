@@ -78,7 +78,7 @@
                             <tr>
                                 <td>On Call</td>
                                 <td>
-                                    <input type="checkbox" class="form-check-input ml-1" id="isOnCall" ${team.isOnCall == true ? 'checked' : ''} >
+                                    <input type="checkbox" class="form-check-input ml-1" id="isOnCall" name="isOnCall" ${team.isOnCall == true ? 'checked' : ''} >
                                 </td>
                             </tr>
                             <c:if test="${team != null && team.id != 0}">

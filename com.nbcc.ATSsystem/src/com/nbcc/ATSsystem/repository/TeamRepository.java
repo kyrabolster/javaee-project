@@ -29,6 +29,9 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
     private final String SPROC_RETRIEVE_TEAMMEMBERS = "CALL SelectEmployeesByTeamId(?)";
     private final String SPROC_RETRIEVE_TEAMS = "CALL RetrieveTeams(null)";
     private final String SPROC_RETRIEVE_TEAM = "CALL RetrieveTeams(?)";
+    private final String SPROC_DELETE_TEAM = "CALL DeleteTeam(?)";
+    private final String SPROC_UPDATE_ISONCALL = "CALL UpdateIsOnCallTeam(?,?,?)";
+    private final String SPROC_RETRIEVE_ONCALLTEAM = "CALL SelectOnCallTeam()";
 
     private IDAL dataAccess;
 
@@ -71,8 +74,24 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
     }
 
     @Override
-    public int deleteTeam(ITeam team) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int deleteTeam(int id) {
+        int rowsAffected = 0;
+        List<Object> returnValues;
+        List<IParameter> params = ParameterFactory.createListInstance();
+
+        params.add(ParameterFactory.createInstance(id));
+
+        returnValues = dataAccess.executeNonQuery(SPROC_DELETE_TEAM, params);
+
+        try {
+            if (returnValues != null) {
+                rowsAffected = Integer.parseInt(returnValues.get(0).toString());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return rowsAffected;
     }
 
     @Override
@@ -91,7 +110,7 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
     }
 
     @Override
-    public ITeam retrieveITeam(int id) {
+    public ITeam retrieveTeam(int id) {
         List<ITeam> teams = TeamFactory.createListInstance();
 
         try {
@@ -99,11 +118,11 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
             params.add(ParameterFactory.createInstance(id));
             CachedRowSet cr = dataAccess.executeFill(SPROC_RETRIEVE_TEAM, params);
             teams = toListofTeams(cr);
-            
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
         return teams.get(0);
     }
 
@@ -151,7 +170,7 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
     @Override
     public List<EmployeeVM> retrievedTeamMembers(int id) {
         List<EmployeeVM> retrievedTeamMembers = new ArrayList<>();
-        
+
         try {
             List<IParameter> params = ParameterFactory.createListInstance();
             params.add(ParameterFactory.createInstance(id));
@@ -169,5 +188,51 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
         }
 
         return retrievedTeamMembers;
+    }
+
+    @Override
+    public String updateIsOnCall(ITeam team) {
+        String returnString = null;
+
+        List<Object> returnValues;
+
+        List<IParameter> params = ParameterFactory.createListInstance();
+
+        params.add(ParameterFactory.createInstance(team.getId()));
+        params.add(ParameterFactory.createInstance(team.getIsOnCall()));
+
+        params.add(ParameterFactory.createInstance(returnString, IParameter.Direction.OUT, java.sql.Types.VARCHAR));
+
+        returnValues = dataAccess.executeNonQuery(SPROC_UPDATE_ISONCALL, params);
+
+        try {
+            if (returnValues.get(0) != null) {
+                returnString = returnValues.get(0).toString();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return returnString;
+    }
+
+    @Override
+    public ITeam retrieveOnCallTeam() {
+        ITeam team = null;
+        
+        try {
+            CachedRowSet cr = dataAccess.executeFill(SPROC_RETRIEVE_ONCALLTEAM, null);
+            
+            while (cr.next()) {
+                team = TeamFactory.createInstance();
+                team.setId(super.getInt("id", cr));
+                team.setName(super.getString("Name", cr));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return team;
     }
 }

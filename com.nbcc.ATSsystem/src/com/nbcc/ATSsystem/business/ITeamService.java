@@ -18,7 +18,7 @@ public interface ITeamService {
     boolean isValid(ITeam team);
     
     ITeam createTeam(ITeam team);
-    int SaveTeam(ITeam team);
+    int saveTeam(ITeam team);
     int deleteTeam(int id);
     
     ITeam getTeam(int id);
@@ -26,5 +26,7 @@ public interface ITeamService {
     
     List<EmployeeVM> getEmployees();
     List<EmployeeVM> getMembers(int id);
+    
+    String updateIsOnCall(ITeam team);
     
 }
