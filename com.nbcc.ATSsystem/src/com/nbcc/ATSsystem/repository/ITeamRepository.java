@@ -21,4 +21,5 @@ public interface ITeamRepository {
     List<ITeam> retrieveTeams();
     ITeam retrieveITeam(int id);
     List<EmployeeVM> retrievedEmplyeeList();
+    ITeam retrieveTeamOnCall();
 }

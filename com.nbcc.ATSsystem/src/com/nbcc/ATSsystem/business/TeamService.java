@@ -49,6 +49,10 @@ public class TeamService implements ITeamService{
         return repo.retrievedEmplyeeList();
     }
 
+    public ITeam getTeamOnCall() {
+        return repo.retrieveTeamOnCall();
+    }
+    
     @Override
     public int SaveTeam(ITeam team) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
