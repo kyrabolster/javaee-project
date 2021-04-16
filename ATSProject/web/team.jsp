@@ -21,7 +21,7 @@
                     <h1 class="text-center display-4 grey mt-5 mb-5">Create Team</h1>
                 </c:when>
                 <c:otherwise>
-                    <h1 class="text-center display-4 grey mt-5 mb-5">Edit Team</h1>
+                    <h1 class="text-center display-4 grey mt-5 mb-5">Team Details</h1>
                 </c:otherwise>
             </c:choose>
             <section>
@@ -42,33 +42,63 @@
                                 <td>Team Name</td>
                                 <td><input class="form-control" type="text" name="teamName" value='${team.name}'/></td>
                             </tr>
-                            <tr>                    
-                                <td>Team Member 1</td>
-                                <td><select name="teamMember1">
-                                        <option value="0">-- Select Employee --</option>
-                                        <c:forEach items="${employeesList}" var="employee">
-                                            <option value="${employee.id}" ${employee.id == emp1.id ? 'selected' : ''}>${employee.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>                    
-                                <td>Team Member 2</td>
+                            <c:choose>
+                                <c:when test="${team != null && team.id != 0}">
+                                    <c:forEach items="${employeesList}" var="employee" varStatus="status">
+                                        <tr>
+                                            <td>Team Member ${status.count} </td>
+                                            <td>${employee.name}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    <tr>                    
+                                        <td>Team Member 1</td> 
+                                        <td><select name="teamMember1">
+                                                <option value="0">-- Select Employee --</option>
+                                                <c:forEach items="${employeesList}" var="employee">
+                                                    <option value="${employee.id}" ${employee.id == emp1.id ? 'selected' : ''}>${employee.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>                    
+                                        <td>Team Member 2</td>
 
-                                <td><select name="teamMember2">
-                                        <option value="0">-- Select Employee --</option>
-                                        <c:forEach items="${employeesList}" var="employee">
-                                            <option value="${employee.id}" ${employee.id == emp2.id ? 'selected' : ''}>${employee.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </td>
-                            </tr>
+                                        <td><select name="teamMember2">
+                                                <option value="0">-- Select Employee --</option>
+                                                <c:forEach items="${employeesList}" var="employee">
+                                                    <option value="${employee.id}" ${employee.id == emp2.id ? 'selected' : ''}>${employee.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </c:otherwise>
+                            </c:choose>
                             <tr>
-                                <td>On call</td>
+                                <td>On Call</td>
                                 <td>
-                                    <input type="checkbox" class="form-check-input" id="isOnCall">
+                                    <input type="checkbox" class="form-check-input ml-1" id="isOnCall" name="isOnCall" ${team.isOnCall == true ? 'checked' : ''} >
                                 </td>
                             </tr>
+                            <c:if test="${team != null && team.id != 0}">
+                                <tr>
+                                    <td>Created Date</td>
+                                    <td><fmt:formatDate value="${team.createdAt}" pattern = "yyyy-MM-dd HH:mm" /></td>
+                                </tr>
+                                <c:if test="${team.updatedAt != null}">
+                                    <tr>
+                                        <td>Updated Date</td>
+                                        <td><fmt:formatDate value="${team.updatedAt}" pattern = "yyyy-MM-dd HH:mm" /></td>
+                                    </tr>
+                                </c:if>
+                                <c:if test="${team.deletedAt != null}">
+                                    <tr>
+                                        <td>Deleted Date</td>
+                                        <td><fmt:formatDate value="${team.deletedAt}" pattern = "yyyy-MM-dd HH:mm" /></td>
+                                    </tr>
+                                </c:if>
+                            </c:if>
                         </table>
                         <c:choose>
                             <c:when test="${team != null && team.id != 0}">

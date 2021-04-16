@@ -17,9 +17,13 @@ import java.util.List;
 public interface ITeamRepository {
     int insertTeam(ITeam team);
     int updateTeam(ITeam team);
-    int deleteTeam(ITeam team);
+    int deleteTeam(int id);
     List<ITeam> retrieveTeams();
-    ITeam retrieveITeam(int id);
+    ITeam retrieveTeam(int id);
     List<EmployeeVM> retrievedEmplyeeList();
+    List<EmployeeVM> retrievedTeamMembers(int id);
+    String updateIsOnCall(ITeam team);
+    ITeam retrieveOnCallTeam();
     ITeam retrieveTeamOnCall();
+
 }

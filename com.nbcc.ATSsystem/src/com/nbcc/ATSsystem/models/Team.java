@@ -24,6 +24,7 @@ public class Team extends Base implements ITeam {
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
+    private String members;
 
     public Team() {
         this.name = "";
@@ -38,6 +39,19 @@ public class Team extends Base implements ITeam {
         setEmpId1(empId1);
         setEmpId2(empId2);
     }
+
+    public Team(int id, String name, boolean isOnCall, boolean isDeleted, Date createdAt, Date updatedAt, Date deletedAt, String members) {
+        setId(id);
+        setName(name);
+        setIsOnCall(isOnCall);
+        setIsDeleted(isDeleted);
+        setCreatedAt(createdAt);
+        setUpdatedAt(updatedAt);
+        setDeletedAt(deletedAt);
+        setMembers(members);
+    }
+    
+    
 
     public int getId() {
         return id;
@@ -126,4 +140,14 @@ public class Team extends Base implements ITeam {
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
     }
+
+    public String getMembers() {
+        return members;
+    }
+
+    public void setMembers(String members) {
+        this.members = members;
+    }
+    
+    
 }

@@ -49,5 +49,8 @@ public interface ITeam extends IBase{
 
     void setDeletedAt(Date deletedAt);
     
+    String getMembers();
+    
+    void setMembers(String names);
     
 }

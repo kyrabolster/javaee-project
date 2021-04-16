@@ -19,6 +19,7 @@
         <main>
             <div class="container">
                 <h1 class="text-center display-4 grey mt-5 mb-5">Summary</h1>
+                <h4>${ deleteMessage }</h4>
                 <c:choose>
                     <c:when test="${ vm.rowsDeleted != null }">
                         <h4>Task deleted Id: <span class="font-weight-bold">${team.id}</span></h4>
@@ -34,14 +35,26 @@
                                     <td style="text-align: right;">Team Name</td>
                                     <td>${ team.name }</td>
                                 </tr>
-                                <tr>
-                                    <td style="text-align: right;">Team Member 1</td>
-                                    <td>${ emp1.name }</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: right;">Team Member 2</td>
-                                    <td>${ emp2.name }</td>
-                                </tr>
+                                <c:choose>
+                                    <c:when test="${team.id != 0}">
+                                        <c:forEach items="${employeesList}" var="employee" varStatus="status">
+                                            <tr>
+                                                <td style="text-align: right;">Team Member ${status.count} </td>
+                                                <td>${employee.name}</td>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <tr>
+                                            <td style="text-align: right;">Team Member 1</td>
+                                            <td>${ emp1.name }</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right;">Team Member 2</td>
+                                            <td>${ emp2.name }</td>
+                                        </tr>
+                                    </c:otherwise>
+                                </c:choose>
                                 <tr>
                                     <td style="text-align: right;">On Call</td>
                                     <c:if test="${ team.isOnCall == true}">
