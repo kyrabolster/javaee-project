@@ -676,7 +676,7 @@ BEGIN
 	select DISTINCT id, name, 0, group_concat(DISTINCT(employees_tasks.taskId) Separator ',') as tasks, Start_param, '1000-01-01 00:00:00' from teams 
 	join team_members on teams.id = team_members.TeamId 
 	join employees_tasks on team_members.employeeId = employees_tasks.employeeId
-	where FIND_IN_SET(employees_tasks.taskId, Tasks_id_array) and teams.isOnCall = 0
+	where FIND_IN_SET(employees_tasks.taskId, Tasks_id_array) and teams.isOnCall = 0 and teams.isDeleted = 0
 	group by teams.id
 	having tasks like concat('%',Tasks_id_array,'%');        
   
