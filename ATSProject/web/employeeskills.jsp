@@ -72,6 +72,9 @@
                             </tr>
                         </table>
                     </form>  
+                    <div class="text-right">
+                        <button class="btn btn-outline-secondary" name="back" onclick="history.back()">back</button>
+                    </div>
                     <c:choose>
                         <c:when test="${ employee.errors.size() > 0 }">
                             <ul>

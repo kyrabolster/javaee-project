@@ -74,7 +74,16 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public int saveEmployee(IEmployee employee) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(employee.getId() == 0) {
+            employee.addError(ErrorFactory.createInstance(14, "Employee was not saved. Id is required."));
+        }
+        
+        if(isValid(employee)){
+            return repo.updateEmployee(employee);
+        } else {
+            employee.addError(ErrorFactory.createInstance(14, "Employee invalid for saving"));
+            return 0;
+        }
     }
 
     @Override

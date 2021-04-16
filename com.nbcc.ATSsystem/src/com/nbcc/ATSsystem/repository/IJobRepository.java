@@ -26,6 +26,10 @@ public interface IJobRepository {
     
     List<IJob> retrieveJobsByDate(String date);
     
+    List<IJob> retrieveJobsByMonth(int month, int year);
+    
+    List<IJob> retrieveJobsByYear(int year);
+    
     IJob retrieveJob(int id);
     
     List<ITask> retrieveTasks();
@@ -33,4 +37,6 @@ public interface IJobRepository {
     List<TeamListVM> retrieveAvailableTeamList(String start, String tasks, boolean isOnSite);
     
     TeamListVM retrieveTeamListByJobId(int jobId);
+    
+    int retrieveNumJobsToday();
 }

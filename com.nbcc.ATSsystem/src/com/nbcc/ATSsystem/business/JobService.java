@@ -70,6 +70,16 @@ public class JobService implements IJobService{
     public List<IJob> getJobsByDate(String date) {
         return repo.retrieveJobsByDate(date);
     }
+    
+    @Override
+    public List<IJob> getJobsByMonth(int month, int year) {
+        return repo.retrieveJobsByMonth(month, year);
+    }
+
+    @Override
+    public List<IJob> getJobsByYear(int year) {
+        return repo.retrieveJobsByYear(year);
+    }
 
     @Override
     public List<ITask> getTasks() {
@@ -84,5 +94,9 @@ public class JobService implements IJobService{
     @Override
     public TeamListVM getTeamByJob(int jobId) {
         return repo.retrieveTeamListByJobId(jobId);
+    }
+    
+    public int getNumJobsToday() {
+        return repo.retrieveNumJobsToday();
     }
 }

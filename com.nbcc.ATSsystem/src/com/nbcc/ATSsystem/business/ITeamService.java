@@ -25,4 +25,6 @@ public interface ITeamService {
     List<ITeam> getTeams();
     
     List<EmployeeVM> getEmployees();
+
+    ITeam getTeamOnCall();
 }
