@@ -21,34 +21,87 @@ END$$
 DELIMITER ;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS RetrieveAllEmployees;
+DROP PROCEDURE IF EXISTS DeleteEmployee
+// DELIMITER;
+
+DELIMITER //
+CREATE PROCEDURE DeleteEmployee (
+IN Id_param INT
+)
+BEGIN
+	IF EXISTS (SELECT employeeId FROM team_members WHERE employeeId = Id_param) THEN
+			UPDATE employees 
+				SET isDeleted = 1, deletedAt = CURRENT_TIMESTAMP()
+			WHERE Id = Id_param;
+		ELSE    
+			DELETE FROM employees_tasks WHERE EmployeeId = Id_param;
+			DELETE FROM employees WHERE Id = Id_param;
+		END IF;
+END//
+DELIMITER;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS SelectEmployees;
 // DELIMITER;
 
 DELIMITER $$
-CREATE PROCEDURE `RetrieveAllEmployees` ()
+CREATE PROCEDURE `SelectEmployees`(IN Id_param INT)
 BEGIN
-
-	SELECT (Id, FirstName, LastName, SIN, HourlyRate, IsDeleted, CreatedAt, UpdatedAt, DeletedAt)
-    FROM employees
-    ORDER BY CreatedAt;
-
+SELECT * FROM employees
+    WHERE
+    (Id_param IS NULL OR  employees.id = Id_param)
+    ORDER BY  employees.CreatedAt;
 END$$
 DELIMITER ;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS RetrieveAllEmployeeById;
+DROP PROCEDURE IF EXISTS SearchEmployees;
 // DELIMITER;
 
 DELIMITER $$
-CREATE PROCEDURE `RetrieveAllEmployeeById` (
-	IN Id_param INT
+CREATE PROCEDURE SearchEmployees(
+IN keyword_param VARCHAR(50)
 )
 BEGIN
+    SELECT DISTINCT * FROM employees 
+        WHERE firstName LIKE CONCAT ('%', keyword_param, '%') OR
+            lastName LIKE CONCAT ('%', keyword_param, '%') OR 
+            SIN LIKE CONCAT ('%', keyword_param, '%');
+END$$
+DELIMITER ;
 
-	SELECT (Id, FirstName, LastName, SIN, HourlyRate, IsDeleted, CreatedAt, UpdatedAt, DeletedAt)
-    FROM employees
-    WHERE (Id_param IS NULL OR id = Id_param)
-    ORDER BY CreatedAt;
+DELIMITER //
+DROP PROCEDURE IF EXISTS SelectTasks;
+// DELIMITER;
 
+DELIMITER $$
+CREATE PROCEDURE `SelectTasks`(IN Id_param INT)
+BEGIN
+SELECT tasks.id, Name FROM tasks
+		INNER JOIN employees_tasks
+			ON employees_tasks.TaskId = tasks.Id
+		INNER JOIN employees
+			ON employees_tasks.EmployeeId = employees.Id
+    WHERE
+    (Id_param IS NULL OR employees.Id = Id_param)
+	ORDER BY Name;
+END$$
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS SelectTeams;
+// DELIMITER;
+
+DELIMITER $$
+CREATE PROCEDURE `SelectTeams`(IN Id_param INT)
+BEGIN
+	SELECT Name FROM teams
+		INNER JOIN team_members
+			ON team_members.TeamId = teams.Id
+		INNER JOIN employees
+			ON team_members.EmployeeId = employees.Id
+    WHERE
+    (Id_param IS NULL OR employees.Id = Id_param)
+    ORDER BY Name;
 END$$
 DELIMITER ;

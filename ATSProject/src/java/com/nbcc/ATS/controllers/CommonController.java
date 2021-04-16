@@ -86,4 +86,18 @@ public abstract class CommonController extends HttpServlet {
             return null;
         }
     }
+    
+    protected Date getDateTime(HttpServletRequest request, String key) {
+        try {
+            Date date = new Date();
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String strDate = request.getParameter(key).replace("T", " ");
+           
+            date = df.parse(strDate);
+            return date;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 }
