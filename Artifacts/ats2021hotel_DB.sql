@@ -1,4 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `ats2021hotel` /*!40100 DEFAULT CHARACTER SET latin1 */;
+DROP SCHEMA IF EXISTS `ats2021hotel`;
+CREATE SCHEMA `ats2021hotel` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `ats2021hotel`;
 -- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
