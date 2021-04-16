@@ -200,7 +200,7 @@ UNLOCK TABLES;
 --
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `AddEmployeeSkill`(
+CREATE PROCEDURE `AddEmployeeSkill`(
 IN Employee_id_param INT,
 IN Task_id_param INT
 )
@@ -213,7 +213,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `DeleteEmployee`(
+CREATE PROCEDURE `DeleteEmployee`(
 IN Id_param INT
 )
 BEGIN
@@ -229,7 +229,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `DeleteJob`(
+CREATE PROCEDURE `DeleteJob`(
 	IN Id_param INT
 )
 BEGIN
@@ -239,7 +239,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `DeleteTask`(
+CREATE PROCEDURE `DeleteTask`(
 IN Id_param INT
 )
 BEGIN
@@ -254,7 +254,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `DeleteTeam`(
+CREATE PROCEDURE `DeleteTeam`(
 IN Id_param INT
 )
 BEGIN
@@ -277,7 +277,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `GetTasksNotAssignedToEmployee`(IN Employee_Id_param INT)
+CREATE PROCEDURE `GetTasksNotAssignedToEmployee`(IN Employee_Id_param INT)
 BEGIN
 	SELECT tasks.* FROM tasks 
 	WHERE tasks.id NOT IN (
@@ -290,7 +290,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `InsertEmergencyJob`(
+CREATE PROCEDURE `InsertEmergencyJob`(
 IN TeamId_param INT,
 IN ClientName_param NVARCHAR(255),
 IN Description_param NVARCHAR(255),
@@ -413,7 +413,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `InsertEmployee`(
+CREATE PROCEDURE `InsertEmployee`(
   IN FirstName_param VARCHAR(50),
   IN LastName_param VARCHAR(50),
   IN SIN_param VARCHAR(11),
@@ -429,7 +429,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `InsertJob`(
+CREATE PROCEDURE `InsertJob`(
 IN TeamId_param INT,
 IN ClientName_param NVARCHAR(255),
 IN Description_param NVARCHAR(255),
@@ -544,7 +544,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `InsertTask`(
+CREATE PROCEDURE `InsertTask`(
 IN Name_param NVARCHAR(255),
 IN Description_param NVARCHAR(255),
 IN Duration_param INT,
@@ -561,7 +561,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `InsertTeam`(
+CREATE PROCEDURE `InsertTeam`(
 IN Name_param NVARCHAR(255),
 IN IsOnCall_param BIT,
 IN Employee1_param INT,
@@ -590,7 +590,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `RemoveEmployeeSkill`(
+CREATE PROCEDURE `RemoveEmployeeSkill`(
 IN Employee_id_param INT,
 IN Task_id_param INT
 )
@@ -603,7 +603,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `RetrieveTasks`(
+CREATE PROCEDURE `RetrieveTasks`(
 	IN Id_param INT
 )
 BEGIN
@@ -616,7 +616,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `RetrieveTeams`(
+CREATE PROCEDURE `RetrieveTeams`(
 IN Id_param INT
 )
 BEGIN
@@ -634,7 +634,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `SearchEmployees`(
+CREATE PROCEDURE `SearchEmployees`(
 IN keyword_param VARCHAR(50)
 )
 BEGIN
@@ -646,7 +646,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `SelectAvailableTeamList`(
+CREATE PROCEDURE `SelectAvailableTeamList`(
 IN Start_param datetime,
 IN Tasks_id_array VARCHAR(1000),
 IN IsOnSite boolean)
@@ -766,7 +766,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `SelecTeamByJobTeamId`(
+CREATE PROCEDURE `SelecTeamByJobTeamId`(
  IN JobId_param INT
 )
 BEGIN
@@ -782,7 +782,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `SelectEmergencyTeam`(
+CREATE PROCEDURE `SelectEmergencyTeam`(
 IN Start_param datetime,
 IN Tasks_id_array VARCHAR(1000),
 IN IsOnSite boolean)
@@ -899,7 +899,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `SelectEmployees`(IN Id_param INT)
+CREATE PROCEDURE `SelectEmployees`(IN Id_param INT)
 BEGIN
 SELECT * FROM employees
     WHERE
@@ -909,7 +909,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `SelectEmployeesByTeamId`(
+CREATE PROCEDURE `SelectEmployeesByTeamId`(
 	IN Id_param INT
 )
 BEGIN
@@ -920,7 +920,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `SelectEmployeesNotInTeam`()
+CREATE PROCEDURE `SelectEmployeesNotInTeam`()
 BEGIN
 	SELECT id, CONCAT(firstName, ' ', LastName) AS FullName FROM employees 
     WHERE id NOT IN (SELECT employeeId FROM team_members);
@@ -928,7 +928,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `SelectJobByTaskId`(
+CREATE PROCEDURE `SelectJobByTaskId`(
 IN EmployeedId_param INT,
 IN TaskId_param INT)
 BEGIN
@@ -941,7 +941,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `SelectJobs`(
+CREATE PROCEDURE `SelectJobs`(
 	IN Id_param INT,
     IN Date_param VARCHAR(10)
 )
@@ -969,7 +969,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`localhost` PROCEDURE `SelectJobsByMonth`(
+CREATE PROCEDURE `SelectJobsByMonth`(
 IN Month_param VARCHAR(10),
 IN Year_param VARCHAR(10)
 )
@@ -988,7 +988,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `SelectOnCallTeam`(
+CREATE PROCEDURE `SelectOnCallTeam`(
 )
 BEGIN
 	SELECT teams.id, teams.Name, GROUP_CONCAT(CONCAT(employees.firstName, ' ' , employees.lastName) Separator ', ') as teamMember FROM Teams 
@@ -1001,7 +1001,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `SelectTasks`(IN Id_param INT)
+CREATE PROCEDURE `SelectTasks`(IN Id_param INT)
 BEGIN
 SELECT tasks.id, Name FROM tasks
 		INNER JOIN employees_tasks
@@ -1015,7 +1015,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `SelectTeams`(IN Id_param INT)
+CREATE PROCEDURE `SelectTeams`(IN Id_param INT)
 BEGIN
 	SELECT Name FROM teams
 		INNER JOIN team_members
@@ -1029,7 +1029,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `UpdateEmployee`(
+CREATE PROCEDURE `UpdateEmployee`(
 IN Id_param INT,
 IN FirstName_param VARCHAR(50),
 IN LastName_param VARCHAR(50),
@@ -1051,7 +1051,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `UpdateIsOnCallTeam`(
+CREATE PROCEDURE `UpdateIsOnCallTeam`(
 	IN Id_param INT,
     IN IsOnCall_param BOOLEAN,
     OUT out_param VARCHAR(255)
@@ -1078,7 +1078,7 @@ END ;;
 DELIMITER ;
 
 DELIMITER ;;
-CREATE DEFINER=`dev`@`%` PROCEDURE `UpdateTask`(
+CREATE PROCEDURE `UpdateTask`(
 IN Id_param INT,
 IN TaskName_param NVARCHAR(255),
 IN TaskDescription_param NVARCHAR(255),
