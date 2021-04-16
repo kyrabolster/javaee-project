@@ -19,7 +19,7 @@
         <main>
             <div class="container">
                 <h1 class="text-center display-4 grey mt-5 mb-5">Summary</h1>
-                <h4>${ deleteMessage }</h4>
+                <h4>${ message }</h4>
                 <c:choose>
                     <c:when test="${ vm.rowsDeleted != null }">
                         <h4>Employee deleted Id: <span class="font-weight-bold">${employee.id}</span></h4>

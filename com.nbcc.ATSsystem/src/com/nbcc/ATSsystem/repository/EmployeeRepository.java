@@ -33,6 +33,7 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
     private final String SPROC_SELECT_TEAMS = "CALL SelectTeams(?)";
     private final String SPROC_ADD_EMPLOYEE_SKILLS = "CALL AddEmployeeSkill(?,?)";
     private final String SPROC_REMOVE_EMPLOYEE_SKILLS = "CALL RemoveEmployeeSkill(?,?)";
+    private final String SPROC_UPDATE_EMPLOYEE = "CALL UpdateEmployee(?,?,?,?,?)";
     private final String SPROC_DELETE_EMPLOYEE = "CALL DeleteEmployee(?);";
 
     private IDAL dataAccess;
@@ -109,7 +110,7 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
 
         return retrievedEmployees;
     }
-    
+
     @Override
     public List<IEmployee> retrieveEmployees(String search) {
         List<IEmployee> retrievedEmployees = EmployeeFactory.createListInstance();
@@ -236,7 +237,28 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
 
     @Override
     public int updateEmployee(IEmployee employee) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int rowsAffected = 0;
+        List<Object> returnValues;
+
+        List<IParameter> params = ParameterFactory.createListInstance();
+
+        params.add(ParameterFactory.createInstance(employee.getId()));
+        params.add(ParameterFactory.createInstance(employee.getFirstName()));
+        params.add(ParameterFactory.createInstance(employee.getLastName()));
+        params.add(ParameterFactory.createInstance(employee.getSIN()));
+        params.add(ParameterFactory.createInstance(employee.getHourlyRate()));
+
+        returnValues = dataAccess.executeNonQuery(SPROC_UPDATE_EMPLOYEE, params);
+
+        try {
+            if (returnValues != null) {
+                rowsAffected = Integer.parseInt(returnValues.get(0).toString());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return rowsAffected;
     }
 
     @Override
