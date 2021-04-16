@@ -24,6 +24,5 @@ public interface ITeamRepository {
     List<EmployeeVM> retrievedTeamMembers(int id);
     String updateIsOnCall(ITeam team);
     ITeam retrieveOnCallTeam();
-    ITeam retrieveTeamOnCall();
 
 }

@@ -64,7 +64,7 @@ public class TeamService implements ITeamService {
     }
 
     public ITeam getTeamOnCall() {
-        return repo.retrieveTeamOnCall();
+        return repo.retrieveOnCallTeam();
     }
     
     @Override

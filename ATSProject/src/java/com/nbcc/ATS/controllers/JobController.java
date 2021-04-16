@@ -100,7 +100,7 @@ public class JobController extends CommonController {
             request.setAttribute("tasks", tasks);
 
             switch (action.toLowerCase()) {
-                case "searchteam":
+                case "search team":
                     super.setView(request, JOBS_MAINT_VIEW);
 
                     taskIds.clear();
@@ -119,9 +119,10 @@ public class JobController extends CommonController {
 
                     boolean isOnSite = request.getParameter("isOnSite") != null;
 
-                    teamList = jobService.getAvailableTeams(jobStart, selectedTasks, isOnSite);
-
-                    request.setAttribute("teams", teamList);
+                    if (job.getErrors().isEmpty()) {
+                        teamList = jobService.getAvailableTeams(jobStart, selectedTasks, isOnSite);
+                        request.setAttribute("teams", teamList);
+                    }
 
                     break;
 
@@ -221,8 +222,8 @@ public class JobController extends CommonController {
             start = new Timestamp(super.getDateTime(request, "jobStart").getTime());
         }
 
-        if(request.getParameter("isOnSite") == null || "".equals(request.getParameter("isOnSite"))) {
-            isOnSite = false;            
+        if (request.getParameter("isOnSite") == null || "".equals(request.getParameter("isOnSite"))) {
+            isOnSite = false;
         } else {
             isOnSite = true;
         }

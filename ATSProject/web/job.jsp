@@ -147,7 +147,7 @@
                         </table>
                         <c:choose>
                             <c:when test="${(teams == null || teams.size() == 0) && team == null}">
-                                <input class="btn btn-primary" type="submit" value="SearchTeam" name="action" />
+                                <input class="btn btn-primary" type="submit" value="Search Team" name="action" />
                             </c:when>
                             <c:when test="${teams != null || teams.size() > 0}">
                                 <input class="btn btn-primary" type="submit" value="Reset" name="action" />
