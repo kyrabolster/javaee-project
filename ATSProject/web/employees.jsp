@@ -20,17 +20,18 @@
             <section>
                 <div class="container clearfix">
                     <a href="${pageContext.request.contextPath}/employee/create"><button class="btn float-right btn-info mb-2" type="button" >Create New Employee</button></a>
+                    <form action="" method="POST">
+                        <div class="input-group">
+                            <div class="form-outline">
+                                <input type="search" name="search" />
+                            </div>
+                            <button class="btn btn-info mb-2" type="submit" value="search" name="action">Search</button>
+                        </div>
+                    </form>
+
                     <c:set var="employeeCount" value="${ employees.size()}" />
                     <c:choose>
                         <c:when test="${ employeeCount > 0}">
-                            <form action="" method="POST">
-                                <div class="input-group">
-                                    <div class="form-outline">
-                                        <input type="search" name="search" />
-                                    </div>
-                                        <button class="btn btn-info mb-2" type="submit" value="search" name="action">Search</button>
-                                </div>
-                            </form>
                             <table class="table table-striped">
                                 <tr class="bg-dark text-light">
                                     <th>

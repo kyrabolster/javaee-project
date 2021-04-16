@@ -29,5 +29,7 @@ public interface IEmployeeRepository {
     boolean addEmployeeSkill(int EmployeeId, int TaskId);
 
     boolean removeEmployeeSkill(int EmployeeId, int TaskId);
+    
+    boolean isExistingJobBySkills(int empId, int TaskId);
 
 }

@@ -34,7 +34,7 @@ public class EmployeeService implements IEmployeeService {
         List<IEmployee> employees = repo.retrieveEmployees();
         return employees;
     }
-    
+
     @Override
     public List<IEmployee> getEmployees(String search) {
         List<IEmployee> employees = repo.retrieveEmployees(search);
@@ -69,16 +69,20 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public boolean removeEmployeeSkill(int EmployeeId, int TaskId) {
-        return repo.removeEmployeeSkill(EmployeeId, TaskId);
+        if (repo.isExistingJobBySkills(EmployeeId, TaskId)) {
+            return false;
+        } else {
+            return repo.removeEmployeeSkill(EmployeeId, TaskId);
+        }
     }
 
     @Override
     public int saveEmployee(IEmployee employee) {
-        if(employee.getId() == 0) {
+        if (employee.getId() == 0) {
             employee.addError(ErrorFactory.createInstance(14, "Employee was not saved. Id is required."));
         }
-        
-        if(isValid(employee)){
+
+        if (isValid(employee)) {
             return repo.updateEmployee(employee);
         } else {
             employee.addError(ErrorFactory.createInstance(14, "Employee invalid for saving"));

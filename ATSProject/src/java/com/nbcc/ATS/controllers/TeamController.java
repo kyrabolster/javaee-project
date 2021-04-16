@@ -30,6 +30,7 @@ public class TeamController extends CommonController {
     private static final String TEAMS_VIEW = "/teams.jsp";
     private static final String TEAMS_MAINT_VIEW = "/team.jsp";
     private static final String TEAM_SUMMARY_VIEW = "/teamsummary.jsp";
+    private static final String TEAM_ERROR = "/error.jsp";
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -46,7 +47,9 @@ public class TeamController extends CommonController {
             int id = super.getInteger(pathParts[1]);
             //Get the team in a variable
 
-            if (id > 0) {
+            if ("/create".equals(pathInfo)) {
+                super.setView(request, TEAMS_MAINT_VIEW);
+            } else if (teamExists(id)) {
                 ITeam team = teamService.getTeam(id);
 
                 //Set attribute as team or error
@@ -57,9 +60,11 @@ public class TeamController extends CommonController {
                 } else {
                     request.setAttribute("error", new ErrorViewModel(String.format("Team ID: $s is not found", id)));
                 }
+                super.setView(request, TEAMS_MAINT_VIEW);
+            } else {
+                request.setAttribute("entity", "team");
+                super.setView(request, TEAM_ERROR);
             }
-            
-            super.setView(request, TEAMS_MAINT_VIEW);
         } else {
             request.setAttribute("teams", teamService.getTeams());
             super.setView(request, TEAMS_VIEW);

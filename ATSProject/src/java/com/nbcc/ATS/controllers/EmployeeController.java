@@ -178,8 +178,10 @@ public class EmployeeController extends CommonController {
                         request.setAttribute("error", new ErrorViewModel(String.format("Please select a skill to be removed.")));
                     }
 
-                    employeeService.removeEmployeeSkill(id, skillToRemoveId);
-
+                    if(!employeeService.removeEmployeeSkill(id, skillToRemoveId)) {
+                        request.setAttribute("error", new ErrorViewModel(String.format("The skill can not be removed. Please check the skill is associated to future job.")));
+                    }
+                    
                     employee = employeeService.getEmployee(id);
                     request.setAttribute("employee", employee);
 

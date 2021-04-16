@@ -34,7 +34,8 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
     private final String SPROC_ADD_EMPLOYEE_SKILLS = "CALL AddEmployeeSkill(?,?)";
     private final String SPROC_REMOVE_EMPLOYEE_SKILLS = "CALL RemoveEmployeeSkill(?,?)";
     private final String SPROC_UPDATE_EMPLOYEE = "CALL UpdateEmployee(?,?,?,?,?)";
-    private final String SPROC_DELETE_EMPLOYEE = "CALL DeleteEmployee(?);";
+    private final String SPROC_DELETE_EMPLOYEE = "CALL DeleteEmployee(?)";
+    private final String SPROC_SELECT_JOBBYSKILLS = "CALL SelectJobByTaskId(?,?)";
 
     private IDAL dataAccess;
 
@@ -228,6 +229,7 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
 
         try {
             returnValues = dataAccess.executeNonQuery(SPROC_REMOVE_EMPLOYEE_SKILLS, params);
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -280,5 +282,27 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         }
 
         return rowsAffected;
+    }
+
+    @Override
+    public boolean isExistingJobBySkills(int empId, int taskId) {
+        List<Integer> jobs = new ArrayList();
+        
+        try {
+            List<IParameter> params = ParameterFactory.createListInstance();
+
+            params.add(ParameterFactory.createInstance(empId));
+            params.add(ParameterFactory.createInstance(taskId));
+            CachedRowSet cr = dataAccess.executeFill(SPROC_SELECT_JOBBYSKILLS, params);
+            
+            while (cr.next()) {
+                jobs.add(super.getInt("id", cr));
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+       
+        return !jobs.isEmpty();
     }
 }

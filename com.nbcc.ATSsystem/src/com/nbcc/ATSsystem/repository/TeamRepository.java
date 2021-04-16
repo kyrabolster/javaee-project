@@ -227,6 +227,7 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
                 team = TeamFactory.createInstance();
                 team.setId(super.getInt("id", cr));
                 team.setName(super.getString("Name", cr));
+                team.setMembers(super.getString("teamMember", cr));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

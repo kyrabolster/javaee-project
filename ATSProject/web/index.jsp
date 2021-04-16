@@ -25,6 +25,7 @@
                 <div class="card-body">
                     <h5 class="card-title font-weight-bold text-info mb-2">TEAM ON CALL</h5>
                     <h4 class="card-subtitle mb-2 text-muted">${ teamOnCall.name}</h4>
+                    <p class="card-text mb-2 text-muted">${ teamOnCall.members}</p>
                 </div>
             </div>
 

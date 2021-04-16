@@ -17,10 +17,16 @@ import com.nbcc.dataaccess.IDAL;
 import com.nbcc.dataaccess.IParameter;
 import com.nbcc.dataaccess.ParameterFactory;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.rowset.CachedRowSet;
 
 /**
@@ -72,12 +78,20 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         String before = "08:00:00";
         String after = "17:00:00";
         String target = job.getStart().toString().substring(11, 19);
+        String targetDate = job.getStart().toString().substring(0,11);
+        Date date = new Date();
+        
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(targetDate);
+        } catch (ParseException ex) {
+            Logger.getLogger(JobRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         LocalTime time = LocalTime.parse(target, format);
         LocalTime morning = LocalTime.parse(before, format);
         LocalTime night = LocalTime.parse(after, format);
 
-        if (time.isBefore(morning) || time.isAfter(night)) {
+        if (time.isBefore(morning) || time.isAfter(night) || date.getDay() == 0 || date.getDay() == 6) {
             returnValues = dataAccess.executeNonQuery(SPROC_INSERT_EMERGENCYJOB, params);
 
         } else {
@@ -263,15 +277,18 @@ public class JobRepository extends BaseRepository implements IJobRepository {
 
             String before = "08:00:00";
             String after = "17:00:00";
-            String target = start.substring(11);
+            String targetTime = start.substring(11);
+            String targetDate = start.substring(0,11);
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(targetDate);
+            
 
-            LocalTime time = LocalTime.parse(target, format);
+            LocalTime time = LocalTime.parse(targetTime, format);
             LocalTime morning = LocalTime.parse(before, format);
             LocalTime night = LocalTime.parse(after, format);
 
             CachedRowSet cr;
 
-            if (time.isBefore(morning) || time.isAfter(night)) {
+            if (time.isBefore(morning) || time.isAfter(night) || date.getDay() == 0 || date.getDay() == 6) {
                 cr = dataAccess.executeFill(SPROC_SELECT_EMERGENCYTEAM, params);
 
             } else {

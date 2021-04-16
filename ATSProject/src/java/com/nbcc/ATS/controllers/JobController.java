@@ -37,7 +37,7 @@ public class JobController extends CommonController {
     private static final String JOBS_VIEW = "/jobs.jsp";
     private static final String JOBS_MAINT_VIEW = "/job.jsp";
     private static final String JOB_SUMMARY_VIEW = "/jobsummary.jsp";
-    private static final String TASK_ERROR = "/error.jsp";
+    private static final String JOB_ERROR = "/error.jsp";
 
     //common variables for creating job
     private List<String> taskIds = new ArrayList<>();
@@ -57,7 +57,11 @@ public class JobController extends CommonController {
             String[] pathParts = pathInfo.split("/");
             int id = super.getInteger(pathParts[1]);
 
-            if (jobExists(id)) {
+            if ("/create".equals(pathInfo)) {
+                super.setView(request, JOBS_MAINT_VIEW);
+                List<ITask> tasks = jobService.getTasks();
+                request.setAttribute("tasks", tasks);
+            } else if (jobExists(id)) {
                 IJob job = jobService.getJob(id);
 
                 if (job != null) {
@@ -70,13 +74,8 @@ public class JobController extends CommonController {
 
             } else {
                 request.setAttribute("entity", "job");
-                super.setView(request, TASK_ERROR);
+                super.setView(request, JOB_ERROR);
             }
-
-            List<ITask> tasks = jobService.getTasks();
-            request.setAttribute("tasks", tasks);
-
-            super.setView(request, JOBS_MAINT_VIEW);
         } else {
             request.setAttribute("jobs", jobService.getJobs());
             super.setView(request, JOBS_VIEW);
