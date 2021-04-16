@@ -26,6 +26,7 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
     private final String SPROC_SELECT_TASK = "CALL RetrieveTasks(?)";
     private final String SPROC_INSERT_TASK = "CALL InsertTask(?,?,?,?);";
     private final String SPROC_TASKS_NOT_ASSIGNED_TO_EMP = "CALL getTasksNotAssignedToEmployee(?);";
+    private final String SPROC_UPDATE_TASK = "CALL UpdateTask(?,?,?,?)";
     private final String SPROC_DELETE_TASK = "CALL DeleteTask(?);";
 
     private IDAL dataAccess;
@@ -125,7 +126,27 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
 
     @Override
     public int updateTask(ITask task) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int rowsAffedcted = 0;
+        List<Object> returnValues;
+        
+        List<IParameter> params = ParameterFactory.createListInstance();
+        
+        params.add(ParameterFactory.createInstance(task.getId()));
+        params.add(ParameterFactory.createInstance(task.getName()));
+        params.add(ParameterFactory.createInstance(task.getDescription()));
+        params.add(ParameterFactory.createInstance(task.getDuration()));
+        
+        returnValues = dataAccess.executeNonQuery(SPROC_UPDATE_TASK, params);
+        
+        try {
+            if(returnValues != null) {
+                rowsAffedcted = Integer.parseInt(returnValues.get(0).toString());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+                
+        return rowsAffedcted;
     }
 
     @Override
