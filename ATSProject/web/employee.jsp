@@ -22,7 +22,7 @@
                     <h1 class="text-center display-4 grey mt-5 mb-5">Create Employee</h1>
                 </c:when>
                 <c:otherwise>
-                    <h1 class="text-center display-4 grey mt-5 mb-5">Employee Details</h1>
+                    <h1 class="text-center display-4 grey mt-5 mb-5">Edit Employee</h1>
                 </c:otherwise>
             </c:choose>
             <section>
@@ -41,19 +41,19 @@
                             </c:if>
                             <tr>                    
                                 <td>First Name:</td>
-                                <td><input type="text" name="firstName" value='${ employee.firstName }' <c:if test="${ employee != null && employee.id > 0}">readonly/></c:if></td>
+                                <td><input type="text" name="firstName" value='${ employee.firstName }'/></td>
                                 </tr>
                                 <tr>                    
                                     <td>Last Name:</td>
-                                    <td><input type="text" name="lastName" value='${ employee.lastName }' <c:if test="${ employee != null && employee.id > 0 }">readonly/></c:if></td>
+                                    <td><input type="text" name="lastName" value='${ employee.lastName }'/></td>
                                 </tr>
                                 <tr>                    
                                     <td>SIN:</td>
-                                    <td><input type="text" name="SIN" value='${ employee.SIN }' <c:if test="${ employee != null && employee.id > 0}">readonly/></c:if></td>
+                                    <td><input type="text" name="SIN" value='${ employee.SIN }' /></td>
                                 </tr>
                                 <tr>                    
                                     <td>Hourly Rate:</td>
-                                    <td><input type="text" name="hourlyRate" value='${ employee.hourlyRate }' <c:if test="${ employee != null && employee.id > 0}">readonly/></c:if></td>
+                                    <td><input type="text" name="hourlyRate" value='<fmt:formatNumber value="${ employee.hourlyRate }" type="currency" currencySymbol=""/>' /></td>
                                 </tr>
                                 <tr>           
                                     <!--Do not show when creating employee-->
@@ -117,13 +117,13 @@
                         </table>
                         <c:choose>
                             <c:when test="${ employee != null && employee.id != 0 }">
-                                <input class="btn btn-primary" type="submit" value="Save" name="action" /> 
                                 <c:if test="${ employee.isDeleted != true }"> 
                                     <input class="btn btn-primary" type="submit" value="Delete" name="action" />
                                     <a href="${pageContext.request.contextPath}/employeeskills/${ employee.id}">
                                         <input class="btn btn-primary" type="submit" name="action" value="Update Skills"/> 
                                     </a>
                                 </c:if>
+                                <input class="btn btn-primary" type="submit" value="Save" name="action" /> 
                             </c:when>
                             <c:otherwise>
                                 <input class="btn btn-primary" type="submit" value="Create" name="action" />

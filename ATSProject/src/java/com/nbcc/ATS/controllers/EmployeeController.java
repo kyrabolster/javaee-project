@@ -112,7 +112,22 @@ public class EmployeeController extends CommonController {
 
                     break;
                 case "save":
+                    employee = setEmployee(request);
+                    employee.setId(id);
 
+                    request.setAttribute("employee", employee);
+
+                    if (employeeService.saveEmployee(employee) == 0) {
+                        employee.addError(ErrorFactory.createInstance(15, "No record affected. Save was unsuccessful"));
+                        request.setAttribute("errors", employee.getErrors());
+                        super.setView(request, EMPLOYEES_MAINT_VIEW);
+                    } else {
+                        if (!employeeService.isValid(employee)) {
+                            request.setAttribute("errors", employee.getErrors());
+                            super.setView(request, EMPLOYEES_MAINT_VIEW);
+                        }
+                        request.setAttribute("message", "The following employee has been successfully updated.");
+                    }
                     break;
                 case "delete":
                     employee = setEmployee(request);
@@ -126,9 +141,9 @@ public class EmployeeController extends CommonController {
                         super.setView(request, EMPLOYEES_MAINT_VIEW);
                     } else {
                         if (employeeExists(id)) {
-                            request.setAttribute("deleteMessage", "The following employee had been flagged as deleted since they are a member in a team.");
+                            request.setAttribute("message", "The following employee had been flagged as deleted since they are a member in a team.");
                         } else {
-                            request.setAttribute("deleteMessage", "The following employee has been successfully deleted from the employees list.");
+                            request.setAttribute("message", "The following employee has been successfully deleted from the employees list.");
                         }
                     }
                     break;
@@ -175,7 +190,7 @@ public class EmployeeController extends CommonController {
                     break;
                 case "search":
                     String search = getValue(request, "search");
-                    
+
                     //pass search keyword
                     request.setAttribute("employees", employeeService.getEmployees(search));
                     super.setView(request, EMPLOYEES_VIEW);

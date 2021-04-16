@@ -16,19 +16,23 @@
         <servlet-name>JobController</servlet-name>
         <url-pattern>/JobController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardController</servlet-name>
+        <url-pattern>/DashboardController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-    <servlet>
+<!--    <servlet>
         <servlet-name>HomeView</servlet-name>
         <jsp-file>/index.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
+    </servlet>-->
+<!--    <servlet-mapping>
         <servlet-name>HomeView</servlet-name>
         <url-pattern>/home</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     <!--Default Views-->
     <servlet>
         <servlet-name>404</servlet-name>
@@ -118,6 +122,23 @@
     <servlet-mapping>
         <servlet-name>JobController</servlet-name>
         <url-pattern>/job/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>DashboardController</servlet-name>
+        <servlet-class>com.nbcc.ATS.controllers.DashboardController</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>DashboardController</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardController</servlet-name>
+        <url-pattern>/index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardController</servlet-name>
+        <url-pattern>/home</url-pattern>
     </servlet-mapping>
     
     <!--mapping-->

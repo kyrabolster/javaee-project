@@ -32,6 +32,8 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
     private final String SPROC_DELETE_TEAM = "CALL DeleteTeam(?)";
     private final String SPROC_UPDATE_ISONCALL = "CALL UpdateIsOnCallTeam(?,?,?)";
     private final String SPROC_RETRIEVE_ONCALLTEAM = "CALL SelectOnCallTeam()";
+    private final String SPROC_RETRIEVE_TEAM_ONCALL = "CALL GetTeamOnCall()";
+
 
     private IDAL dataAccess;
 
@@ -226,6 +228,13 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
             while (cr.next()) {
                 team = TeamFactory.createInstance();
                 team.setId(super.getInt("id", cr));
+
+    public ITeam retrieveTeamOnCall() {
+        ITeam team = TeamFactory.createInstance();
+
+        try {
+            CachedRowSet cr = dataAccess.executeFill(SPROC_RETRIEVE_TEAM_ONCALL, null);
+            while (cr.next()) {
                 team.setName(super.getString("Name", cr));
             }
 

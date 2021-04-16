@@ -25,8 +25,10 @@ public interface ITeamService {
     List<ITeam> getTeams();
     
     List<EmployeeVM> getEmployees();
+
     List<EmployeeVM> getMembers(int id);
     
     String updateIsOnCall(ITeam team);
     
+    ITeam getTeamOnCall();
 }

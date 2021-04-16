@@ -125,3 +125,25 @@ BEGIN
             TaskId = Task_id_param;
 END
 //DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS UpdateTask;
+// DELIMITER;
+
+DELIMITER //
+CREATE PROCEDURE `UpdateTask`(
+IN Id_param INT,
+IN TaskName_param NVARCHAR(255),
+IN TaskDescription_param NVARCHAR(255),
+IN TaskDuration_param INT
+)
+BEGIN
+	UPDATE tasks 
+    SET
+    Name = IF(TaskName_param IS NULL,Name,TaskName_param),
+    Description = IF(TaskDescription_param IS NULL,Description,TaskDescription_param),
+    Duration = IF(TaskDuration_param IS NULL,Duration,TaskDuration_param),
+    UpdatedAt = current_timestamp()
+    WHERE Id = Id_param;
+END
+//DELIMITER ;
