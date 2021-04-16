@@ -76,6 +76,10 @@ public class JobService implements IJobService{
         return repo.retrieveJobsByMonth(month, year);
     }
 
+    @Override
+    public List<IJob> getJobsByYear(int year) {
+        return repo.retrieveJobsByYear(year);
+    }
 
     @Override
     public List<ITask> getTasks() {

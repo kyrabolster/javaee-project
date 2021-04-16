@@ -3,7 +3,7 @@
 <script type="text/javascript">
     window.onload = function () {
 
-        var chart = new CanvasJS.Chart("chartContainer", {
+        var thisYearChart = new CanvasJS.Chart("thisYearChart", {
             animationEnabled: true,
             theme: "light2",
             title: {
@@ -12,8 +12,8 @@
             axisX: {
                 title: "Month (${currentYear})",
                 interval: 1,
-		intervalType: "month",
-		valueFormatString: "MMM YYYY",
+                intervalType: "month",
+                valueFormatString: "MMM YYYY",
                 crosshair: {
                     enabled: true,
                     snapToDataPoint: true
@@ -32,79 +32,189 @@
             },
             legend: {
                 cursor: "pointer",
-                verticalAlign: "bottom",
-                horizontalAlign: "left",
+                verticalAlign: "top",
+                horizontalAlign: "center",
                 dockInsidePlotArea: true,
                 itemclick: toogleDataSeries
             },
-           data: [{
-                    type: "line",
-                    showInLegend: true,
-                    name: "Cost",
-                    lineDashType: "dash",
-                    markerType: "square",
-                    xValueFormatString: "MMM",
-                    color: "#F08080",
-                    dataPoints: [
-                        {x: new Date(2017, 00, 0), y: 560},
-                        {x: new Date(2017, 01, 0), y: 560},
-                        {x: new Date(2017, 02, 0), y: 560},
-                        {x: new Date(2017, 03, 0), y: 540},
-                        {x: new Date(2017, 04, 0), y: 558},
-                        {x: new Date(2017, 05, 0), y: 544},
-                        {x: new Date(2017, 06, 0), y: 693},
-                        {x: new Date(2017, 07, 0), y: 657},
-                        {x: new Date(2017, 08, 0), y: 663},
-                        {x: new Date(2017, 09, 0), y: 639},
-                        {x: new Date(2017, 10, 0), y: 673},
-                        {x: new Date(2017, 11, 0), y: 660}
-                    ]
-                },
-                {
+            data: [{
                     type: "line",
                     showInLegend: true,
                     name: "Revenue",
                     lineDashType: "dash",
+                    markerType: "square",
+                    xValueFormatString: "MMM, YYYY",
+                    color: "#77dd77 ",
                     dataPoints: [
-                        {x: new Date(2017, 00, 0), y: 560},
-                        {x: new Date(2017, 01, 0), y: 660},
-                        {x: new Date(2017, 02, 0), y: 660},
-                        {x: new Date(2017, 03, 0), y: 640},
-                        {x: new Date(2017, 04, 0), y: 658},
-                        {x: new Date(2017, 05, 0), y: 644},
-                        {x: new Date(2017, 06, 0), y: 793},
-                        {x: new Date(2017, 07, 0), y: 757},
-                        {x: new Date(2017, 08, 0), y: 763},
-                        {x: new Date(2017, 09, 0), y: 739},
-                        {x: new Date(2017, 10, 0), y: 773},
-                        {x: new Date(2017, 11, 0), y: 760}
+
+                        {x: new Date(${currentYear}, 00, 1), y: ${rjan}},
+                        {x: new Date(${currentYear}, 01, 1), y: ${rfeb}},
+                        {x: new Date(${currentYear}, 02, 1), y: ${rmar}},
+                        {x: new Date(${currentYear}, 03, 1), y: ${rapr}},
+                        {x: new Date(${currentYear}, 04, 1), y: ${rmay}},
+                        {x: new Date(${currentYear}, 05, 1), y: ${rjun}},
+                        {x: new Date(${currentYear}, 06, 1), y: ${rjul}},
+                        {x: new Date(${currentYear}, 07, 1), y: ${raug}},
+                        {x: new Date(${currentYear}, 08, 1), y: ${rsep}},
+                        {x: new Date(${currentYear}, 09, 1), y: ${roct}},
+                        {x: new Date(${currentYear}, 10, 1), y: ${rnov}},
+                        {x: new Date(${currentYear}, 11, 1), y: ${rdec}}
                     ]
-                },
+                }
+                ,
+                {
+                    type: "line",
+                    showInLegend: true,
+                    name: "Cost",
+                    lineDashType: "dash",
+                    color: "#F08080",
+                    dataPoints: [
+                        {x: new Date(${currentYear}, 00, 1), y: ${cjan}},
+                        {x: new Date(${currentYear}, 01, 1), y: ${cfeb}},
+                        {x: new Date(${currentYear}, 02, 1), y: ${cmar}},
+                        {x: new Date(${currentYear}, 03, 1), y: ${capr}},
+                        {x: new Date(${currentYear}, 04, 1), y: ${cmay}},
+                        {x: new Date(${currentYear}, 05, 1), y: ${cjun}},
+                        {x: new Date(${currentYear}, 06, 1), y: ${cjul}},
+                        {x: new Date(${currentYear}, 07, 1), y: ${caug}},
+                        {x: new Date(${currentYear}, 08, 1), y: ${csep}},
+                        {x: new Date(${currentYear}, 09, 1), y: ${coct}},
+                        {x: new Date(${currentYear}, 10, 1), y: ${cnov}},
+                        {x: new Date(${currentYear}, 11, 1), y: ${cdec}}
+                    ]
+                }
+                ,
                 {
                     type: "line",
                     showInLegend: true,
                     name: "Billabe",
                     lineDashType: "dash",
                     markerType: "triangle",
-                    color: "#6699cc   ",
+                    color: "#6699cc",
                     dataPoints: [
-                        {x: new Date(2017, 00, 0), y: 460},
-                        {x: new Date(2017, 01, 0), y: 460},
-                        {x: new Date(2017, 02, 0), y: 460},
-                        {x: new Date(2017, 03, 0), y: 440},
-                        {x: new Date(2017, 04, 0), y: 458},
-                        {x: new Date(2017, 05, 0), y: 444},
-                        {x: new Date(2017, 06, 0), y: 593},
-                        {x: new Date(2017, 07, 0), y: 557},
-                        {x: new Date(2017, 08, 0), y: 563},
-                        {x: new Date(2017, 09, 0), y: 539},
-                        {x: new Date(2017, 10, 0), y: 573},
-                        {x: new Date(2017, 11, 0), y: 860}
+                        {x: new Date(${currentYear}, 00, 1), y: ${cjan + rjan}},
+                        {x: new Date(${currentYear}, 01, 1), y: ${cfeb + rfeb}},
+                        {x: new Date(${currentYear}, 02, 1), y: ${cmar + rmar}},
+                        {x: new Date(${currentYear}, 03, 1), y: ${capr + rapr}},
+                        {x: new Date(${currentYear}, 04, 1), y: ${cmay + rmay}},
+                        {x: new Date(${currentYear}, 05, 1), y: ${cjun + rjun}},
+                        {x: new Date(${currentYear}, 06, 1), y: ${cjul + rjul}},
+                        {x: new Date(${currentYear}, 07, 1), y: ${caug + raug}},
+                        {x: new Date(${currentYear}, 08, 1), y: ${csep + rsep}},
+                        {x: new Date(${currentYear}, 09, 1), y: ${coct + roct}},
+                        {x: new Date(${currentYear}, 10, 1), y: ${cnov + rnov}},
+                        {x: new Date(${currentYear}, 11, 1), y: ${cdec + rdec}}
                     ]
                 }
             ]
         });
-        chart.render();
+        var lastYearChart = new CanvasJS.Chart("lastYearChart", {
+            animationEnabled: true,
+            theme: "light2",
+            title: {
+                text: "${lastYear} Cost & Revenue"
+            },
+            axisX: {
+                title: "Month (${lastYear})",
+                interval: 1,
+                intervalType: "month",
+                valueFormatString: "MMM YYYY",
+                crosshair: {
+                    enabled: true,
+                    snapToDataPoint: true
+                }
+            },
+            axisY: {
+                title: "Dollar Amount ($)",
+                includeZero: true,
+                valueFormatString: "$#0",
+                crosshair: {
+                    enabled: true
+                }
+            },
+            toolTip: {
+                shared: true
+            },
+            legend: {
+                cursor: "pointer",
+                verticalAlign: "top",
+                horizontalAlign: "center",
+                dockInsidePlotArea: true,
+                itemclick: toogleDataSeries
+            },
+            data: [{
+                    type: "line",
+                    showInLegend: true,
+                    name: "Revenue",
+                    lineDashType: "dash",
+                    markerType: "square",
+                    xValueFormatString: "MMM, YYYY",
+                    color: "#77dd77 ",
+                    dataPoints: [
+
+                        {x: new Date(${lastYear}, 00, 1), y: ${rjanLY}},
+                        {x: new Date(${lastYear}, 01, 1), y: ${rfebLY}},
+                        {x: new Date(${lastYear}, 02, 1), y: ${rmarLY}},
+                        {x: new Date(${lastYear}, 03, 1), y: ${raprLY}},
+                        {x: new Date(${lastYear}, 04, 1), y: ${rmayLY}},
+                        {x: new Date(${lastYear}, 05, 1), y: ${rjunLY}},
+                        {x: new Date(${lastYear}, 06, 1), y: ${rjulLY}},
+                        {x: new Date(${lastYear}, 07, 1), y: ${raugLY}},
+                        {x: new Date(${lastYear}, 08, 1), y: ${rsepLY}},
+                        {x: new Date(${lastYear}, 09, 1), y: ${roctLY}},
+                        {x: new Date(${lastYear}, 10, 1), y: ${rnovLY}},
+                        {x: new Date(${lastYear}, 11, 1), y: ${rdecLY}}
+                    ]
+                }
+                ,
+                {
+                    type: "line",
+                    showInLegend: true,
+                    name: "Cost",
+                    lineDashType: "dash",
+                    color: "#F08080",
+                    dataPoints: [
+                        {x: new Date(${lastYear}, 00, 1), y: ${cjanLY}},
+                        {x: new Date(${lastYear}, 01, 1), y: ${cfebLY}},
+                        {x: new Date(${lastYear}, 02, 1), y: ${cmarLY}},
+                        {x: new Date(${lastYear}, 03, 1), y: ${caprLY}},
+                        {x: new Date(${lastYear}, 04, 1), y: ${cmayLY}},
+                        {x: new Date(${lastYear}, 05, 1), y: ${cjunLY}},
+                        {x: new Date(${lastYear}, 06, 1), y: ${cjulLY}},
+                        {x: new Date(${lastYear}, 07, 1), y: ${caugLY}},
+                        {x: new Date(${lastYear}, 08, 1), y: ${csepLY}},
+                        {x: new Date(${lastYear}, 09, 1), y: ${coctLY}},
+                        {x: new Date(${lastYear}, 10, 1), y: ${cnovLY}},
+                        {x: new Date(${lastYear}, 11, 1), y: ${cdecLY}}
+                    ]
+                }
+                ,
+                {
+                    type: "line",
+                    showInLegend: true,
+                    name: "Billabe",
+                    lineDashType: "dash",
+                    markerType: "triangle",
+                    color: "#6699cc",
+                    dataPoints: [
+                        {x: new Date(${lastYear}, 00, 1), y: ${cjanLY + rjanLY}},
+                        {x: new Date(${lastYear}, 01, 1), y: ${cfebLY + rfebLY}},
+                        {x: new Date(${lastYear}, 02, 1), y: ${cmarLY + rmarLY}},
+                        {x: new Date(${lastYear}, 03, 1), y: ${caprLY + raprLY}},
+                        {x: new Date(${lastYear}, 04, 1), y: ${cmayLY + rmayLY}},
+                        {x: new Date(${lastYear}, 05, 1), y: ${cjunLY + rjunLY}},
+                        {x: new Date(${lastYear}, 06, 1), y: ${cjulLY + rjulLY}},
+                        {x: new Date(${lastYear}, 07, 1), y: ${caugLY + raugLY}},
+                        {x: new Date(${lastYear}, 08, 1), y: ${csepLY + rsepLY}},
+                        {x: new Date(${lastYear}, 09, 1), y: ${coctLY + roctLY}},
+                        {x: new Date(${lastYear}, 10, 1), y: ${cnovLY + rnovLY}},
+                        {x: new Date(${lastYear}, 11, 1), y: ${cdecLY + rdecLY}}
+                    ]
+                }
+            ]
+        });
+        thisYearChart.render();
+        lastYearChart.render();
 
         function toogleDataSeries(e) {
             if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
@@ -112,9 +222,9 @@
             } else {
                 e.dataSeries.visible = true;
             }
-            chart.render();
+            thisYearChart.render();
+            lastYearChart.render();
         }
-
     }
 </script>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>

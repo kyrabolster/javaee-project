@@ -27,6 +27,7 @@ public interface IJobService {
     List<IJob> getJobs();
     List<IJob> getJobsByDate(String date);
     List<IJob> getJobsByMonth(int month, int year);
+    List<IJob> getJobsByYear(int year);
     int getNumJobsToday();
     
     List<ITask> getTasks();

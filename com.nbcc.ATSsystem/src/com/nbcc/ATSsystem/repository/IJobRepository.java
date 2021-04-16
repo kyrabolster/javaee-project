@@ -28,6 +28,8 @@ public interface IJobRepository {
     
     List<IJob> retrieveJobsByMonth(int month, int year);
     
+    List<IJob> retrieveJobsByYear(int year);
+    
     IJob retrieveJob(int id);
     
     List<ITask> retrieveTasks();

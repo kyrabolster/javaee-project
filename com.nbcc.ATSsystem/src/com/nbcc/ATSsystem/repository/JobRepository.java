@@ -38,6 +38,7 @@ public class JobRepository extends BaseRepository implements IJobRepository {
     private final String SPROC_SELECT_JOBS = "CALL SelectJobs(null, null)";
     private final String SPROC_SELECT_JOBSBYDATE = "CALL SelectJobs(null, ?)";
     private final String SPROC_SELECT_JOBSBYMONTH = "CALL SelectJobsByMonth(?,?)";
+    private final String SPROC_SELECT_JOBSBYYEAR = "CALL SelectJobsByMonth(null,?)";
     private final String SPROC_SELECT_TASKS = "CALL RetrieveTasks(null)";
     private final String SPROC_SELECT_TEAMBYJOB = "CALL SelecTeamByJobTeamId(?)";
     private final String SPROC_DELETE_JOB = "CALL DeleteJob(?)";
@@ -77,14 +78,12 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         LocalTime morning = LocalTime.parse(before, format);
         LocalTime night = LocalTime.parse(after, format);
 
-
         if (time.isBefore(morning) || time.isAfter(night)) {
             returnValues = dataAccess.executeNonQuery(SPROC_INSERT_EMERGENCYJOB, params);
 
         } else {
             returnValues = dataAccess.executeNonQuery(SPROC_INSERT_JOB, params);
         }
-            
 
         try {
             if (returnValues != null) {
@@ -170,7 +169,7 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         return retrievedJobs;
 
     }
-    
+
     @Override
     public List<IJob> retrieveJobsByMonth(int month, int year) {
         List<IJob> retrievedJobs = JobFactory.createListInstance();
@@ -186,12 +185,29 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         }
 
         return retrievedJobs;
-
     }
-    
+
+    @Override
+    public List<IJob> retrieveJobsByYear(int year) {
+        List<IJob> retrievedJobs = JobFactory.createListInstance();
+
+        List<IParameter> params = ParameterFactory.createListInstance();
+        params.add(ParameterFactory.createInstance(null));
+        params.add(ParameterFactory.createInstance(year));
+
+        try {
+            CachedRowSet cr = dataAccess.executeFill(SPROC_SELECT_JOBSBYMONTH, params);
+            retrievedJobs = toListofJobs(cr);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return retrievedJobs;
+    }
+
     @Override
     public int retrieveNumJobsToday() {
-       int numJobs = 0;
+        int numJobs = 0;
 
         try {
             CachedRowSet cr = dataAccess.executeFill(SPROC_GET_NUM_JOBS, null);
