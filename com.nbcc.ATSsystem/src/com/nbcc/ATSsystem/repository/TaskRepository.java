@@ -91,6 +91,7 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
             task.setName(cs.getString("Name"));
             task.setDescription(cs.getString("Description"));
             task.setDuration(super.getInt("Duration", cs));
+            task.setUpdatedAt(super.getDate("UpdatedAt", cs));
             retrievedTasks.add(task);
         }
 

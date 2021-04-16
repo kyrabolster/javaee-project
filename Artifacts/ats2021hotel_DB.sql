@@ -608,7 +608,7 @@ CREATE PROCEDURE `RetrieveTasks`(
 )
 BEGIN
 	
-    SELECT Id, Name, Description, Duration FROM Tasks
+    SELECT Id, Name, Description, Duration, UpdatedAt FROM Tasks
     WHERE (Id_param IS NULL OR Id = Id_param)
     ORDER BY CreatedAt;
     

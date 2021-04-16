@@ -50,6 +50,12 @@
                                 <td>Duration(minutes)</td>
                                 <td><input class="form-control" type="number" min="30" step="15" name="taskDuration" value="${task.duration}"/></td>
                             </tr>
+                            <c:if test="${task != null && task.updatedAt != null}">
+                                <tr>
+                                    <td>Updated Date </td>
+                                    <td><fmt:formatDate value="${ task.updatedAt }" pattern = "yyyy-MM-dd HH:mm" /></td>
+                                </tr>
+                            </c:if>
                         </table>
                         <c:choose>
                             <c:when test="${task != null && task.id != 0}">
