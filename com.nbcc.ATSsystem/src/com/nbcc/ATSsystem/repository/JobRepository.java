@@ -38,7 +38,6 @@ public class JobRepository extends BaseRepository implements IJobRepository {
     private final String SPROC_SELECT_JOBS = "CALL SelectJobs(null, null)";
     private final String SPROC_SELECT_JOBSBYDATE = "CALL SelectJobs(null, ?)";
     private final String SPROC_SELECT_JOBSBYMONTH = "CALL SelectJobsByMonth(?,?)";
-    private final String SPROC_SELECT_JOBSBYYEAR = "CALL SelectJobsByMonth(null,?)";
     private final String SPROC_SELECT_TASKS = "CALL RetrieveTasks(null)";
     private final String SPROC_SELECT_TEAMBYJOB = "CALL SelecTeamByJobTeamId(?)";
     private final String SPROC_DELETE_JOB = "CALL DeleteJob(?)";

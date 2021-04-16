@@ -12,7 +12,6 @@ import com.nbcc.dataaccess.DALFactory;
 import com.nbcc.dataaccess.IDAL;
 import com.nbcc.dataaccess.IParameter;
 import com.nbcc.dataaccess.ParameterFactory;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.rowset.CachedRowSet;
@@ -25,8 +24,8 @@ import javax.sql.rowset.CachedRowSet;
 public class TeamRepository extends BaseRepository implements ITeamRepository {
 
     private final String SPROC_INSERT_TEAM = "CALL InsertTeam(?,?,?,?,?);";
-    private final String SPROC_RETRIEVE_EMPLOYEES = "CALL selectEmployeesNotInTeam()";
-    private final String SPROC_RETRIEVE_TEAM_ONCALL = "CALL GetTeamOnCall()";
+    private final String SPROC_RETRIEVE_EMPLOYEES = "CALL SelectEmployeesNotInTeam()";
+    private final String SPROC_RETRIEVE_TEAM_ONCALL = "CALL SelectOnCallTeam()";
 
     private IDAL dataAccess;
 
