@@ -18,8 +18,6 @@ import java.util.List;
 public interface IJobRepository {
     int insertJob(IJob job);
     
-    int updateJob(IJob job);
-    
     int deleteJob(int id);
     
     List<IJob> retrieveJobs();

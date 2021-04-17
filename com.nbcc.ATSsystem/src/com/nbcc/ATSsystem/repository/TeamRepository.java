@@ -39,6 +39,11 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
         dataAccess = DALFactory.createInstance();
     }
 
+    /**
+     * Insert team
+     * @param team
+     * @return id of inserted team
+     */
     @Override
     public int insertTeam(ITeam team) {
         int returnId = 0;
@@ -68,11 +73,11 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
 
     }
 
-    @Override
-    public int updateTeam(ITeam team) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    /**
+     * Delete team by id
+     * @param id
+     * @return number of rows affected
+     */
     @Override
     public int deleteTeam(int id) {
         int rowsAffected = 0;
@@ -94,6 +99,10 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
         return rowsAffected;
     }
 
+    /**
+     * Get all teams
+     * @return list of teams
+     */
     @Override
     public List<ITeam> retrieveTeams() {
         List<ITeam> retrievedTeams = TeamFactory.createListInstance();
@@ -109,6 +118,11 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
         return retrievedTeams;
     }
 
+    /**
+     * Get team by id
+     * @param id
+     * @return team with respective id
+     */
     @Override
     public ITeam retrieveTeam(int id) {
         List<ITeam> teams = TeamFactory.createListInstance();
@@ -126,6 +140,10 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
         return teams.get(0);
     }
 
+    /**
+     * Get employee list as view model
+     * @return list of employee view models
+     */
     public List<EmployeeVM> retrievedEmplyeeList() {
         List<EmployeeVM> retrievedEmplyeeList = new ArrayList<>();
 
@@ -146,6 +164,12 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
         return retrievedEmplyeeList;
     }
 
+    /**
+     * Get list of teams from row set
+     * @param cr
+     * @return list of teams
+     * @throws SQLException 
+     */
     private List<ITeam> toListofTeams(CachedRowSet cr) throws SQLException {
         List<ITeam> retrievedTeams = TeamFactory.createListInstance();
         ITeam team;
@@ -167,6 +191,11 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
         return retrievedTeams;
     }
 
+    /**
+     * Get team members by team id
+     * @param id
+     * @return list of team members for specified team
+     */
     @Override
     public List<EmployeeVM> retrievedTeamMembers(int id) {
         List<EmployeeVM> retrievedTeamMembers = new ArrayList<>();
@@ -190,6 +219,11 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
         return retrievedTeamMembers;
     }
 
+    /**
+     * Update on call status of specific team
+     * @param team
+     * @return returned query values as string
+     */
     @Override
     public String updateIsOnCall(ITeam team) {
         String returnString = null;
@@ -216,6 +250,10 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
         return returnString;
     }
 
+    /**
+     * Get team currently on call
+     * @return team on call
+     */
     @Override
     public ITeam retrieveOnCallTeam() {
         ITeam team = null;
@@ -234,5 +272,4 @@ public class TeamRepository extends BaseRepository implements ITeamRepository {
         }
         return team;
     }
-    
 }

@@ -16,7 +16,6 @@ import java.util.List;
  */
 public interface ITeamRepository {
     int insertTeam(ITeam team);
-    int updateTeam(ITeam team);
     int deleteTeam(int id);
     List<ITeam> retrieveTeams();
     ITeam retrieveTeam(int id);

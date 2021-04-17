@@ -55,6 +55,12 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         dataAccess = DALFactory.createInstance();
     }
 
+    /**
+     * Insert Job
+     *
+     * @param job
+     * @return id of inserted job
+     */
     @Override
     public int insertJob(IJob job) {
         int returnId = 0;
@@ -78,9 +84,9 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         String before = "08:00:00";
         String after = "17:00:00";
         String target = job.getStart().toString().substring(11, 19);
-        String targetDate = job.getStart().toString().substring(0,11);
+        String targetDate = job.getStart().toString().substring(0, 11);
         Date date = new Date();
-        
+
         try {
             date = new SimpleDateFormat("yyyy-MM-dd").parse(targetDate);
         } catch (ParseException ex) {
@@ -109,11 +115,11 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         return returnId;
     }
 
-    @Override
-    public int updateJob(IJob job) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    /**
+     * Delete job by id
+     * @param id
+     * @return number of rows affected
+     */
     @Override
     public int deleteJob(int id) {
         int rowsAffedcted = 0;
@@ -135,6 +141,10 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         return rowsAffedcted;
     }
 
+    /**
+     * Get all jobs
+     * @return list of jobs
+     */
     @Override
     public List<IJob> retrieveJobs() {
         List<IJob> retrievedJobs = JobFactory.createListInstance();
@@ -149,6 +159,11 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         return retrievedJobs;
     }
 
+    /**
+     * Get job by id
+     * @param id
+     * @return job with respective id
+     */
     @Override
     public IJob retrieveJob(int id) {
         List<IJob> jobs = JobFactory.createListInstance();
@@ -166,6 +181,11 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         return jobs.get(0);
     }
 
+    /**
+     * Get Jobs by date
+     * @param date
+     * @return list of jobs
+     */
     @Override
     public List<IJob> retrieveJobsByDate(String date) {
         List<IJob> retrievedJobs = JobFactory.createListInstance();
@@ -183,6 +203,12 @@ public class JobRepository extends BaseRepository implements IJobRepository {
 
     }
 
+    /**
+     * Get jobs by month
+     * @param month
+     * @param year
+     * @return list of jobs
+     */
     @Override
     public List<IJob> retrieveJobsByMonth(int month, int year) {
         List<IJob> retrievedJobs = JobFactory.createListInstance();
@@ -200,6 +226,11 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         return retrievedJobs;
     }
 
+    /**
+     * Get jobs by year
+     * @param year
+     * @return list of jobs
+     */
     @Override
     public List<IJob> retrieveJobsByYear(int year) {
         List<IJob> retrievedJobs = JobFactory.createListInstance();
@@ -218,6 +249,10 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         return retrievedJobs;
     }
 
+    /**
+     * Get number of jobs for current day
+     * @return number of jobs for current day
+     */
     @Override
     public int retrieveNumJobsToday() {
         int numJobs = 0;
@@ -234,6 +269,10 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         return numJobs;
     }
 
+    /**
+     * Retrieve all tasks
+     * @return list of tasks
+     */
     @Override
     public List<ITask> retrieveTasks() {
         List<ITask> retrievedTasks = TaskFactory.createListInstance();
@@ -248,6 +287,12 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         return retrievedTasks;
     }
 
+    /**
+     * Get list of tasks from row set
+     * @param cs
+     * @return list of tasks
+     * @throws SQLException 
+     */
     private List<ITask> toListofTasks(CachedRowSet cs) throws SQLException {
         List<ITask> retrievedTasks = TaskFactory.createListInstance();
         ITask task;
@@ -261,6 +306,13 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         return retrievedTasks;
     }
 
+    /**
+     * Get available teams matching params
+     * @param start
+     * @param tasks
+     * @param isOnSite
+     * @return list of teams
+     */
     @Override
     public List<TeamListVM> retrieveAvailableTeamList(String start, String tasks, boolean isOnSite) {
         List<TeamListVM> retrievedTeamList = new ArrayList<>();
@@ -278,9 +330,8 @@ public class JobRepository extends BaseRepository implements IJobRepository {
             String before = "08:00:00";
             String after = "17:00:00";
             String targetTime = start.substring(11);
-            String targetDate = start.substring(0,11);
+            String targetDate = start.substring(0, 11);
             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(targetDate);
-            
 
             LocalTime time = LocalTime.parse(targetTime, format);
             LocalTime morning = LocalTime.parse(before, format);
@@ -312,6 +363,12 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         return retrievedTeamList;
     }
 
+    /**
+     * Get list of jobs from row set
+     * @param cs
+     * @return list of jobs
+     * @throws SQLException 
+     */
     private List<IJob> toListofJobs(CachedRowSet cs) throws SQLException {
         List<IJob> retrievedJobs = JobFactory.createListInstance();
         IJob job;
@@ -335,6 +392,11 @@ public class JobRepository extends BaseRepository implements IJobRepository {
         return retrievedJobs;
     }
 
+    /**
+     * Get team list by job id
+     * @param jobId
+     * @return team view model matching job id
+     */
     @Override
     public TeamListVM retrieveTeamListByJobId(int jobId) {
         TeamListVM team = new TeamListVM();

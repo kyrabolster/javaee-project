@@ -43,6 +43,11 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         dataAccess = DALFactory.createInstance();
     }
 
+    /**
+     * Retrieve Tasks by Id
+     * @param id
+     * @return list of tasks
+     */
     public List<ITask> retrieveTasks(int id) {
         List<ITask> tasks = new ArrayList();
 
@@ -58,6 +63,12 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return tasks;
     }
 
+    /**
+     * Get list of tasks from row set
+     * @param cs
+     * @return list of tasks
+     * @throws SQLException 
+     */
     private List<ITask> toListofTasks(CachedRowSet cs) throws SQLException {
         List<ITask> tasks = new ArrayList();
 
@@ -73,6 +84,11 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return tasks;
     }
 
+    /**
+     * Get Teams by id
+     * @param id
+     * @return list of teams as strings
+     */
     public List<String> retrieveTeams(int id) {
         List<String> teams = new ArrayList();
 
@@ -88,6 +104,12 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return teams;
     }
 
+    /**
+     * Get list of Teams from row set
+     * @param cs
+     * @return list of Teams
+     * @throws SQLException 
+     */
     private List<String> toListofTeams(CachedRowSet cs) throws SQLException {
         List<String> teams = new ArrayList();
 
@@ -98,6 +120,10 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return teams;
     }
 
+    /**
+     * Get all employees
+     * @return list of employees
+     */
     @Override
     public List<IEmployee> retrieveEmployees() {
         List<IEmployee> retrievedEmployees = EmployeeFactory.createListInstance();
@@ -112,6 +138,11 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return retrievedEmployees;
     }
 
+    /**
+     * Get employees matching search criteria
+     * @param search
+     * @return list of employees
+     */
     @Override
     public List<IEmployee> retrieveEmployees(String search) {
         List<IEmployee> retrievedEmployees = EmployeeFactory.createListInstance();
@@ -128,6 +159,11 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return retrievedEmployees;
     }
 
+    /**
+     * Get employee by id
+     * @param id
+     * @return employee with respective id
+     */
     @Override
     public IEmployee retrieveEmployee(int id) {
         List<IEmployee> employees = EmployeeFactory.createListInstance();
@@ -148,6 +184,12 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return employees.get(0);
     }
 
+    /**
+     * Get list of employees from row set
+     * @param cs
+     * @return list of employees
+     * @throws SQLException 
+     */
     private List<IEmployee> toListofEmployees(CachedRowSet cs) throws SQLException {
         List<IEmployee> retrievedEmployees = EmployeeFactory.createListInstance();
         IEmployee employee;
@@ -170,6 +212,11 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return retrievedEmployees;
     }
 
+    /**
+     * Insert employee
+     * @param employee
+     * @return id of inserted employee
+     */
     @Override
     public int insertEmployee(IEmployee employee) {
         int returnId = 0;
@@ -198,6 +245,12 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return returnId;
     }
 
+    /**
+     * Add specific employee skill to specific employee
+     * @param EmployeeId
+     * @param TaskId
+     * @return boolean for returned value is null
+     */
     @Override
     public boolean addEmployeeSkill(int EmployeeId, int TaskId) {
 
@@ -217,6 +270,12 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return returnValues != null;
     }
 
+    /**
+     * Remove employee skill
+     * @param EmployeeId
+     * @param TaskId
+     * @return boolean for returned value is null
+     */
     @Override
     public boolean removeEmployeeSkill(int EmployeeId, int TaskId) {
 
@@ -237,6 +296,11 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return returnValues != null;
     }
 
+    /**
+     * Update employee
+     * @param employee
+     * @return number of rows affected
+     */
     @Override
     public int updateEmployee(IEmployee employee) {
         int rowsAffected = 0;
@@ -263,6 +327,11 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return rowsAffected;
     }
 
+    /**
+     * Delete employee by id
+     * @param id
+     * @return number of rows affected
+     */
     @Override
     public int deleteEmployee(int id) {
         int rowsAffected = 0;
@@ -284,6 +353,12 @@ public class EmployeeRepository extends BaseRepository implements IEmployeeRepos
         return rowsAffected;
     }
 
+    /**
+     * Check if jobs exist for specific employee and skill
+     * @param empId
+     * @param taskId
+     * @return boolean for whether jobs exist or not
+     */
     @Override
     public boolean isExistingJobBySkills(int empId, int taskId) {
         List<Integer> jobs = new ArrayList();

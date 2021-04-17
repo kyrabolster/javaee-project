@@ -35,6 +35,10 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
         dataAccess = DALFactory.createInstance();
     }
 
+    /**
+     * Get all tasks
+     * @return list of tasks
+     */
     @Override
     public List<ITask> retrieveTasks() {
         List<ITask> retrievedTasks = TaskFactory.createListInstance();
@@ -49,6 +53,11 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
         return retrievedTasks;
     }
 
+    /**
+     * Get tasks not assigned to specific employee
+     * @param employeeId
+     * @return list of tasks
+     */
     @Override
     public List<ITask> retrieveTasksNotAssignedToEmployee(int employeeId) {
         List<ITask> retrievedTasks = TaskFactory.createListInstance();
@@ -65,6 +74,11 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
         return retrievedTasks;
     }
 
+    /**
+     * Get tasks by id
+     * @param id
+     * @return list of tasks
+     */
     @Override
     public ITask retrieveTask(int id) {
         List<ITask> tasks = TaskFactory.createListInstance();
@@ -81,6 +95,12 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
         return tasks.get(0);
     }
 
+    /**
+     * Get list of tasks from row set
+     * @param cs
+     * @return list of tasks
+     * @throws SQLException 
+     */
     private List<ITask> toListofTasks(CachedRowSet cs) throws SQLException {
         List<ITask> retrievedTasks = TaskFactory.createListInstance();
         ITask task;
@@ -98,6 +118,11 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
         return retrievedTasks;
     }
 
+    /**
+     * Insert task
+     * @param task
+     * @return id of inserted task
+     */
     @Override
     public int insertTask(ITask task) {
         int returnId = 0;
@@ -125,6 +150,11 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
         return returnId;
     }
 
+    /**
+     * Update task
+     * @param task
+     * @return number of rows affected
+     */
     @Override
     public int updateTask(ITask task) {
         int rowsAffedcted = 0;
@@ -150,6 +180,11 @@ public class TaskRepository extends BaseRepository implements ITaskRepository {
         return rowsAffedcted;
     }
 
+    /**
+     * Delete task by id
+     * @param id
+     * @return number of rows affected
+     */
     @Override
     public int deleteTask(int id) {
         int rowsAffected = 0;
