@@ -30,59 +30,35 @@ LOCK TABLES `employees` WRITE;
 INSERT INTO `employees` VALUES (1,'Sam','Smith','111-222-333',50.00,_binary '\0','2021-03-19 22:05:19',NULL,NULL),(2,'Jennifer','Wilson','444-555-666',100.00,_binary '\0','2021-03-19 22:05:19',NULL,NULL),(3,'Christine','Sipes','123-456-789',25.00,_binary '\0','2021-03-20 17:50:23',NULL,NULL),(4,'Mackenzie','Hettinger','987-654-321',40.00,_binary '\0','2021-03-20 17:50:23',NULL,NULL),(5,'Sam','Smith','111-222-333',30.00,_binary '\0','2021-03-21 15:32:07',NULL,NULL),(6,'Jonathan','Pryor','123-456-789',60.00,_binary '\0','2021-03-23 17:55:13',NULL,NULL),(7,'Frank','Simpkins','987-654-321',40.00,_binary '','2021-03-23 17:55:13',NULL,'2021-04-07 10:00:02'),(8,'Dina','Gregory','123-456-789',50.00,_binary '\0','2021-03-23 17:55:13',NULL,NULL),(9,'Maria','Bright','987-654-321',40.00,_binary '','2021-03-23 17:55:13',NULL,'2021-04-06 14:59:11'),(10,'Angela','Joseph','123-456-789',50.00,_binary '\0','2021-03-23 17:55:13',NULL,NULL),(11,'Robert','Perez','987-654-321',45.00,_binary '\0','2021-03-23 17:55:13',NULL,NULL),(12,'Frederick','Delgado','123-456-789',55.00,_binary '\0','2021-03-23 17:55:13',NULL,NULL),(15,'Theodore','Daniel','234-123-512',50.00,_binary '\0','2021-04-08 09:38:36',NULL,NULL),(16,'Margaret','Calder','288-123-213',75.00,_binary '\0','2021-04-08 09:38:59',NULL,NULL);
 UNLOCK TABLES;
 
---
--- Table structure for table `employees_tasks`
---
-
-DROP TABLE IF EXISTS `employees_tasks`;
-
-CREATE TABLE `employees_tasks` (
-  `EmployeeId` int(11) NOT NULL,
-  `TaskId` int(11) NOT NULL,
-  PRIMARY KEY (`EmployeeId`,`TaskId`),
-  KEY `TaskId_idx` (`TaskId`),
-  CONSTRAINT `EmployeeId` FOREIGN KEY (`EmployeeId`) REFERENCES `employees` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `TaskId` FOREIGN KEY (`TaskId`) REFERENCES `tasks` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 --
--- Dumping data for table `employees_tasks`
+-- Table structure for table `teams`
 --
 
-LOCK TABLES `employees_tasks` WRITE;
+DROP TABLE IF EXISTS `teams`;
 
-INSERT INTO `employees_tasks` VALUES (1,1),(10,1),(1,2),(2,2),(3,2),(7,2),(2,3),(7,4),(6,6),(15,6),(12,7),(16,7),(10,8),(12,9);
+CREATE TABLE `teams` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255) NOT NULL,
+  `IsOnCall` bit(1) NOT NULL,
+  `IsDeleted` bit(1) NOT NULL,
+  `CreatedAt` datetime NOT NULL,
+  `UpdatedAt` datetime DEFAULT NULL,
+  `DeletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
+
+--
+-- Dumping data for table `teams`
+--
+
+LOCK TABLES `teams` WRITE;
+
+INSERT INTO `teams` VALUES (1,'First',_binary '\0',_binary '\0','2021-03-20 22:19:41',NULL,NULL),(2,'Blue',_binary '\0',_binary '\0','2021-03-23 17:56:39',NULL,NULL),(3,'Giants',_binary '',_binary '\0','2021-03-23 17:58:01','2021-04-16 15:26:53',NULL),(4,'Green',_binary '\0',_binary '\0','2021-04-06 08:56:27','2021-04-16 15:26:43',NULL),(5,'Purple',_binary '\0',_binary '','2021-04-07 21:35:45','2021-04-07 21:37:00','2021-04-07 21:41:00');
 
 UNLOCK TABLES;
 
---
--- Table structure for table `job_tasks`
---
-
-DROP TABLE IF EXISTS `job_tasks`;
-
-CREATE TABLE `job_tasks` (
-  `TaskId` int(11) NOT NULL,
-  `JobId` int(11) NOT NULL,
-  `OperatingCost` decimal(13,2) NOT NULL,
-  `OperatingRevenue` decimal(13,2) NOT NULL,
-  PRIMARY KEY (`TaskId`,`JobId`),
-  KEY `JobId_JobTask_FK_idx` (`JobId`),
-  CONSTRAINT `JobId_JobTask_FK` FOREIGN KEY (`JobId`) REFERENCES `jobs` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `TaskId_jobTask_FK` FOREIGN KEY (`TaskId`) REFERENCES `tasks` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
---
--- Dumping data for table `job_tasks`
---
-
-LOCK TABLES `job_tasks` WRITE;
-
-INSERT INTO `job_tasks` VALUES (1,1,100.00,300.00),(1,2,100.00,300.00),(1,3,100.00,300.00),(1,6,50.00,150.00),(1,7,50.00,150.00),(1,8,50.00,150.00),(1,9,50.00,150.00),(1,11,50.00,150.00),(1,13,50.00,150.00),(2,1,250.00,750.00),(2,13,60.00,180.00),(2,28,37.50,112.50),(2,29,37.50,112.50),(2,30,37.50,112.50),(3,3,150.00,450.00),(3,5,50.00,150.00),(3,12,30.00,120.00),(3,14,50.00,150.00),(3,15,50.00,150.00),(4,2,80.00,240.00),(4,12,55.00,220.00),(5,12,60.00,240.00),(6,4,120.00,480.00),(7,4,82.50,330.00);
-
-UNLOCK TABLES;
 
 --
 -- Table structure for table `jobs`
@@ -141,6 +117,63 @@ INSERT INTO `tasks` VALUES (1,'Network Design','Network design is a category of 
 
 UNLOCK TABLES;
 
+
+--
+-- Table structure for table `job_tasks`
+--
+
+DROP TABLE IF EXISTS `job_tasks`;
+
+CREATE TABLE `job_tasks` (
+  `TaskId` int(11) NOT NULL,
+  `JobId` int(11) NOT NULL,
+  `OperatingCost` decimal(13,2) NOT NULL,
+  `OperatingRevenue` decimal(13,2) NOT NULL,
+  PRIMARY KEY (`TaskId`,`JobId`),
+  KEY `JobId_JobTask_FK_idx` (`JobId`),
+  CONSTRAINT `JobId_JobTask_FK` FOREIGN KEY (`JobId`) REFERENCES `jobs` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `TaskId_jobTask_FK` FOREIGN KEY (`TaskId`) REFERENCES `tasks` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Dumping data for table `job_tasks`
+--
+
+LOCK TABLES `job_tasks` WRITE;
+
+INSERT INTO `job_tasks` VALUES (1,1,100.00,300.00),(1,2,100.00,300.00),(1,3,100.00,300.00),(1,6,50.00,150.00),(1,7,50.00,150.00),(1,8,50.00,150.00),(1,9,50.00,150.00),(1,11,50.00,150.00),(1,13,50.00,150.00),(2,1,250.00,750.00),(2,13,60.00,180.00),(2,28,37.50,112.50),(2,29,37.50,112.50),(2,30,37.50,112.50),(3,3,150.00,450.00),(3,5,50.00,150.00),(3,12,30.00,120.00),(3,14,50.00,150.00),(3,15,50.00,150.00),(4,2,80.00,240.00),(4,12,55.00,220.00),(5,12,60.00,240.00),(6,4,120.00,480.00),(7,4,82.50,330.00);
+
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `employees_tasks`
+--
+
+DROP TABLE IF EXISTS `employees_tasks`;
+
+CREATE TABLE `employees_tasks` (
+  `EmployeeId` int(11) NOT NULL,
+  `TaskId` int(11) NOT NULL,
+  PRIMARY KEY (`EmployeeId`,`TaskId`),
+  KEY `TaskId_idx` (`TaskId`),
+  CONSTRAINT `EmployeeId` FOREIGN KEY (`EmployeeId`) REFERENCES `employees` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `TaskId` FOREIGN KEY (`TaskId`) REFERENCES `tasks` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Dumping data for table `employees_tasks`
+--
+
+LOCK TABLES `employees_tasks` WRITE;
+
+INSERT INTO `employees_tasks` VALUES (1,1),(10,1),(1,2),(2,2),(3,2),(7,2),(2,3),(7,4),(6,6),(15,6),(12,7),(16,7),(10,8),(12,9);
+
+UNLOCK TABLES;
+
+
 --
 -- Table structure for table `team_members`
 --
@@ -164,34 +197,6 @@ CREATE TABLE `team_members` (
 LOCK TABLES `team_members` WRITE;
 
 INSERT INTO `team_members` VALUES (1,1),(2,1),(7,2),(10,2),(6,3),(12,3),(3,4),(9,4),(4,5),(8,5);
-
-UNLOCK TABLES;
-
---
--- Table structure for table `teams`
---
-
-DROP TABLE IF EXISTS `teams`;
-
-CREATE TABLE `teams` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(255) NOT NULL,
-  `IsOnCall` bit(1) NOT NULL,
-  `IsDeleted` bit(1) NOT NULL,
-  `CreatedAt` datetime NOT NULL,
-  `UpdatedAt` datetime DEFAULT NULL,
-  `DeletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
-
-
---
--- Dumping data for table `teams`
---
-
-LOCK TABLES `teams` WRITE;
-
-INSERT INTO `teams` VALUES (1,'First',_binary '\0',_binary '\0','2021-03-20 22:19:41',NULL,NULL),(2,'Blue',_binary '\0',_binary '\0','2021-03-23 17:56:39',NULL,NULL),(3,'Giants',_binary '',_binary '\0','2021-03-23 17:58:01','2021-04-16 15:26:53',NULL),(4,'Green',_binary '\0',_binary '\0','2021-04-06 08:56:27','2021-04-16 15:26:43',NULL),(5,'Purple',_binary '\0',_binary '','2021-04-07 21:35:45','2021-04-07 21:37:00','2021-04-07 21:41:00');
 
 UNLOCK TABLES;
 
